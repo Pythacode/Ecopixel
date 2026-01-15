@@ -8,26 +8,31 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
-from searchEngine import searchEngine
+from searchEngine import searchView
+
+WIDTH, HEIGHT = 1280, 720
 
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 running = True
 
-current_view = searchEngine
+current_view = searchView
+
+text = "hj"
 
 while running:
 
+    events = pygame.event.get()
+
     # Écout des évenement
-    for event in pygame.event.get():
+    for event in events:
         # Quand l'utilisateur ferme la fenetre
         if event.type == pygame.QUIT:
             running = False
-        current_view.event(event)
 
     # Gérer le rendu
-    current_view.render()
+    current_view.update(events, screen)
 
     # Actualiser l'écran
     pygame.display.flip()

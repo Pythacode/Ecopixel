@@ -7,6 +7,8 @@
 
 import requests
 import json
+from game import *
+import pygame
 
 def search(query:str, max_result=10, lang="fr") -> list:
     """
@@ -54,3 +56,47 @@ def search(query:str, max_result=10, lang="fr") -> list:
         } for r in results] # Suprime les informations inutiles à notre usage
 
     return exploit_result
+
+pygame.init()
+text = "_"
+font = pygame.font.Font("freesansbold.ttf", 24)
+
+def update(events, screen) :
+    global text
+
+    
+
+    width, height = screen.get_size() 
+
+    # Header
+    pygame.draw.rect(screen, WHITE, (0, 0, width, 80), width=0)
+
+    # Zone de recherche
+    search_zone = pygame.draw.rect(
+        screen,
+        BLACK,
+        (20, 20, width - 40, 40),
+        width=2,
+        border_radius=20,
+    )
+
+    for event in events:
+        if event.type == pygame.MOUSEBUTTONUP:
+            if search_zone.collidepoint(event.pos):
+                print("Dans la zone")
+        elif event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_RETURN:
+                print(search(text))
+            elif event.key == pygame.K_BACKSPACE:
+                text =  text[:-2]
+                text += "_"
+            else:
+                text =  text[:-1]
+                text += event.unicode + "_"
+
+    text_pygame = font.render(text, True, BLACK)
+    screen.blit(text_pygame, (27, 27))
+
+
+
+searchView = view(update)
