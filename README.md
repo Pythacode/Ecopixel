@@ -1,2 +1,3 @@
 # ecosia_simulator
-A little game when player can plant tree with search
+
+Un jeu où l'on peut planter des arbres en achetant des pousses grace au crédits que l'on gagnerais en fesant des recherches sur le web
