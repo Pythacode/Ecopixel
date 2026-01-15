@@ -8,11 +8,14 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
+from searchEngine import searchEngine
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 running = True
+
+current_view = searchEngine
 
 while running:
 
@@ -21,7 +24,10 @@ while running:
         # Quand l'utilisateur ferme la fenetre
         if event.type == pygame.QUIT:
             running = False
+        current_view.event(event)
 
+    # Gérer le rendu
+    current_view.render()
 
     # Actualiser l'écran
     pygame.display.flip()
