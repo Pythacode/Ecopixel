@@ -9,6 +9,7 @@
 
 import pygame
 from searchEngine import searchView
+from menu import menuView
 
 WIDTH, HEIGHT = 1280, 720
 
@@ -17,7 +18,7 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 running = True
 
-current_view = searchView
+current_view = menuView
 current_view.init()
 
 text = "hj"
