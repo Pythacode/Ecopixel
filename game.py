@@ -8,14 +8,17 @@
 from typing import Callable
 
 class view() :
-    def __init__(self, update:Callable) -> None:
+    def __init__(self, init:Callable, update:Callable) -> None:
         """
         Crée une vue pour le jeux
         
         :param update: Une fonction qui sert à gérer actualiser la vue.. Elle doit attendre deux argument, la liste d'évènement et un objet surface qui correspond à l'écran.
         :type update: Callable
+        :param init: Une fonction qui sert à initialiser la vue.
+        :type init: Callable
         """
-        self.update = update # Fonction qui sera appelée pour gérer les évènements pygame
+        self.init = init
+        self.update = update
 
 
 WHITE = (255, 255, 255)

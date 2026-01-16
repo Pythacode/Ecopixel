@@ -57,14 +57,16 @@ def search(query:str, max_result=10, lang="fr") -> list:
 
     return exploit_result
 
-pygame.init()
-text = "_"
-font = pygame.font.Font("freesansbold.ttf", 24)
+def init() :
+    global font
+    global text 
+
+    pygame.init()
+    text = "_"
+    font = pygame.font.Font("freesansbold.ttf", 24)
 
 def update(events, screen) :
     global text
-
-    
 
     width, height = screen.get_size() 
 
@@ -99,4 +101,4 @@ def update(events, screen) :
 
 
 
-searchView = view(update)
+searchView = view(init, update)
