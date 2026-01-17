@@ -2,7 +2,7 @@
 # Lien du dépot : https://github.com/Pythacode/ecosia_simulator/         #
 # Fichier contenant toute les variable globals du jeux                   #
 # Crée par Titouan - https://github.com/Pythacode/                       #
-# License :                                                              #
+# License : Creative Commons Attribution-NonCommercial 4.0 International #
 # ---------------------------------------------------------------------- #
 
 from typing import Callable

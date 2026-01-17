@@ -1,3 +1,10 @@
+# -------------------------------- Menu -------------------------------- #
+# Lien du dépot : https://github.com/Pythacode/ecosia_simulator/         #
+# Fichier contenant tout le code du moteur de recherche.                 #
+# Crée par Lucas - https://github.com/GreGrenier                         #
+# License : Creative Commons Attribution-NonCommercial 4.0 International #
+# ---------------------------------------------------------------------- #
+
 from game import *
 import pygame
 

@@ -4,7 +4,7 @@
 # Crée par                                                               #
 #      - Titouan - https://github.com/Pythacode/                         #
 #      - Lucas - https://github.com/GreGrenier                           #
-# License :                                                              #
+# License : Creative Commons Attribution-NonCommercial 4.0 International #
 # ---------------------------------------------------------------------- #
 
 import pygame
