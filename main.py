@@ -1,6 +1,6 @@
 # ------------------------- Fichier Principal -------------------------- #
 # Lien du dépot : https://github.com/Pythacode/ecosia_simulator/         #
-# Fichier contenant tout le code du moteur de recherche.                 #
+# Fichier contenant tout le code du moteur de jeu.                       #
 # Crée par                                                               #
 #      - Titouan - https://github.com/Pythacode/                         #
 #      - Lucas - https://github.com/GreGrenier                           #
