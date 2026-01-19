@@ -20,6 +20,7 @@ class Game() :
         self.BLACK = (000, 000, 000)
     
     def change_view(self, new_view) :
+        self.screen.fill(self.BLACK)
         self.current_view = new_view
         self.current_view.init()
 
