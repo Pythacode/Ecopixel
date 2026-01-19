@@ -33,26 +33,8 @@ def update(events, screen) :
         pygame.time.wait(1)
 
     # Play button
-    if createButton(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), screen, (width/2, height/2), 48*4, 24*4, events) == True:
+    if button.createButton(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), screen, (width/2, height/2), 48*4, 24*4, events) == True:
         pass
-
-def createButton(image_nor, image_mouse, image_click, screen, position, width, height, events):
-    global button_cooldown
-    click = False
-    image = pygame.image.load(image_nor)
-    scaled_image = pygame.transform.scale(image, (width, height))
-    rect = scaled_image.get_rect()
-    rect.center = position
-    if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-        image = pygame.image.load(image_mouse)
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONUP:
-                button_cooldown = 80
-                click = True
-                image = pygame.image.load(image_click)
-    scaled_image = pygame.transform.scale(image, (width, height))
-    screen.blit(scaled_image, rect)
-    return click
     
 
 menuView = view(init, update)

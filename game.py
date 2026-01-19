@@ -6,6 +6,7 @@
 # ---------------------------------------------------------------------- #
 
 from typing import Callable
+import pygame
 
 class view() :
     def __init__(self, init:Callable, update:Callable) -> None:
@@ -19,6 +20,25 @@ class view() :
         """
         self.init = init
         self.update = update
+
+
+class button():
+
+    def createButton(self, image_nor, image_mouse, image_click, screen, position, width, height, events):
+        self.click = False
+        image = pygame.image.load(image_nor)
+        scaled_image = pygame.transform.scale(image, (width, height))
+        rect = scaled_image.get_rect()
+        rect.center = position
+        if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
+            for event in events:
+                if event == pygame.MOUSEBUTTONDOWN:
+                    image = pygame.image.load(image_click)
+                else:
+                    image = pygame.image.load(image_mouse)
+        scaled_image = pygame.transform.scale(image, (width, height))
+        screen.blit(scaled_image, rect)
+        return self.click
 
 
 WHITE = (255, 255, 255)
