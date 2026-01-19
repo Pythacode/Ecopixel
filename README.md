@@ -17,23 +17,28 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grace au crédit
 
 [Documentation officiel](https://docs.python.org/3/library/venv.html "Documentation officiel venv")
 
-Pour commencer, il faut renter dans l'environnement virtuel. Pour cela, utilisez la commande qui correspond à votre shell :
+Pour commencer, if faut créer un venv avec la commande suivante :
+```shell
+python -m venv venv
+```
+
+Ensuite, il faut renter dans l'environnement virtuel. Pour cela, utilisez la commande qui correspond à votre shell :
   
 * POSIX (Linux, MacOS...)
 
     | Shell | Commande pour activer l'environement virtuel | 
     | - | - |
-    | bash/zsh | `$ source linux-venv/bin/activate` |
-    | fish | `$ source linux-venv/bin/activate.fish` |
-    | csh/tcsh | `$ source linux-venv/bin/activate.csh` |
-    | pwsh | `$ linux-venv/bin/Activate.ps1` |
+    | bash/zsh | `$ source venv/bin/activate` |
+    | fish | `$ source venv/bin/activate.fish` |
+    | csh/tcsh | `$ source venv/bin/activate.csh` |
+    | pwsh | `$ venv/bin/Activate.ps1` |
 
 * Windows
 
     | Shell | Commande pour activer l'environement virtuel |
     | - | - |
     | cmd.exe | `C:\> <venv>\Scripts\activate.bat` |
-    | PowerShell | `PS C:\> <venv>\Scripts\Activate.ps1` |
+    | PowerShell | `PS C:\> venv\Scripts\Activate.ps1` |
 
 Ensuite, lancez simplement le projet avec la commande
 
