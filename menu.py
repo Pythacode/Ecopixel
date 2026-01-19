@@ -24,7 +24,18 @@ def update(events, screen) :
     # Header
     pygame.draw.rect(screen, (255, 201, 157), (0, 0, width, 720), width=0)
 
-    text_pygame = font.render("test", True, BLACK)
-    screen.blit(text_pygame, (27, 27))
+
+    createButton("assets/play_button_nor.png", "assets/play_button_mouse.png", "assets/play_button_click.png",screen, (width/2, height/2), 48*4, 24*4)
+
+def createButton(image_nor, image_mouse, image_click, screen, position, width, height):
+    image = pygame.image.load(image_nor)
+    scaled_image = pygame.transform.scale(image, (width, height))
+    rect = scaled_image.get_rect()
+    rect.center = position
+    if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
+        image = pygame.image.load(image_mouse)
+        scaled_image = pygame.transform.scale(image, (width, height))
+    screen.blit(scaled_image, rect)
+    
 
 menuView = view(init, update)
