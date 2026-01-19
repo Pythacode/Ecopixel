@@ -5,9 +5,7 @@
 # License : Creative Commons Attribution-NonCommercial 4.0 International #
 # ---------------------------------------------------------------------- #
 
-
 import pygame
-
 pygame.init()
 
 class Game() :
@@ -33,3 +31,21 @@ main_game = Game(
 
 from menu import menuView
 main_game.change_view(menuView)
+
+class button():
+
+    def createButton(self, image_nor, image_mouse, image_click, screen, position, width, height, events):
+        self.click = False
+        image = pygame.image.load(image_nor)
+        scaled_image = pygame.transform.scale(image, (width, height))
+        rect = scaled_image.get_rect()
+        rect.center = position
+        if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
+            for event in events:
+                if event == pygame.MOUSEBUTTONDOWN:
+                    image = pygame.image.load(image_click)
+                else:
+                    image = pygame.image.load(image_mouse)
+        scaled_image = pygame.transform.scale(image, (width, height))
+        screen.blit(scaled_image, rect)
+        return self.click
