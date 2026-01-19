@@ -23,10 +23,10 @@ Pour commencer, il faut renter dans l'environnement virtuel. Pour cela, utilisez
 
     | Shell | Commande pour activer l'environement virtuel | 
     | - | - |
-    | bash/zsh | `$ source <venv>/bin/activate` |
-    | fish | `$ source <venv>/bin/activate.fish` |
-    | csh/tcsh | `$ source <venv>/bin/activate.csh` |
-    | pwsh | `$ <venv>/bin/Activate.ps1` |
+    | bash/zsh | `$ source linux-venv/bin/activate` |
+    | fish | `$ source linux-venv/bin/activate.fish` |
+    | csh/tcsh | `$ source linux-venv/bin/activate.csh` |
+    | pwsh | `$ linux-venv/bin/Activate.ps1` |
 
 * Windows
 

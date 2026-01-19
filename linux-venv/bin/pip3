@@ -1,4 +1,4 @@
-#!/home/nathanaelle/code/NSI/ecosia_simulator/venv/bin/python3
+#!/home/nathanaelle/code/NSI/ecosia_simulator/linux-venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
