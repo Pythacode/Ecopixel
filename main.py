@@ -18,10 +18,8 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 running = True
 
-current_view = menuView
+current_view = searchView
 current_view.init()
-
-text = "hj"
 
 while running:
 
