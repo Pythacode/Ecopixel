@@ -5,21 +5,30 @@
 # License : Creative Commons Attribution-NonCommercial 4.0 International #
 # ---------------------------------------------------------------------- #
 
-from typing import Callable
 
-class view() :
-    def __init__(self, init:Callable, update:Callable) -> None:
-        """
-        Crée une vue pour le jeux
-        
-        :param update: Une fonction qui sert à gérer actualiser la vue.. Elle doit attendre deux argument, la liste d'évènement et un objet surface qui correspond à l'écran.
-        :type update: Callable
-        :param init: Une fonction qui sert à initialiser la vue.
-        :type init: Callable
-        """
-        self.init = init
-        self.update = update
+import pygame
 
+pygame.init()
 
-WHITE = (255, 255, 255)
-BLACK = (000, 000, 000)
+class Game() :
+    def __init__(self, WIDTH:int, HEIGHT:int):
+        self.WIDTH = WIDTH
+        self.HEIGHT = HEIGHT
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
+        self.current_view = None
+        self.WHITE = (255, 255, 255)
+        self.BLACK = (000, 000, 000)
+    
+    def change_view(self, new_view) :
+        self.current_view = new_view
+        self.current_view.init()
+
+main_game = Game(
+    WIDTH=1280,
+    HEIGHT=720
+)
+
+# Permet de crer main_game, dont menuView à besoin
+
+from menu import menuView
+main_game.change_view(menuView)

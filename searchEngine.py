@@ -9,6 +9,7 @@ import requests
 import json
 from game import *
 import pygame
+from view import view
 
 def search(query:str, max_result=10, lang="fr") -> list:
     """
@@ -65,18 +66,18 @@ def init() :
     text = "_"
     font = pygame.font.Font("freesansbold.ttf", 24)
 
-def update(events, screen) :
+def update(events) :
     global text
 
-    width, height = screen.get_size() 
+    width, height = main_game.screen.get_size() 
 
     # Header
-    pygame.draw.rect(screen, WHITE, (0, 0, width, 80), width=0)
+    pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 0, width, 80), width=0)
 
     # Zone de recherche
     search_zone = pygame.draw.rect(
-        screen,
-        BLACK,
+        main_game.screen,
+        main_game.BLACK,
         (20, 20, width - 40, 40),
         width=2,
         border_radius=20,
@@ -96,8 +97,8 @@ def update(events, screen) :
                 text =  text[:-1]
                 text += event.unicode + "_"
 
-    text_pygame = font.render(text, True, BLACK)
-    screen.blit(text_pygame, (27, 27))
+    text_pygame = font.render(text, True, main_game.BLACK)
+    main_game.screen.blit(text_pygame, (27, 27))
 
 
 

@@ -8,18 +8,9 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
-from searchEngine import searchView
-from menu import menuView
+from game import main_game
 
-WIDTH, HEIGHT = 1280, 720
-
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
 running = True
-
-current_view = menuView
-current_view.init()
 
 while running:
 
@@ -32,7 +23,7 @@ while running:
             running = False
 
     # Gérer le rendu
-    current_view.update(events, screen)
+    main_game.current_view.update(events)
 
     # Actualiser l'écran
     pygame.display.flip()
