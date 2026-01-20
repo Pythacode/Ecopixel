@@ -34,18 +34,29 @@ main_game.change_view(menuView)
 
 class button():
 
-    def createButton(self, image_nor, image_mouse, image_click, screen, position, width, height, events):
+    def __init__(self, image_nor, image_mouse, image_click, position, width, height):
+        self.image_nor = image_nor
+        self.image_mouse = image_mouse
+        self.image_click = image_click
+        self.position = position
+        self.width = width
+        self.height = height
+
+    def update(self):
+        pygame.draw(self.image_nor)
+
+    def createButton(self, screen, events):
         self.click = False
-        image = pygame.image.load(image_nor)
-        scaled_image = pygame.transform.scale(image, (width, height))
+        image = pygame.image.load(self.image_nor)
+        scaled_image = pygame.transform.scale(image, (self.width, self.height))
         rect = scaled_image.get_rect()
-        rect.center = position
+        rect.center = self.position
         if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
             for event in events:
                 if event == pygame.MOUSEBUTTONDOWN:
-                    image = pygame.image.load(image_click)
+                    image = pygame.image.load(self.image_click)
                 else:
-                    image = pygame.image.load(image_mouse)
-        scaled_image = pygame.transform.scale(image, (width, height))
+                    image = pygame.image.load(self.image_mouse)
+        scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, rect)
         return self.click

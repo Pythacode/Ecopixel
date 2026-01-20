@@ -34,8 +34,8 @@ def update(events) :
         pygame.time.wait(1)
 
     # Play button
-    if createButton(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4, events) == True:
-        pass
+    button.__init__(play, os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4)
+    #(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4, events)
     
 
 menuView = view(init, update)
