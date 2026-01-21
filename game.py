@@ -27,11 +27,6 @@ main_game = Game(
     HEIGHT=720
 )
 
-# Permet de crer main_game, dont menuView à besoin
-
-from menu import menuView
-main_game.change_view(menuView)
-
 class button():
 
     def __init__(self, image_nor, image_mouse, image_click, position, width, height):
@@ -60,3 +55,10 @@ class button():
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, rect)
         return self.click
+
+
+# INSEREZ LES CLASSES ET FONCTIONS ICI
+
+# Permet de crer main_game, dont menuView à besoin
+from menu import menuView
+main_game.change_view(menuView)
