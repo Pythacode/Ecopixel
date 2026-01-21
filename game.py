@@ -44,8 +44,8 @@ class button():
 
     def update(self):
         pygame.draw(self.image_nor)
-
-    def createButton(self, screen, events):
+    
+    def createButton(self, screen, events): 
         self.click = False
         image = pygame.image.load(self.image_nor)
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
