@@ -10,6 +10,9 @@ import pygame
 import os
 from view import view
 
+def PlayButton_Pressed():
+    pass
+
 def init() :
     global font
     global text
@@ -27,8 +30,7 @@ def update(events) :
     pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, 720), width=0)
 
     # Play button
-    playbutton = button(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4)
-    #(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4, events)
-    
+    playbutton = button(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4, PlayButton_Pressed, text="")
+    playbutton.createButton(main_game.screen)
 
 menuView = view(init, update)
