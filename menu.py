@@ -11,7 +11,11 @@ import os
 from view import view
 
 def PlayButton_Pressed():
-    pass
+    print("CLIQUEEEEEEEEEE")
+
+def QuitButton_Pressed():
+    #makes an error on "pygame.display.flip()"... To fix it we should change the running var but I can't acces it !
+    pygame.quit()
 
 def init() :
     global font
@@ -29,8 +33,19 @@ def update(events) :
     # Header
     pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, 720), width=0)
 
+    # Logo
+    image = pygame.image.load(os.sep.join(["assets", "logo.png"]))
+    scaled_image = pygame.transform.scale(image, (48*4, 48*4))
+    rect = scaled_image.get_rect()
+    rect.center = (640, 200)
+    main_game.screen.blit(scaled_image, rect)
+
     # Play button
-    playbutton = button(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (width/2, height/2), 48*4, 24*4, PlayButton_Pressed, text="")
+    playbutton = button(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (640, 360), 48*4, 24*4, PlayButton_Pressed, text="")
     playbutton.createButton(main_game.screen)
+
+    # Quit button
+    quitbutton = button(os.sep.join(["assets", "button_nor.png"]), os.sep.join(["assets", "button_mouse.png"]), os.sep.join(["assets", "button_click.png"]), (640, 460), 48*4, 24*4, QuitButton_Pressed, text="Quit")
+    quitbutton.createButton(main_game.screen)
 
 menuView = view(init, update)

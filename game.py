@@ -51,13 +51,14 @@ class button():
         if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
                 image = pygame.image.load(self.image_click)
-                if self.OnClickFunc != None:
-                    self.OnClickFunc()
+                self.click = True
             else:
                 image = pygame.image.load(self.image_mouse)
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, rect)
         screen.blit(rendertext, self.position)
+        if self.click == True and self.OnClickFunc != None:
+                self.OnClickFunc()
 
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
