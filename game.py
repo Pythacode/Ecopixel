@@ -29,36 +29,41 @@ main_game = Game(
 
 class button():
 
-    def __init__(self, image_nor, image_mouse, image_click, position, width, height):
+    def __init__(self, image_nor, image_mouse, image_click, position, width, height, OnClickFunc, text=""):
         self.image_nor = image_nor
         self.image_mouse = image_mouse
         self.image_click = image_click
         self.position = position
         self.width = width
         self.height = height
-
-    def update(self):
-        pygame.draw(self.image_nor)
-    
-    def createButton(self, screen, events): 
+        self.OnClickFunc = OnClickFunc
+        self.text = text
         self.click = False
+    
+    # Create Button
+    def createButton(self, screen):
+        font = pygame.font.Font("freesansbold.ttf", 24)
         image = pygame.image.load(self.image_nor)
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         rect = scaled_image.get_rect()
         rect.center = self.position
+        rendertext = font.render(self.text, True, main_game.BLACK)
         if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-            for event in events:
-                if event == pygame.MOUSEBUTTONDOWN:
-                    image = pygame.image.load(self.image_click)
-                else:
-                    image = pygame.image.load(self.image_mouse)
+            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+                image = pygame.image.load(self.image_click)
+                self.click = True
+            else:
+                image = pygame.image.load(self.image_mouse)
+                self.click = False
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, rect)
-        return self.click
+        screen.blit(rendertext, self.position)
+        if self.click == True and self.OnClickFunc != None:
+                self.OnClickFunc()
 
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
-# Permet de crer main_game, dont menuView à besoin
+# Permet de créer main_game, dont menuView à besoin
 from menu import menuView
 main_game.change_view(menuView)
