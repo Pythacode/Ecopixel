@@ -14,8 +14,7 @@ def PlayButton_Pressed():
     print("CLIQUEEEEEEEEEE")
 
 def QuitButton_Pressed():
-    main_game.running = True
-    pygame.quit() 
+    main_game.running = False 
 
 def Logo_Pressed():
     babysfx = pygame.mixer.Sound(os.sep.join(["assets", "sfx", "BabyNoise.mp3"]))
