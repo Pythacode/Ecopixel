@@ -17,6 +17,10 @@ def QuitButton_Pressed():
     #makes an error on "pygame.display.flip()"... To fix it we should change the running var but I can't acces it !
     pygame.quit()
 
+def Logo_Pressed():
+    babysfx = pygame.mixer.Sound(os.sep.join(["assets", "sfx", "BabyNoise.mp3"]))
+    babysfx.play()
+
 def init() :
     global font
     global text
@@ -34,18 +38,15 @@ def update(events) :
     pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, 720), width=0)
 
     # Logo
-    image = pygame.image.load(os.sep.join(["assets", "logo.png"]))
-    scaled_image = pygame.transform.scale(image, (48*4, 48*4))
-    rect = scaled_image.get_rect()
-    rect.center = (640, 200)
-    main_game.screen.blit(scaled_image, rect)
+    logo = button(os.sep.join(["assets", "image", "logo.png"]), os.sep.join(["assets", "image", "logo.png"]), os.sep.join(["assets", "image", "logo.png"]), (640, 200), 48*4, 48*4, Logo_Pressed)
+    logo.createButton(main_game.screen)
 
     # Play button
-    playbutton = button(os.sep.join(["assets", "play_button_nor.png"]), os.sep.join(["assets", "play_button_mouse.png"]), os.sep.join(["assets", "play_button_click.png"]), (640, 360), 48*4, 24*4, PlayButton_Pressed, text="")
+    playbutton = button(os.sep.join(["assets", "image", "play_button_nor.png"]), os.sep.join(["assets", "image", "play_button_mouse.png"]), os.sep.join(["assets", "image", "play_button_click.png"]), (640, 360), 48*4, 24*4, PlayButton_Pressed, text="")
     playbutton.createButton(main_game.screen)
 
     # Quit button
-    quitbutton = button(os.sep.join(["assets", "button_nor.png"]), os.sep.join(["assets", "button_mouse.png"]), os.sep.join(["assets", "button_click.png"]), (640, 460), 48*4, 24*4, QuitButton_Pressed, text="Quit")
+    quitbutton = button(os.sep.join(["assets", "image", "button_nor.png"]), os.sep.join(["assets", "image", "button_mouse.png"]), os.sep.join(["assets", "image", "button_click.png"]), (640, 460), 48*4, 24*4, QuitButton_Pressed, text="Quit")
     quitbutton.createButton(main_game.screen)
 
 menuView = view(init, update)

@@ -38,11 +38,11 @@ class button():
         self.height = height
         self.OnClickFunc = OnClickFunc
         self.text = text
+        self.click = False
     
     # Create Button
     def createButton(self, screen):
         font = pygame.font.Font("freesansbold.ttf", 24)
-        self.click = False
         image = pygame.image.load(self.image_nor)
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         rect = scaled_image.get_rect()
@@ -54,6 +54,7 @@ class button():
                 self.click = True
             else:
                 image = pygame.image.load(self.image_mouse)
+                self.click = False
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, rect)
         screen.blit(rendertext, self.position)
