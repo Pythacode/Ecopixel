@@ -10,9 +10,7 @@
 import pygame
 from game import main_game
 
-running = True
-
-while running:
+while main_game.running:
 
     events = pygame.event.get()
 

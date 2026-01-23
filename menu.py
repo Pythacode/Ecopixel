@@ -14,7 +14,7 @@ def PlayButton_Pressed():
     print("CLIQUEEEEEEEEEE")
 
 def QuitButton_Pressed():
-    #makes an error on "pygame.display.flip()"... To fix it we should change the running var but I can't acces it !
+    main_game.running = True
     pygame.quit()
 
 def Logo_Pressed():
