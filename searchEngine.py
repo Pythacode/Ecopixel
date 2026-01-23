@@ -13,7 +13,13 @@ from view import view
 
 class searchView() :
     def __init__(self):
-        pass
+        # Fonction appelée à la création de la vue
+        pygame.init()
+        self.text = "_"
+        self.font = pygame.font.Font("freesansbold.ttf", 24)
+
+        self.onsearch = False
+        self.exploit_result = {}
 
     def search(self, query:str, max_result=10, lang="fr") -> list:
         """
@@ -64,17 +70,8 @@ class searchView() :
         
         print(self.exploit_result)
 
-
-    def init(self) :
-
-        pygame.init()
-        self.text = "_"
-        self.font = pygame.font.Font("freesansbold.ttf", 24)
-
-        self.onsearch = False
-        self.exploit_result = {}
-
     def update(self, events) :
+        # Fonction appelée à chaque frame pour géré l'affichage
 
         width, height = main_game.screen.get_size() 
 
