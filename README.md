@@ -4,12 +4,12 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grace au crédit
 
 ## Sommaire
 
-- [Instalation](#instalation)
+- [Installation](#instalation)
 - [Lancement](#lancement)
     - [Avec venv](#avec-venv)
     - [Sans venv](#sans-venv)
 
-## Instalation
+## Installation
 
 > [!TIP]
 > Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre instalation, vous devrier peut être utiliser `python` et `python3 -m pip` à la place.
