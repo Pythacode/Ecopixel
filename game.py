@@ -116,7 +116,7 @@ class entry_text() :
         self.border_radius = border_radius
         self.search_zone = pygame.Rect(pos, (size))
         self.last_change = 0
-        self.cursor = " "
+        self.cursor = True
         self.cursor_index = 0
     
     def update(self, events) :
@@ -141,20 +141,21 @@ class entry_text() :
                         if self.cursor_index > 0 :
                             self.cursor_index -=1
                     elif event.key == pygame.K_RIGHT:
-                        if self.cursor_index <= len(self.text) :
+                        if self.cursor_index < len(self.text) :
                             self.cursor_index +=1
                     else:
-                        self.text.insert(self.cursor_index, event.unicode)
-                        self.cursor_index +=1
+                        if event.unicode != "" :
+                            self.text.insert(self.cursor_index, event.unicode)
+                            self.cursor_index +=1
 
         if self.active :
             now = pygame.time.get_ticks()
             if now - self.last_change > 500 :
-                self.cursor = '|' if self.cursor == ' ' else ' '
+                self.cursor = not self.cursor
                 self.last_change = now
             
             text = self.text[:]
-            text.insert(self.cursor_index, self.cursor)
+            #text.insert(self.cursor_index, self.cursor)
             text = ''.join(text)
 
         else :
@@ -163,6 +164,9 @@ class entry_text() :
         pygame.draw.rect(self.surface, self.color, self.search_zone, self.width, border_radius=self.border_radius)
         search_text = self.font.render(text, True, main_game.BLACK)
         self.surface.blit(search_text, (self.x+10, self.y+7))
+        if self.cursor :
+            cursor = self.font.render("|", True, main_game.BLACK)
+            self.surface.blit(cursor, (self.x + 10 +self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), self.y+7))
 
         return return_value
 

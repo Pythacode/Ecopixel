@@ -131,5 +131,6 @@ class searchView() :
         text = self.search_zone.update(events)
 
         if isinstance(text, str) :
-            self.onsearch = True
-            threading.Thread(target=self.search, args=(text,), daemon=True).start()
+            if text != "" :
+                self.onsearch = True
+                threading.Thread(target=self.search, args=(text,), daemon=True).start()
