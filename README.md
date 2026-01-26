@@ -43,7 +43,7 @@ Ensuite, il faut renter dans l'environnement virtuel. Pour cela, utilisez la com
     | cmd.exe | `C:\> <venv>\Scripts\activate.bat` |
     | PowerShell | `PS C:\> venv\Scripts\Activate.ps1` |
 
-Ensuite, installez les dépendence avec :
+Ensuite, installez les dépendences avec :
 
 ```
 pip install -r requirements.txt
