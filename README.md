@@ -1,10 +1,10 @@
 # ecosia_simulator
 
-Un jeu où l'on peut planter des arbres en achetant des pousses grace au crédits que l'on gagnerais en fesant des recherches sur le web
+Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagnerait en faisant des recherches sur le web
 
 ## Sommaire
 
-- [Installation](#instalation)
+- [Installation](#installation)
 - [Lancement](#lancement)
     - [Avec venv](#avec-venv)
     - [Sans venv](#sans-venv)
@@ -12,7 +12,7 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grace au crédit
 ## Installation
 
 > [!TIP]
-> Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre instalation, vous devrier peut être utiliser `python` et `python3 -m pip` à la place.
+> Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre installation, vous devriez peut-être utiliser `python` et `python3 -m pip` à la place.
 
 ## Lancement
 
@@ -43,13 +43,13 @@ Ensuite, il faut renter dans l'environnement virtuel. Pour cela, utilisez la com
     | cmd.exe | `C:\> <venv>\Scripts\activate.bat` |
     | PowerShell | `PS C:\> venv\Scripts\Activate.ps1` |
 
-Ensuite, installez les dépendence avec 
+Ensuite, installez les dépendence avec :
 
 ```
 pip install -r requirements.txt
 ```
 
-Enfin, lancez simplement le projet avec la commande
+Enfin, lancez simplement le projet avec la commande :
 
 ```shell
 python3 main.py
