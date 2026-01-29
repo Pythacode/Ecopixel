@@ -40,7 +40,7 @@ Ensuite, il faut renter dans l'environnement virtuel. Pour cela, utilisez la com
 
     | Shell | Commande pour activer l'environement virtuel |
     | - | - |
-    | cmd.exe | `C:\> <venv>\Scripts\activate.bat` |
+    | cmd.exe | `C:\> venv\Scripts\activate.bat` |
     | PowerShell | `PS C:\> venv\Scripts\Activate.ps1` |
 
 Ensuite, installez les dépendences avec :
