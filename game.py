@@ -173,4 +173,5 @@ class entry_text() :
 
 # Permet de créer main_game, dont menuView à besoin
 from menu import menuView
-main_game.change_view(menuView)
+from gameView import gameView
+main_game.change_view(gameView)
