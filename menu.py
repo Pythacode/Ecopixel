@@ -9,11 +9,12 @@ from game import *
 import pygame
 import os
 from view import view
+from gameView import gameView
 
 
 class menuView():
     def PlayButton_Pressed(self):
-        print("CLIQUEEEEEEEEEE")
+        main_game.change_view(gameView)
 
     def QuitButton_Pressed(self):
         main_game.running = False 
