@@ -5,6 +5,7 @@ class Player() :
     def __init__(self, center):
         self.passiv_skin = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "player", "static_player.png"]))
         self.actual_skin = self.passiv_skin
+        self.size = self.actual_skin.get_rect()[2:4]
         
         self.x = center - (self.actual_skin.get_rect()[2] / 2)
         self.y = 0
@@ -42,8 +43,10 @@ class gameView() :
 
         # Move player
         if main_game.touch_pressed.get(pygame.K_LEFT, False) :
-            self.player.move_left()
+            if self.player.x > 200 :
+                self.player.move_left()
         if main_game.touch_pressed.get(pygame.K_RIGHT, False) :
-            self.player.move_right()
+            if self.player.x < width - self.player.size[1] :
+                self.player.move_right()
 
         self.player.draw(main_game.screen, height - rect[3])
