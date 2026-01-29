@@ -39,9 +39,9 @@ class menuView():
         logo.createButton(main_game.screen)
 
         # Play button
-        playbutton = button(os.sep.join(["assets", "image", "play_button_nor.png"]), os.sep.join(["assets", "image", "play_button_mouse.png"]), os.sep.join(["assets", "image", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
+        playbutton = button(os.sep.join(["assets", "image", "button", "play_button_nor.png"]), os.sep.join(["assets", "image", "button", "play_button_mouse.png"]), os.sep.join(["assets", "image", "button", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
         playbutton.createButton(main_game.screen)
 
         # Quit button
-        quitbutton = button(os.sep.join(["assets", "image", "button_nor.png"]), os.sep.join(["assets", "image", "button_mouse.png"]), os.sep.join(["assets", "image", "button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="Quit")
+        quitbutton = button(os.sep.join(["assets", "image", "button", "button_nor.png"]), os.sep.join(["assets", "image", "button", "button_mouse.png"]), os.sep.join(["assets", "image", "button", "button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="Quit")
         quitbutton.createButton(main_game.screen)
