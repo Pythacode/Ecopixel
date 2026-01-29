@@ -11,8 +11,6 @@ pygame.init()
 
 class Game() :
     def __init__(self, WIDTH:int, HEIGHT:int):
-        self.WIDTH = WIDTH
-        self.HEIGHT = HEIGHT
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None
         self.WHITE = (255, 255, 255)
@@ -22,6 +20,7 @@ class Game() :
         self.main_font_name = "freesansbold.ttf"
         self.scroll_y = 0
         self.scroll_x = 0
+        self.touch_pressed = {}
 
     def blit_text(self, text:str, pos:tuple, font:pygame.font, max_width, color) -> int:
         """

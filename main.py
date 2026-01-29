@@ -17,9 +17,13 @@ while main_game.running:
         # Quand l'utilisateur ferme la fenetre
         if event.type == pygame.QUIT:
             main_game.running = False
-        if event.type == pygame.MOUSEWHEEL:
+        elif event.type == pygame.MOUSEWHEEL:
             main_game.scroll_y -= event.y * 10
             main_game.scroll_x -= event.x * 10
+        elif event.type == pygame.KEYDOWN :
+            main_game.touch_pressed[event.key] = True
+        elif event.type == pygame.KEYUP :
+            main_game.touch_pressed[event.key] = False
 
 
     # Gérer le rendu
