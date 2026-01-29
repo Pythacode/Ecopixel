@@ -33,9 +33,9 @@ class Player() :
         self.last_change = pygame.time.get_ticks()
         self.move = False
 
-    def draw(self, surface, ground_altitude) :
+    def update_skin(self) :
         now = pygame.time.get_ticks()
-        if now - self.last_change > (80 if self.move else 500) :
+        if now - self.last_change > (15*self.velocity if self.move else 500) :
             self.last_change = now
             self.skin_index = not self.skin_index
             if self.move :
@@ -44,6 +44,8 @@ class Player() :
                 skin_list = self.static_skin_list
             self.actual_skin = skin_list[self.skin_index]
 
+    def draw(self, surface, ground_altitude) :
+        self.update_skin()
         rect = self.actual_skin.get_rect()
         rect[0], rect[1] = self.x, ground_altitude + self.y - rect[3]
         surface.blit(pygame.transform.flip(self.actual_skin, True, False) if self.orientation == "LEFT" else self.actual_skin, rect)
@@ -101,3 +103,4 @@ class gameView() :
             if event.type == pygame.KEYUP :
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT :
                     self.player.move = False
+                    self.player.update_skin()
