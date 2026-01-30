@@ -107,7 +107,7 @@ class searchView() :
                 pos_y += text_height + gap
 
                 max_width = main_game.screen.get_size()[0] - 2*pos_x
-                text_height = main_game.blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK)
+                text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK, main_game.screen)
                 pos_y += text_height + gap
 
                 text_height = self.text_font.size("A")[1]

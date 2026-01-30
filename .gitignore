@@ -2,3 +2,4 @@ test
 __pycache__
 *.pyc
 venv
+asset-create-files

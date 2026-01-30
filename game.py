@@ -11,6 +11,9 @@ pygame.init()
 
 class Game() :
     def __init__(self, WIDTH:int, HEIGHT:int):
+        """
+        A class for global variable
+        """
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None
         self.WHITE = (255, 255, 255)
@@ -23,21 +26,40 @@ class Game() :
         self.touch_pressed = {}
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "logo.png"]))
         pygame.display.set_icon(self.logo)
-
-    def blit_text(self, text:str, pos:tuple, font:pygame.font, max_width, color) -> int:
+    
+    def change_view(self, new_view) :
         """
-        Draw `text` on `self.screen` with lines-split for not exceed `max_width`
+        Docstring for change_view
+        
+        :param new_view: new view
+        """
+        self.screen.fill(self.BLACK)
+        self.current_view = new_view()
+        self.scroll_y = 0
+        self.scroll_x = 0
+
+main_game = Game(
+    WIDTH=1280,
+    HEIGHT=720
+)
+
+def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+        """
+        Draw `text` on `screen` with lines-split for not exceed `max_width`
         Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
 
         :param text: Text to draw
         :type text: str
         :param pos: A tuple with position `(x, y)`
-        :type tuple: int
+        :type pos: tuple
         :param font: Font to draw text
         :type font: pygame.font
         :param max_width: Width we cant exceed
         :type max_width: int
         :param color: Color of text
+        :type color:pygame.Color | tuple
+        :param screen: Screen where text as display
+        :type screen: pygame.surface
         :return: The height of text
         :rtype: int
         """
@@ -52,24 +74,13 @@ class Game() :
                 if x + word_width >= max_width:
                     x = pos[0]  # Reset the x.
                     y += word_height  # Start on new row.
-                self.screen.blit(word_surface, (x, y))
+                screen.blit(word_surface, (x, y))
                 x += word_width + space
             x = pos[0]  # Reset the x.
             y += word_height  # Start on new row.
             count_line += 1
 
         return count_line * word_height
-    
-    def change_view(self, new_view) :
-        self.screen.fill(self.BLACK)
-        self.current_view = new_view()
-        self.scroll_y = 0
-        self.scroll_x = 0
-
-main_game = Game(
-    WIDTH=1280,
-    HEIGHT=720
-)
 
 class button():
 
@@ -106,7 +117,25 @@ class button():
                 self.OnClickFunc()
 
 class entry_text() :
-    def __init__(self, surface, color, pos, size, width, border_radius, font):
+    def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
+        """
+        A entry text
+        
+        :param surface: Screen where entry text as display
+        :type surface: pygame.surface
+        :param color: Color of entry text
+        :type color: pygame.Color | tuple
+        :param pos: Position of entry text
+        :type pos: tuple
+        :param size: Size of entry
+        :type size: tuple
+        :param width: Width de la zone
+        :type width: int
+        :param border_radius: Border radius
+        :type border_radius: int
+        :param font: font of text.
+        :type font: pygame.font
+        """
         self.active = False
         self.text = []
         self.font = font
@@ -115,12 +144,18 @@ class entry_text() :
         self.surface = surface
         self.width = width
         self.border_radius = border_radius
-        self.search_zone = pygame.Rect(pos, (size))
+        self.search_zone = pygame.Rect(pos, size)
         self.last_change = 0
         self.cursor = True
         self.cursor_index = 0
     
-    def update(self, events) :
+    def update(self, events:list) :
+        """
+        Update function
+        
+        :param events: List of pygame evenements
+        :type events: list
+        """
         return_value = None
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP:
@@ -156,7 +191,6 @@ class entry_text() :
                 self.last_change = now
             
             text = self.text[:]
-            #text.insert(self.cursor_index, self.cursor)
             text = ''.join(text)
 
         else :
@@ -176,4 +210,5 @@ class entry_text() :
 # Permet de créer main_game, dont menuView à besoin
 from menu import menuView
 from gameView import gameView
-main_game.change_view(menuView)
+from searchEngine import searchView
+main_game.change_view(searchView)
