@@ -85,36 +85,42 @@ def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame
 class button():
 
     def __init__(self, image_nor, image_mouse, image_click, position, width, height, OnClickFunc, text=""):
-        self.image_nor = image_nor
-        self.image_mouse = image_mouse
-        self.image_click = image_click
+        self.image_nor = pygame.image.load(image_nor)
+        self.image_mouse = pygame.image.load(image_mouse)
+        self.image_click = pygame.image.load(image_click)
         self.position = position
         self.width = width
         self.height = height
         self.OnClickFunc = OnClickFunc
         self.text = text
         self.click = False
-    
-    # Create Button
-    def createButton(self, screen):
-        font = pygame.font.Font("freesansbold.ttf", 24)
-        image = pygame.image.load(self.image_nor)
-        scaled_image = pygame.transform.scale(image, (self.width, self.height))
-        rect = scaled_image.get_rect()
-        rect.center = self.position
-        rendertext = font.render(self.text, True, main_game.BLACK)
-        if rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
+
+    def update(self, screen):
+        image = self.image_nor
+        if self.rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
             if pygame.mouse.get_pressed(num_buttons=3)[0]:
-                image = pygame.image.load(self.image_click)
+                image = self.image_click
                 self.click = True
             else:
-                image = pygame.image.load(self.image_mouse)
+                image = self.image_mouse
                 self.click = False
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
-        screen.blit(scaled_image, rect)
-        screen.blit(rendertext, self.position)
+        screen.blit(scaled_image, self.rect)
+        screen.blit(self.rendertext, self.position)
         if self.click == True and self.OnClickFunc != None:
                 self.OnClickFunc()
+        screen.blit(self.scaled_image, self.rect)
+        screen.blit(self.rendertext, self.position)
+
+    # Create Button
+    def createButton(self):
+        font = pygame.font.Font("freesansbold.ttf", 24)
+        image = self.image_nor
+        scaled_image = pygame.transform.scale(image, (self.width, self.height))
+        self.rect = scaled_image.get_rect()
+        self.rect.center = self.position
+        self.rendertext = font.render(self.text, True, main_game.BLACK)
+        
 
 class entry_text() :
     def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
@@ -211,4 +217,4 @@ class entry_text() :
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
-main_game.change_view(searchView)
+main_game.change_view(menuView)
