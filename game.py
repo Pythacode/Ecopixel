@@ -109,7 +109,7 @@ class button():
         screen.blit(self.rendertext, self.position)
         if self.click == True and self.OnClickFunc != None:
                 self.OnClickFunc()
-        screen.blit(self.scaled_image, self.rect)
+        screen.blit(scaled_image, self.rect)
         screen.blit(self.rendertext, self.position)
 
     # Create Button
