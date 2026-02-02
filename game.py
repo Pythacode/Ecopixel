@@ -20,7 +20,7 @@ class Game() :
         self.BLACK = (000, 000, 000)
         self.running = True
         self.asset_doc = "assets"
-        self.main_font_name = "freesansbold.ttf"
+        self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) #"freesansbold.ttf"
         self.scroll_y = 0
         self.scroll_x = 0
         self.touch_pressed = {}
@@ -204,10 +204,10 @@ class entry_text() :
         
         pygame.draw.rect(self.surface, self.color, self.search_zone, self.width, border_radius=self.border_radius)
         search_text = self.font.render(text, True, main_game.BLACK)
-        self.surface.blit(search_text, (self.x+10, self.y+7))
-        if self.cursor :
+        self.surface.blit(search_text, (self.x+10, self.y+5))
+        if self.cursor and self.active :
             cursor = self.font.render("|", True, main_game.BLACK)
-            self.surface.blit(cursor, (self.x + 10 +self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), self.y+7))
+            self.surface.blit(cursor, (self.x + 10 + self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), self.y+5))
 
         return return_value
 
@@ -217,4 +217,4 @@ class entry_text() :
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
-main_game.change_view(menuView)
+main_game.change_view(searchView)
