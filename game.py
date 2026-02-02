@@ -26,6 +26,7 @@ class Game() :
         self.touch_pressed = {}
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "logo.png"]))
         pygame.display.set_icon(self.logo)
+        pygame.display.set_caption('Ecopixel')
     
     def change_view(self, new_view) :
         """
