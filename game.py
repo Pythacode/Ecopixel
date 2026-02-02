@@ -218,4 +218,4 @@ class entry_text() :
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
-main_game.change_view(searchView)
+main_game.change_view(menuView)

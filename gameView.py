@@ -1,10 +1,10 @@
 from game import *
 import os
+from dataclasses import dataclass
 
 class Player() :
     def __init__(self, center):
-        self.passiv_skin = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "player", "static_player.png"]))
-        self.tileset = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "player_tileset.png"]))
+        self.tileset = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "player", "player_tileset.png"]))
 
         self.file_size = (44, 46)
         self.size = (200, 200)
@@ -34,9 +34,6 @@ class Player() :
         self.move = False
 
     def change_skin(self) :
-        now = pygame.time.get_ticks()
-        if now - self.last_change > (15*self.velocity if self.move else 500) :
-            self.last_change = now
             self.skin_index = not self.skin_index
             if self.move :
                 skin_list = self.move_skin_list
@@ -45,7 +42,10 @@ class Player() :
             self.actual_skin = skin_list[self.skin_index]
 
     def draw(self, surface, ground_altitude) :
-        self.change_skin()
+        now = pygame.time.get_ticks()
+        if now - self.last_change > (15*self.velocity if self.move else 500) :
+            self.last_change = now
+            self.change_skin()
         rect = self.actual_skin.get_rect()
         rect[0], rect[1] = self.x, ground_altitude + self.y - rect[3]
         surface.blit(pygame.transform.flip(self.actual_skin, True, False) if self.orientation == "LEFT" else self.actual_skin, rect)
@@ -58,25 +58,33 @@ class Player() :
         self.move = True
         self.x += self.velocity
 
+@dataclass
+class Shop():
+    image = pygame.image.load(os.sep.join([main_game.asset_doc, 'image', 'game', 'shop.png']))
+    rect = image.get_rect()
+    x = 30
+    y = 0
+
 class gameView() :
     def __init__(self):
         self.offset_x = 0
         self.player = Player(main_game.screen.get_size()[0] / 2)
-        self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "ground.png"]))
+        self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
+        self.draw_element = [Shop()]
 
     def update(self, events) :
         main_game.screen.fill(main_game.WHITE)
 
-        rect = self.ground.get_rect()
+        ground_rect = self.ground.get_rect()
         width, height = main_game.screen.get_size()
 
         # Draw ground
-        x = - rect[2]
-        ground_offset = self.offset_x % rect[2] # ground offset
+        x = - ground_rect[2]
+        ground_offset = self.offset_x % ground_rect[2] # ground offset
         while x < width :
-            rect[0], rect[1] = x + ground_offset, height - rect[3]
-            main_game.screen.blit(self.ground, rect)
-            x += rect[2]
+            ground_rect[0], ground_rect[1] = x + ground_offset, height - ground_rect[3]
+            main_game.screen.blit(self.ground, ground_rect)
+            x += ground_rect[2]
 
         # Move player
         if main_game.touch_pressed.get(pygame.K_LEFT, False) :
@@ -89,8 +97,11 @@ class gameView() :
                 self.player.move_right()
             else :
                 self.offset_x -= self.player.velocity
+        
+        for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
+            main_game.screen.blit(elem.image, pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4]))
 
-        self.player.draw(main_game.screen, height - rect[3])
+        self.player.draw(main_game.screen, height - ground_rect[3])
 
         for event in events :
             if event.type == pygame.KEYDOWN :
