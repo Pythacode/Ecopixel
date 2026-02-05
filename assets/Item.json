@@ -1,0 +1,22 @@
+[
+    {
+        "name" : "arrosoir",
+        "price" : "100$",
+        "skin" : "arrosoir.png"
+    },
+    {
+        "name" : "engrais",
+        "price" : "10$",
+        "skin" : "engrais.png"
+    },
+    {
+        "name" : "ruche",
+        "price" : "1000$",
+        "skin" : "ruche.png"
+    },
+    {
+        "name" : "pot",
+        "price" : "5$",
+        "skin" : "pot.png"
+    }
+]
