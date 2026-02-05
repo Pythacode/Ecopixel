@@ -1,3 +1,10 @@
+# --------------------------- Search engine ---------------------------- #
+# Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
+# Fichier contenant tout le code du moteur de recherche.                 #
+# Crée par Titouan - https://github.com/Pythacode/                       #
+# License : Creative Commons Attribution-NonCommercial 4.0 International #
+# ---------------------------------------------------------------------- #
+
 from game import *
 import os
 from dataclasses import dataclass

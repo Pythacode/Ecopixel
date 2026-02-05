@@ -1,5 +1,5 @@
 # -------------------------------- Game -------------------------------- #
-# Lien du dépot : https://github.com/Pythacode/ecosia_simulator/         #
+# Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant la classe pour les vues du jeux                      #
 # Crée par Titouan - https://github.com/Pythacode/                       #
 # License : Creative Commons Attribution-NonCommercial 4.0 International #
