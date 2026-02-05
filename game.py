@@ -217,4 +217,5 @@ class entry_text() :
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
+from shop import shopView
 main_game.change_view(menuView)
