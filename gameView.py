@@ -70,7 +70,8 @@ class gameView() :
         self.offset_x = 0
         self.player = Player(main_game.screen.get_size()[0] / 2)
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
-        self.draw_element = [Shop()]
+        self.shop = Shop()
+        self.draw_element = [self.shop]
 
     def update(self, events) :
         main_game.screen.fill(main_game.WHITE)
@@ -99,7 +100,8 @@ class gameView() :
                 self.offset_x -= self.player.velocity
         
         for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
-            main_game.screen.blit(elem.image, pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4]))
+            elem.rect = pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4])
+            main_game.screen.blit(elem.image, elem.rect)
 
         self.player.draw(main_game.screen, height - ground_rect[3])
 
