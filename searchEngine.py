@@ -9,6 +9,7 @@ import requests
 import threading
 from game import *
 import pygame
+import webbrowser
 from game import main_game
 
 class searchView() :
@@ -27,7 +28,7 @@ class searchView() :
         self.search_zone = entry_text(
             main_game.screen,
             main_game.BLACK,
-            (70, 20),
+            (70, 60),
             (width - 80, 40),
             2,
             20,
@@ -35,6 +36,8 @@ class searchView() :
         )
         self.search_zone.active = True
         self.header = True
+
+        self.results_rect = []
 
     def search(self, query:str, max_result=10, lang="fr"):
         """
@@ -91,16 +94,20 @@ class searchView() :
         main_game.screen.fill((255, 201, 157))
 
         if self.searchFiniched :
-            pos_y = 90 - main_game.scroll_y
+            pos_y = 140 - main_game.scroll_y
             pos_x = 20
             gap = 4
+            self.results_rect = []
             for result in self.exploit_result :
+
+                start_y = pos_y
+
                 titleText = self.font.render(result.get('title'), True, main_game.BLACK)
                 urlText = self.url_font.render(result.get('link').removeprefix("https://").removesuffix('/').replace('/', ' > '), True, (142, 142, 142))
 
                 main_game.screen.blit(titleText, (pos_x, pos_y))
 
-                text_height = self.font.size(result.get('title'))[1]
+                width, text_height = self.font.size(result.get('title'))
                 pos_y += text_height + gap
 
                 main_game.screen.blit(urlText, (pos_x, pos_y))
@@ -110,20 +117,31 @@ class searchView() :
                 text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK, main_game.screen)
                 pos_y += text_height + gap
 
-                text_height = self.text_font.size("A")[1]
+                if max_width > width :
+                    width = max_width
+
+                text_width, text_height = self.text_font.size("A")
                 pos_y += text_height + gap + 5
+
+                if text_width > width :
+                    width = text_width
+
+                self.results_rect.append({
+                    'rect' : pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y),
+                    'link' : result.get('link')
+                })
                 
         elif self.onsearch :
             search_text = self.font.render("Chargement...", True, main_game.BLACK)
-            main_game.screen.blit(search_text, (30, 100))
+            main_game.screen.blit(search_text, (30, 140))
 
         width = main_game.screen.get_size()[0]
 
         # Header
-        pygame.draw.rect(main_game.screen, main_game.WHITE, (20, 0, width, 100), width=0)
+        pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 40, width, 85), width=0)
 
         scaled_image = pygame.transform.scale(main_game.logo, (40, 40))
-        main_game.screen.blit(scaled_image, (20, 20))
+        main_game.screen.blit(scaled_image, (20, 60))
 
         #(70, 20, width - 80, 40)        
 
@@ -133,3 +151,18 @@ class searchView() :
             if text != "" :
                 self.onsearch = True
                 threading.Thread(target=self.search, args=(text,), daemon=True).start()
+
+        mouse_pos = pygame.mouse.get_pos()
+        cursor = (pygame.cursors.Cursor(),)
+        for i in self.results_rect :
+            if i.get('rect').collidepoint(mouse_pos) :
+                cursor = pygame.cursors.tri_left
+                break
+        pygame.mouse.set_cursor(*cursor)
+
+        for event in events :
+            if event.type == pygame.MOUSEBUTTONDOWN :
+                for i in self.results_rect :
+                    if i.get('rect').collidepoint(event.pos) :
+                        webbrowser.open(i.get('link'))
+                        main_game.player.sprout += 1
