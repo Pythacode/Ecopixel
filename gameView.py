@@ -132,7 +132,7 @@ class Player() :
         self.y = 0
         self.orientation = "RIGHT"
 
-        self.velocity = 5
+        self.velocity = 1
         self.last_change = pygame.time.get_ticks()
         self.move = False
 
