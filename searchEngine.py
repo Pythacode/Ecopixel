@@ -9,7 +9,6 @@ import requests
 import threading
 from game import *
 import pygame
-from view import view
 from game import main_game
 
 class searchView() :

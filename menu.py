@@ -8,8 +8,8 @@
 from game import *
 import pygame
 import os
-from view import view
 from gameView import gameView
+from shop import shopView
 
 
 class menuView():
@@ -31,6 +31,10 @@ class menuView():
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="Quit")
         self.quitbutton.createButton()
 
+        # Shop button init
+        self.shopbutton = button(os.sep.join(["assets", "image", "button", "button_nor.png"]), os.sep.join(["assets", "image", "button", "button_mouse.png"]), os.sep.join(["assets", "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
+        self.shopbutton.createButton()
+
     def PlayButton_Pressed(self):
         main_game.change_view(gameView)
 
@@ -40,6 +44,9 @@ class menuView():
     def Logo_Pressed(self):
         babysfx = pygame.mixer.Sound(os.sep.join([main_game.asset_doc, "sfx", "BabyNoise.mp3"]))
         babysfx.play()
+
+    def ShopButton_Pressed(self):
+        main_game.change_view(shopView)
 
     def update(self, events) :
 
@@ -52,5 +59,6 @@ class menuView():
         self.logo.update(main_game.screen)
         self.playbutton.update(main_game.screen)
         self.quitbutton.update(main_game.screen)
+        self.shopbutton.update(main_game.screen)
 
         
