@@ -19,6 +19,7 @@ class Player() :
 
         self.size = (120, 228)
 
+        #Handle Animation Frame
         self.idle0 = {"subsurface" : self.tileset.subsurface(
                         self.tilesetjson["Idle 0"]["frame"]["x"],
                         self.tilesetjson["Idle 0"]["frame"]["y"],
@@ -156,13 +157,13 @@ class Player() :
         rect[0], rect[1] = self.x, ground_altitude + self.y - rect[3]
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
 
-    def move_left(self) :
+    def move_left(self, dt) :
         self.move = True
-        self.x -= self.velocity
+        self.x -= self.velocity * dt
 
-    def move_right(self) :
+    def move_right(self, dt) :
         self.move = True
-        self.x += self.velocity
+        self.x += self.velocity * dt
 
 @dataclass
 class Shop():
@@ -178,6 +179,8 @@ class gameView() :
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.shop = Shop()
         self.draw_element = [self.shop]
+        self.last_frame = 0
+        self.dt = 0
 
     def update(self, events) :
         main_game.screen.fill(main_game.WHITE)
@@ -192,18 +195,24 @@ class gameView() :
             ground_rect[0], ground_rect[1] = x + ground_offset, height - ground_rect[3]
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]
+        
+        # Calculate delta time
+        now = pygame.time.get_ticks()
+        self.dt =  now - self.last_frame
+        self.last_frame = now
+        print(self.dt)
 
         # Move player
         if main_game.touch_pressed.get(pygame.K_LEFT, False) :
             if self.player.x > 200 :
-                self.player.move_left()
+                self.player.move_left(self.dt)
             else :
-                self.offset_x += self.player.velocity
+                self.offset_x += self.player.velocity * self.dt
         if main_game.touch_pressed.get(pygame.K_RIGHT, False) :
             if self.player.x < width - self.player.size[1] - 200 :
-                self.player.move_right()
+                self.player.move_right(self.dt)
             else :
-                self.offset_x -= self.player.velocity
+                self.offset_x -= self.player.velocity * self.dt
         
         for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
             elem.rect = pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4])
