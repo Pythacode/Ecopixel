@@ -25,6 +25,7 @@ class Game() :
         self.scroll_x = 0
         self.touch_pressed = {}
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "logo.png"]))
+        self.player = None
         pygame.display.set_icon(self.logo)
         pygame.display.set_caption('Ecopixel')
     
@@ -219,4 +220,6 @@ from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
 from shop import shopView
+from player import Player
 main_game.change_view(menuView)
+main_game.player = Player(main_game.screen.get_size()[0] / 2)
