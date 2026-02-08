@@ -216,36 +216,39 @@ class entry_text() :
 def draw_header() :
     width = main_game.screen.get_size()[0]
     pygame.draw.rect(main_game.screen, (166, 85, 78), (0, 0, width, 40))
+    font = pygame.font.Font(main_game.main_font_name, 24)
 
     # Logo
     scaled_logo = pygame.transform.scale(main_game.logo, (35, 35))
     main_game.screen.blit(scaled_logo, (2.5, 2.5))
 
     # Coin
+    gap = 84 + font.size(str(main_game.player.money))[0]
+    if gap > 300 : gap = 100
+    start_pos = gap if gap > 100 else 100
+    w = gap-40
 
-    start_pos = 100
-
-    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, 80, 30), border_radius=20)
+    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, w, 30), border_radius=20)
 
     coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]))
     scaled_coin = pygame.transform.scale(coin_image, (30, 30))
     main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
 
-    font = pygame.font.Font(main_game.main_font_name, 24)
     coin_count = font.render(str(main_game.player.money), True, main_game.WHITE)
     main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
     # Sprout
+    gap = 84 + font.size(str(main_game.player.sprout))[0]
+    if gap > 300 : gap = 100
+    start_pos += gap if gap > 100 else 100
+    w = gap-40
 
-    start_pos += 100
-
-    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, 80, 30), border_radius=20)
+    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, w, 30), border_radius=20)
 
     coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]))
     scaled_coin = pygame.transform.scale(coin_image, (30, 30))
     main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
 
-    font = pygame.font.Font(main_game.main_font_name, 24)
     coin_count = font.render(str(main_game.player.sprout), True, main_game.WHITE)
     main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
