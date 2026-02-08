@@ -19,7 +19,7 @@ class Game() :
         self.WHITE = (255, 255, 255)
         self.BLACK = (000, 000, 000)
         self.running = True
-        self.asset_doc = "assets"
+        self.asset_doc = "data"
         self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) #"freesansbold.ttf"
         self.scroll_y = 0
         self.scroll_x = 0
