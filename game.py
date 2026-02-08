@@ -213,6 +213,20 @@ class entry_text() :
 
         return return_value
 
+def draw_header() :
+    width = main_game.screen.get_size()[0]
+    pygame.draw.rect(main_game.screen, (166, 85, 78), (0, 0, width, 40))
+
+    # Logo
+    scaled_logo = pygame.transform.scale(main_game.logo, (35, 35))
+    main_game.screen.blit(scaled_logo, (2.5, 2.5))
+
+    # Coin
+    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - 100, 5, 80, 30), border_radius=20)
+    scaled_logo = pygame.transform.scale(os.sep.join([main_game.asset_doc, "image", "game", "icon", "coin.png"]), (35, 35))
+    main_game.screen.blit(scaled_logo, (2.5, 2.5))
+
+
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
 # Permet de créer main_game, dont menuView à besoin

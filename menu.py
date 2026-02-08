@@ -35,6 +35,8 @@ class menuView():
         self.shopbutton = button(os.sep.join(["assets", "image", "button", "button_nor.png"]), os.sep.join(["assets", "image", "button", "button_mouse.png"]), os.sep.join(["assets", "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
         self.shopbutton.createButton()
 
+        self.header = False
+
     def PlayButton_Pressed(self):
         main_game.change_view(gameView)
 

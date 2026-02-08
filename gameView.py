@@ -24,6 +24,7 @@ class gameView() :
         self.draw_element = [self.shop]
         self.last_frame = 0
         self.dt = 0
+        self.header = True
 
     def update(self, events) :
         main_game.screen.fill(main_game.WHITE)

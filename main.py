@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
-from game import main_game
+from game import *
 
 while main_game.running:
 
@@ -28,6 +28,8 @@ while main_game.running:
 
     # Gérer le rendu
     main_game.current_view.update(events)
+    if main_game.current_view.header : # Si la vue nécésite l'affichage du header'
+        draw_header()
 
     # Actualiser l'écran
     pygame.display.flip()

@@ -34,6 +34,7 @@ class searchView() :
             self.font
         )
         self.search_zone.active = True
+        self.header = True
 
     def search(self, query:str, max_result=10, lang="fr"):
         """
@@ -119,10 +120,9 @@ class searchView() :
         width = main_game.screen.get_size()[0]
 
         # Header
-        pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 0, width, 80), width=0)
+        pygame.draw.rect(main_game.screen, main_game.WHITE, (20, 0, width, 100), width=0)
 
-        logo_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]))
-        scaled_image = pygame.transform.scale(logo_image, (40, 40))
+        scaled_image = pygame.transform.scale(main_game.logo, (40, 40))
         main_game.screen.blit(scaled_image, (20, 20))
 
         #(70, 20, width - 80, 40)        
