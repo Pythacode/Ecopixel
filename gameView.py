@@ -200,7 +200,6 @@ class gameView() :
         now = pygame.time.get_ticks()
         self.dt =  now - self.last_frame
         self.last_frame = now
-        print(self.dt)
 
         # Move player
         if main_game.touch_pressed.get(pygame.K_LEFT, False) :
