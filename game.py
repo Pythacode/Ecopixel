@@ -24,7 +24,7 @@ class Game() :
         self.scroll_y = 0
         self.scroll_x = 0
         self.touch_pressed = {}
-        self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "logo.png"]))
+        self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"]))
         pygame.display.set_icon(self.logo)
         pygame.display.set_caption('Ecopixel')
     

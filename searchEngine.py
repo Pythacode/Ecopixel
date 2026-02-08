@@ -122,7 +122,7 @@ class searchView() :
         # Header
         pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 0, width, 80), width=0)
 
-        logo_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "logo.png"]))
+        logo_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]))
         scaled_image = pygame.transform.scale(logo_image, (40, 40))
         main_game.screen.blit(scaled_image, (20, 20))
 
