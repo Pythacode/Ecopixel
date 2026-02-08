@@ -28,11 +28,11 @@ class menuView():
         self.playbutton.createButton()
 
         # Quit button init
-        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="Quit")
+        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="")
         self.quitbutton.createButton()
 
         # Shop button init
-        self.shopbutton = button(os.sep.join(["assets", "image", "button", "button_nor.png"]), os.sep.join(["assets", "image", "button", "button_mouse.png"]), os.sep.join(["assets", "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
+        self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
         self.shopbutton.createButton()
 
         self.header = False
