@@ -8,7 +8,6 @@
 from game import *
 import pygame
 import os
-from view import view
 from gameView import gameView
 from shop import shopView
 
