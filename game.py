@@ -258,5 +258,5 @@ from gameView import gameView
 from searchEngine import searchView
 from shop import shopView
 from player import Player
-main_game.change_view(searchView)
+main_game.change_view(menuView)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)

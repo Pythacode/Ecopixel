@@ -6,6 +6,7 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
+import json
 from game import *
 
 while main_game.running:
@@ -34,4 +35,23 @@ while main_game.running:
     # Actualiser l'écran
     pygame.display.flip()
 
+# Sauvegarde des données
+
+data = {'data' :
+        {'player' : 
+            {
+                'x' : main_game.player.x,
+                'y' : main_game.player.y,
+                'money' : main_game.player.money,
+                'sprout' : main_game.player.sprout,
+                'orientation' : main_game.player.orientation,
+                'skin_index' : main_game.player.skin_index,
+                'plant' : main_game.player.plant
+            }
+        }
+    }
+
+with open(os.sep.join([main_game.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
+    json.dump(data, f, ensure_ascii=False, indent=4)
+    
 pygame.quit()
