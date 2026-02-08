@@ -278,6 +278,9 @@ class Player() :
         self.move = False
         self.plant = False
 
+        self.money = 0
+        self.sprout = 0
+
     def change_skin(self) :
             self.skin_index += 1
             if self.plant:

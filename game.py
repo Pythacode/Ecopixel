@@ -222,9 +222,32 @@ def draw_header() :
     main_game.screen.blit(scaled_logo, (2.5, 2.5))
 
     # Coin
-    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - 100, 5, 80, 30), border_radius=20)
-    scaled_logo = pygame.transform.scale(os.sep.join([main_game.asset_doc, "image", "game", "icon", "coin.png"]), (35, 35))
-    main_game.screen.blit(scaled_logo, (2.5, 2.5))
+
+    start_pos = 100
+
+    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, 80, 30), border_radius=20)
+
+    coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]))
+    scaled_coin = pygame.transform.scale(coin_image, (30, 30))
+    main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
+
+    font = pygame.font.Font(main_game.main_font_name, 24)
+    coin_count = font.render(str(main_game.player.money), True, main_game.WHITE)
+    main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
+
+    # Sprout
+
+    start_pos += 100
+
+    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, 80, 30), border_radius=20)
+
+    coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]))
+    scaled_coin = pygame.transform.scale(coin_image, (30, 30))
+    main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
+
+    font = pygame.font.Font(main_game.main_font_name, 24)
+    coin_count = font.render(str(main_game.player.sprout), True, main_game.WHITE)
+    main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
