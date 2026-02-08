@@ -42,5 +42,65 @@
    "Run 7": {
     "frame": { "x": 20, "y": 38, "w": 10, "h": 19 },
     "duration": 100
+   },
+   "Plant 0": {
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 1": {
+    "frame": { "x": 0, "y": 57, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 2": {
+    "frame": { "x": 10, "y": 57, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 3": {
+    "frame": { "x": 20, "y": 57, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 4": {
+    "frame": { "x": 0, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 5": {
+    "frame": { "x": 10, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 6": {
+    "frame": { "x": 0, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 7": {
+    "frame": { "x": 10, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 8": {
+    "frame": { "x": 0, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 9": {
+    "frame": { "x": 10, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 10": {
+    "frame": { "x": 0, "y": 76, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Plant 11": {
+    "frame": { "x": 10, "y": 76, "w": 10, "h": 19 },
+    "duration": 300
+   },
+   "Plant 12": {
+    "frame": { "x": 20, "y": 76, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 13": {
+    "frame": { "x": 10, "y": 57, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Plant 14": {
+    "frame": { "x": 0, "y": 95, "w": 10, "h": 19 },
+    "duration": 100
    }
-}
+ }

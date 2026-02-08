@@ -44,13 +44,17 @@ class gameView() :
         self.dt =  now - self.last_frame
         self.last_frame = now
 
+        # Plant Player
+        if main_game.touch_pressed.get(pygame.K_e, False) and not main_game.player.plant:
+            main_game.player.plant_act()
+
         # Move player
-        if main_game.touch_pressed.get(pygame.K_LEFT, False) :
+        if (main_game.touch_pressed.get(pygame.K_LEFT, False) or main_game.touch_pressed.get(pygame.K_q, False)) and not main_game.player.plant:
             if main_game.player.x > 200 :
                 main_game.player.move_left(self.dt)
             else :
                 self.offset_x += main_game.player.velocity * self.dt
-        if main_game.touch_pressed.get(pygame.K_RIGHT, False) :
+        if (main_game.touch_pressed.get(pygame.K_RIGHT, False) or main_game.touch_pressed.get(pygame.K_d, False)) and not main_game.player.plant:
             if main_game.player.x < width - main_game.player.size[1] - 200 :
                 main_game.player.move_right(self.dt)
             else :
@@ -63,14 +67,14 @@ class gameView() :
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
         for event in events :
-            if event.type == pygame.KEYDOWN :
-                if event.key == pygame.K_LEFT :
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_q:
                     main_game.player.orientation = "LEFT"
                     main_game.player.move = True
-                if event.key == pygame.K_RIGHT :
+                if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     main_game.player.orientation = "RIGHT"
                     main_game.player.move = True
-            if event.type == pygame.KEYUP :
-                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT :
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_d or event.key == pygame.K_q:
                     main_game.player.move = False
                     main_game.player.change_skin()
