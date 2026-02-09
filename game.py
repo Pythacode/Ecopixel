@@ -52,6 +52,7 @@ class Game() :
         :param new_view: new view
         """
         self.screen.fill(self.BLACK)
+        new_view.previous_view = self.current_view
         self.current_view = new_view
         self.scroll_y = 0
         self.scroll_x = 0
@@ -127,6 +128,7 @@ class button():
         screen.blit(self.rendertext, self.position)
         if self.click == True and self.OnClickFunc != None:
                 self.OnClickFunc()
+                self.click = False
         screen.blit(scaled_image, self.rect)
         screen.blit(self.rendertext, self.position)
 
@@ -172,6 +174,7 @@ class entry_text() :
         self.last_change = 0
         self.cursor = True
         self.cursor_index = 0
+        self.previous_view = None
     
     def update(self, events:list) :
         """

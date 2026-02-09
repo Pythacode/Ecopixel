@@ -36,6 +36,7 @@ class searchView() :
         )
         self.search_zone.active = True
         self.header = True
+        self.previous_view = None
 
         self.results_rect = []
 
@@ -164,7 +165,7 @@ class searchView() :
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN :
                 if back_rect.collidepoint(event.pos) :
-                    main_game.change_view(menuView)
+                    main_game.change_view(self.previous_view)
                     break
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :

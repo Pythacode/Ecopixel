@@ -14,6 +14,7 @@ class shopView():
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "shop", "items.json"]))
         self.items = json.load(tilsetJsonFile)
         self.header = True
+        self.previous_view = None
 
 
     def  update (self,event):

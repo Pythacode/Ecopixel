@@ -20,6 +20,7 @@ class settingView():
         self.edit_id = None
         self.header = False
         self.key_edit = []
+        self.previous_view = None
 
     def update(self, events) :
 
@@ -80,8 +81,7 @@ class settingView():
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN :
                 if back_rect.collidepoint(event.pos) :
-                    from menu import menuView
-                    main_game.change_view(menuView)
+                    main_game.change_view(self.previous_view)
                 if self.edit_id == None :
                     for i in self.key_edit :
                         if i.get('rect').collidepoint(event.pos) :

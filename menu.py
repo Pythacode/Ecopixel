@@ -40,6 +40,7 @@ class menuView():
         self.settingsButton.createButton()
 
         self.header = False
+        self.previous_view = None
 
     def PlayButton_Pressed(self):
         main_game.change_view(main_game.game_view)
