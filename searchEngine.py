@@ -170,3 +170,5 @@ class searchView() :
                     if i.get('rect').collidepoint(event.pos) :
                         webbrowser.open(i.get('link'))
                         main_game.player.sprout += 1
+            elif event.type == pygame.K_ESCAPE :
+                main_game.change_view(self.previous_view)

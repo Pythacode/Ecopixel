@@ -86,6 +86,10 @@ class settingView():
                     for i in self.key_edit :
                         if i.get('rect').collidepoint(event.pos) :
                             self.edit_id = i.get('id')
-            if event.type == pygame.KEYDOWN and self.edit_id is not None :
+            
+            elif event.type == pygame.KEYDOWN and self.edit_id is not None :
                     setattr(main_game, self.edit_id, event.key)
                     self.edit_id = None
+            
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+                main_game.change_view(self.previous_view)
