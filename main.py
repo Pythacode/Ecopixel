@@ -9,6 +9,8 @@ import pygame
 import json
 from game import *
 
+last_frame = 0
+
 while main_game.running:
 
     events = pygame.event.get()
@@ -26,6 +28,10 @@ while main_game.running:
         elif event.type == pygame.KEYUP :
             main_game.touch_pressed[event.key] = False
 
+    # Calculate delta time
+    now = pygame.time.get_ticks()
+    main_game.dt =  (now - last_frame)
+    last_frame = now
 
     # Gérer le rendu
     main_game.current_view.update(events)

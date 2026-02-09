@@ -1,6 +1,6 @@
 # -------------------------------- Menu -------------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
-# Fichier contenant tout le code du moteur de recherche.                 #
+# Fichier contenant tout le code du menu principal.                      #
 # Crée par Lucas - https://github.com/GreGrenier                         #
 # License : Creative Commons Attribution-NonCommercial 4.0 International #
 # ---------------------------------------------------------------------- #
@@ -21,19 +21,15 @@ class menuView():
 
         # Logo init
         self.logo = button(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), (640, 200), 48*4, 48*4, self.Logo_Pressed)
-        self.logo.createButton()
 
         # Play button init
         self.playbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "play_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
-        self.playbutton.createButton()
 
         # Quit button init
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="")
-        self.quitbutton.createButton()
 
         # Shop button init
         self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
-        self.shopbutton.createButton()
 
         self.header = False
 

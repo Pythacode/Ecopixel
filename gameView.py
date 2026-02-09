@@ -7,6 +7,7 @@
 
 from game import *
 import os
+from tree import Tree
 from dataclasses import dataclass
 
 @dataclass
@@ -20,10 +21,8 @@ class gameView() :
     def __init__(self):
         self.offset_x = 0
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
-        self.shop = Shop()
-        self.draw_element = [self.shop]
+        self.draw_element = []
         self.last_frame = 0
-        self.dt = 0
         self.header = True
 
     def update(self, events) :
@@ -39,31 +38,28 @@ class gameView() :
             ground_rect[0], ground_rect[1] = x + ground_offset, height - ground_rect[3]
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]
-        
-        # Calculate delta time
-        now = pygame.time.get_ticks()
-        self.dt =  now - self.last_frame
-        self.last_frame = now
 
         # Plant Player
         if main_game.touch_pressed.get(pygame.K_e, False) and not main_game.player.plant:
             main_game.player.plant_act()
+            self.draw_element.append(Tree(main_game.player.x, height - ground_rect[3]))
 
         # Move player
         if (main_game.touch_pressed.get(pygame.K_LEFT, False) or main_game.touch_pressed.get(pygame.K_q, False)) and not main_game.player.plant:
             if main_game.player.x > 200 :
-                main_game.player.move_left(self.dt)
+                main_game.player.move_left()
             else :
-                self.offset_x += main_game.player.velocity * self.dt
+                self.offset_x += main_game.player.velocity * main_game.dt
         if (main_game.touch_pressed.get(pygame.K_RIGHT, False) or main_game.touch_pressed.get(pygame.K_d, False)) and not main_game.player.plant:
             if main_game.player.x < width - main_game.player.size[1] - 200 :
-                main_game.player.move_right(self.dt)
+                main_game.player.move_right()
             else :
-                self.offset_x -= main_game.player.velocity * self.dt
+                self.offset_x -= main_game.player.velocity * main_game.dt
         
         for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
             elem.rect = pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4])
             main_game.screen.blit(elem.image, elem.rect)
+            elem.draw(main_game.screen, height - ground_rect[3])
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
