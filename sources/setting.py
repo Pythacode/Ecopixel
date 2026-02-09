@@ -2,7 +2,7 @@
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant le menu des réglages.                                #
 # Crée par Titouan - https://github.com/Pythacode/                       #
-# License : Creative Commons Attribution-NonCommercial 4.0 International #
+# License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
 # ---------------------------------------------------------------------- #
 
 from game import *
