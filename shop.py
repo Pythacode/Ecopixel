@@ -10,7 +10,7 @@ from game import*
 
 class shopView():
     def __init__ (self):
-        tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "shop", "items.json"]))
+        tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "image", "item", "items.json"]))
         self.items = json.load(tilsetJsonFile)
         self.header = True
         self.previous_view = None
