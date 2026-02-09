@@ -291,7 +291,6 @@ class Player() :
                     self.skin_index = 0
                     self.plant = False
                 elif self.skin_index == 11 :
-                    print('d')
                     main_game.game_view.draw_element.append(main_game.game_view.wait_tree)
                     main_game.game_view.wait_tree = None
             elif self.move:
