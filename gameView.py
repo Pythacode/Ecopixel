@@ -50,7 +50,7 @@ class gameView() :
                 main_game.player.move_left()
             else :
                 self.offset_x += main_game.player.velocity * main_game.dt
-                
+
         if main_game.touch_pressed.get(main_game.key_move_right, False) and not main_game.player.plant:
             if main_game.player.x < width - main_game.player.size[1] - 200 :
                 main_game.player.move_right()
@@ -58,9 +58,7 @@ class gameView() :
                 self.offset_x -= main_game.player.velocity * main_game.dt
         
         for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
-            elem.rect = pygame.Rect(elem.x+self.offset_x, height-elem.rect[3]-ground_rect[3], *elem.rect[2:4])
-            main_game.screen.blit(elem.image, elem.rect)
-            elem.draw(main_game.screen, height - ground_rect[3])
+            elem.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 

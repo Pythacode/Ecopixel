@@ -50,7 +50,7 @@ class Tree():
         self.f = 0
 
         self.x = x
-        self.y = y
+        self.y = y - self.size[1]
 
         self.orientation = "RIGHT"
     
@@ -67,10 +67,9 @@ class Tree():
         if self.f >= 1000:
             self.time_alive +=1
             self.f = 0
-        print(self.f)
 
-    def draw(self, surface, ground_altitude) :
-        self.change_skin()
+    def draw(self, surface, ground_altitude, offset_x) :
+        #self.change_skin()
         rect = self.actual_skin["subsurface"].get_rect()
-        rect[0], rect[1] = self.x, ground_altitude + self.y - rect[3]
-        surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
+        rect[0], rect[1] = self.x+offset_x, self.y
+        surface.blit(self.actual_skin["subsurface"], rect)
