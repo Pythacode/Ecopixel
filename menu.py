@@ -42,7 +42,7 @@ class menuView():
         self.header = False
 
     def PlayButton_Pressed(self):
-        main_game.change_view(gameView)
+        main_game.change_view(main_game.game_view)
 
     def QuitButton_Pressed(self):
         main_game.running = False 
@@ -52,10 +52,10 @@ class menuView():
         babysfx.play()
 
     def ShopButton_Pressed(self):
-        main_game.change_view(shopView)
+        main_game.change_view(main_game.shop_view)
 
     def settingsButton_Pressed(self):
-        main_game.change_view(settingView)
+        main_game.change_view(main_game.settings_view)
 
     def update(self, events) :
 

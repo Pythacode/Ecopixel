@@ -8,6 +8,7 @@
 import pygame
 import os
 import json
+
 pygame.init()
 
 class Game() :
@@ -51,7 +52,7 @@ class Game() :
         :param new_view: new view
         """
         self.screen.fill(self.BLACK)
-        self.current_view = new_view()
+        self.current_view = new_view
         self.scroll_y = 0
         self.scroll_x = 0
 
@@ -276,5 +277,13 @@ from gameView import gameView
 from searchEngine import searchView
 from shop import shopView
 from player import Player
-main_game.change_view(searchView)
+from setting import settingView
+
+main_game.menu_view = menuView()
+main_game.game_view = gameView()
+main_game.search_view = searchView()
+main_game.shop_view = shopView()
+main_game.settings_view = settingView()
+
+main_game.change_view(main_game.menu_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)
