@@ -21,9 +21,13 @@ class gameView() :
     def __init__(self):
         self.offset_x = 0
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
-        self.draw_element = []
         self.last_frame = 0
         self.header = True
+        gamedata = main_game.data.get('game', {})
+        self.tree = []
+        for tree in gamedata.get('trees', []) :
+            self.tree.append(Tree(tree.get('x'), tree.get('y'), tree.get('time_alive')))
+        self.wait_tree = gamedata.get('wait_tree', None)
 
     def update(self, events) :
         main_game.screen.fill(main_game.WHITE)
@@ -40,9 +44,9 @@ class gameView() :
             x += ground_rect[2]
 
         # Plant Player
-        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
+        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1:
             main_game.player.plant_act()
-            self.wait_tree = Tree(main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, height - ground_rect[3])
+            self.wait_tree = {'x' : main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, 'y' : 0}
             main_game.player.sprout -= 1
 
         # Move player
@@ -58,8 +62,8 @@ class gameView() :
             else :
                 self.offset_x -= main_game.player.velocity * main_game.dt
         
-        for elem in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.draw_element) :
-            elem.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        for tree in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.tree) :
+            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 

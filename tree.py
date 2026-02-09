@@ -13,7 +13,7 @@ from game import*
 
 class Tree():
 
-    def __init__(self, x, y):
+    def __init__(self, x, y=0, time_alive=0):
         self.image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "tree", "tree.png"]))
 
         imageJsonFile = open(os.sep.join([main_game.asset_doc, "image", "tree", "tree_frame.json"]), 'r')
@@ -46,13 +46,11 @@ class Tree():
         
         self.seedling = True
 
-        self.time_alive = 0
+        self.time_alive = time_alive
         self.f = 0
 
         self.x = x
-        self.y = y - self.size[1]
-
-        self.orientation = "RIGHT"
+        self.y = y
     
     def change_skin(self) :
         self.skin_index += 1
@@ -71,5 +69,5 @@ class Tree():
     def draw(self, surface, ground_altitude, offset_x) :
         #self.change_skin()
         rect = self.actual_skin["subsurface"].get_rect()
-        rect[0], rect[1] = self.x+offset_x, self.y
+        rect[0], rect[1] = self.x+offset_x, ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin["subsurface"], rect)

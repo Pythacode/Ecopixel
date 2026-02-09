@@ -53,15 +53,25 @@ data = {
                 'orientation' : main_game.player.orientation,
                 'skin_index' : main_game.player.skin_index,
                 'plant' : main_game.player.plant
-            }
-        ,
+            },
         'settings' :
             {
                 'key_move_right' : main_game.key_move_right,
                 'key_move_left' : main_game.key_move_left,
                 'key_plant' : main_game.key_plant,
+            },
+        'game' :
+            {
+                'wait_tree' : None if main_game.game_view.wait_tree == None else {
+                    'x' : main_game.game_view.wait_tree.get('x'),
+                    'y' : main_game.game_view.wait_tree.get('y')
+                    },
+                'trees' : [{
+                    'x' : t.x,
+                    'y' : t.y,
+                    'time_alive' : t.time_alive
+                    } for t in main_game.game_view.tree]
             }
-        
     }
 
 with open(os.sep.join([main_game.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
