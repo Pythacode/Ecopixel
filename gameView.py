@@ -42,7 +42,7 @@ class gameView() :
         # Plant Player
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
             main_game.player.plant_act()
-            self.draw_element.append(Tree(main_game.player.x, height - ground_rect[3]))
+            self.wait_tree = Tree(main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, height - ground_rect[3])
             main_game.player.sprout -= 1
 
         # Move player
