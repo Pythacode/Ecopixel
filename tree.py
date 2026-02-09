@@ -12,7 +12,7 @@ from game import*
 
 
 class Tree():
-    def __init__(self, x, y=0, time_alive=0, type=""):
+    def __init__(self, x, y=0, type="", time_alive=0, seedling=True, growned_up=False, skin_index=0):
         self.image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "tree", "tree.png"]))
 
         imageJsonFile = open(os.sep.join([main_game.asset_doc, "image", "tree", "tree_frame.json"]), 'r')
@@ -71,23 +71,30 @@ class Tree():
         }
         self.oak2["subsurface"] = pygame.transform.scale(self.oak2["subsurface"], self.size)
 
-
-        self.actual_skin = self.seedling0
-        self.rect = self.actual_skin["subsurface"].get_rect()
-
-        self.skin_index = 0
+        self.skin_index = skin_index
         self.seedling_skin_list = (self.seedling0, self.seedling1, self.seedling2)
         self.oak_skin_list = (self.oak0, self.oak1, self.oak2)
         
-        self.seedling = True
-        self.growned_up = False
+        self.seedling = seedling
+        self.growned_up = growned_up
         self.type = type
 
         self.time_alive = time_alive
         self.f = 0
 
+        if self.seedling:
+            self.skin_list = self.seedling_skin_list
+        else:
+            if self.type == "oak":
+                self.skin_list = self.oak_skin_list
+
+        self.actual_skin = self.skin_list[skin_index]
+        self.rect = self.actual_skin["subsurface"].get_rect()
+
         self.x = x
         self.y = y
+
+        print(x, y, time_alive, type, seedling, growned_up)
     
     def change_skin(self) :
         self.skin_index += 1
@@ -113,6 +120,7 @@ class Tree():
         if self.f >= 100 and not self.growned_up:
             self.time_alive +=1
             self.f = 0
-            if self.time_alive == 1000:
+            print(self.time_alive)
+            if self.time_alive == 50:
                 self.change_skin()
                 self.time_alive = 0

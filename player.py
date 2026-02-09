@@ -291,7 +291,7 @@ class Player() :
                     self.skin_index = 0
                     self.plant = False
                 elif self.skin_index == 11 :
-                    main_game.game_view.tree.append(Tree(main_game.game_view.wait_tree.get('x'), main_game.game_view.wait_tree.get('y')))
+                    main_game.game_view.tree.append(Tree(main_game.game_view.wait_tree.get('x'), main_game.game_view.wait_tree.get('y'), main_game.game_view.wait_tree.get('type')))
                     main_game.game_view.wait_tree = None
             elif self.move:
                 skin_list = self.move_skin_list

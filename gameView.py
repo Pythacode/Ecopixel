@@ -26,7 +26,7 @@ class gameView() :
         gamedata = main_game.data.get('game', {})
         self.tree = []
         for tree in gamedata.get('trees', []) :
-            self.tree.append(Tree(tree.get('x'), tree.get('y'), tree.get('time_alive')))
+            self.tree.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index')))
         self.wait_tree = gamedata.get('wait_tree', None)
 
     def update(self, events) :
@@ -46,7 +46,7 @@ class gameView() :
         # Plant Player
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1:
             main_game.player.plant_act()
-            self.wait_tree = {'x' : main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, 'y' : 0}
+            self.wait_tree = {'x' : main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, 'y' : 0, 'type' : 'oak'}
             main_game.player.sprout -= 1
 
         # Move player

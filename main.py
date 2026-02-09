@@ -64,12 +64,17 @@ data = {
             {
                 'wait_tree' : None if main_game.game_view.wait_tree == None else {
                     'x' : main_game.game_view.wait_tree.get('x'),
-                    'y' : main_game.game_view.wait_tree.get('y')
+                    'y' : main_game.game_view.wait_tree.get('y'),
+                    'type': main_game.game_view.wait_tree.get('type')
                     },
                 'trees' : [{
                     'x' : t.x,
                     'y' : t.y,
-                    'time_alive' : t.time_alive
+                    'time_alive' : t.time_alive,
+                    'type' : t.type,
+                    'seedling': t.seedling,
+                    'growned_up': t.growned_up,
+                    'skin_index': t.skin_index
                     } for t in main_game.game_view.tree]
             }
     }
