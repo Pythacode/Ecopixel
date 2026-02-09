@@ -266,11 +266,7 @@ class Player() :
         self.move_skin_list = (self.run0, self.run1, self.run2, self.run3, self.run4, self.run5, self.run6, self.run7)
         self.plant_skin_list = (self.plant0, self.plant1, self.plant2, self.plant3, self.plant4, self.plant5, self.plant6, self.plant7, self.plant8, self.plant9, self.plant10, self.plant11, self.plant12, self.plant13, self.plant14)
 
-        if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) :
-            dataJsonfile = open(os.sep.join([main_game.asset_doc, "data_game.json"]), 'r')
-            playerdata = json.load(dataJsonfile).get('data').get('player')
-        else :
-            playerdata = {}
+        playerdata = main_game.data.get('player', {})
 
         self.actual_skin = self.idle0
         self.skin_index = playerdata.get('skin_index', 0)

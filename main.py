@@ -37,8 +37,8 @@ while main_game.running:
 
 # Sauvegarde des données
 
-data = {'data' :
-        {'player' : 
+data = {
+        'player' : 
             {
                 'x' : main_game.player.x,
                 'y' : main_game.player.y,
@@ -48,7 +48,14 @@ data = {'data' :
                 'skin_index' : main_game.player.skin_index,
                 'plant' : main_game.player.plant
             }
-        }
+        ,
+        'settings' :
+            {
+                'key_move_right' : main_game.key_move_right,
+                'key_move_left' : main_game.key_move_left,
+                'key_plant' : main_game.key_plant,
+            }
+        
     }
 
 with open(os.sep.join([main_game.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:

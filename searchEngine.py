@@ -10,7 +10,7 @@ import threading
 from game import *
 import pygame
 import webbrowser
-from game import main_game
+from gameView import gameView
 
 class searchView() :
     def __init__(self):
@@ -140,8 +140,9 @@ class searchView() :
         # Header
         pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 40, width, 85), width=0)
 
-        scaled_image = pygame.transform.scale(main_game.logo, (40, 40))
-        main_game.screen.blit(scaled_image, (20, 60))
+        back_rect = main_game.back.get_rect()
+        back_rect[0], back_rect[1] = 20, 70
+        main_game.screen.blit(main_game.back, back_rect)
 
         #(70, 20, width - 80, 40)        
 
@@ -162,6 +163,9 @@ class searchView() :
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN :
+                if back_rect.collidepoint(event.pos) :
+                    main_game.change_view(menuView)
+                    break
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :
                         webbrowser.open(i.get('link'))

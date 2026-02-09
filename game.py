@@ -7,6 +7,7 @@
 
 import pygame
 import os
+import json
 pygame.init()
 
 class Game() :
@@ -14,18 +15,32 @@ class Game() :
         """
         A class for global variable
         """
+        self.asset_doc = "data"
+
+        if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) :
+            dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r')
+            self.data = json.load(dataJsonfile)
+        else :
+            self.data = {}
+
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None
         self.WHITE = (255, 255, 255)
         self.BLACK = (000, 000, 000)
         self.running = True
-        self.asset_doc = "data"
         self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) #"freesansbold.ttf"
         self.scroll_y = 0
         self.scroll_x = 0
         self.touch_pressed = {}
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"]))
+        self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"]))
         self.player = None
+        
+        settings_data = self.data.get('settings', {})
+        self.key_move_right = settings_data.get('key_move_right', pygame.K_d)
+        self.key_move_left = settings_data.get('key_move_left', pygame.K_q)
+        self.key_plant = settings_data.get('key_plant', pygame.K_e)
+
         pygame.display.set_icon(self.logo)
         pygame.display.set_caption('Ecopixel')
     
@@ -261,5 +276,5 @@ from gameView import gameView
 from searchEngine import searchView
 from shop import shopView
 from player import Player
-main_game.change_view(menuView)
+main_game.change_view(searchView)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)

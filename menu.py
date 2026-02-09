@@ -10,7 +10,7 @@ import pygame
 import os
 from gameView import gameView
 from shop import shopView
-
+from setting import settingView
 
 class menuView():
 
@@ -35,6 +35,10 @@ class menuView():
         self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
         self.shopbutton.createButton()
 
+        # Shop button init
+        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 660), 48*4, 24*4, self.settingsButton_Pressed, text="Réglages")
+        self.settingsButton.createButton()
+
         self.header = False
 
     def PlayButton_Pressed(self):
@@ -50,6 +54,9 @@ class menuView():
     def ShopButton_Pressed(self):
         main_game.change_view(shopView)
 
+    def settingsButton_Pressed(self):
+        main_game.change_view(settingView)
+
     def update(self, events) :
 
         width, height = main_game.screen.get_size() 
@@ -62,5 +69,6 @@ class menuView():
         self.playbutton.update(main_game.screen)
         self.quitbutton.update(main_game.screen)
         self.shopbutton.update(main_game.screen)
+        self.settingsButton.update(main_game.screen)
 
         
