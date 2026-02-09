@@ -28,9 +28,8 @@ class menuView():
         # Shop button init
         self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
 
-        # Shop button init
+        # Settings button init
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 660), 48*4, 24*4, self.settingsButton_Pressed, text="Réglages")
-        self.settingsButton.createButton()
 
         self.header = False
         self.previous_view = None
