@@ -113,6 +113,12 @@ class button():
         self.OnClickFunc = OnClickFunc
         self.text = text
         self.click = False
+        font = pygame.font.Font("freesansbold.ttf", 24)
+        image = self.image_nor
+        scaled_image = pygame.transform.scale(image, (self.width, self.height))
+        self.rect = scaled_image.get_rect()
+        self.rect.center = self.position
+        self.rendertext = font.render(self.text, True, main_game.BLACK)
 
     def update(self, screen):
         image = self.image_nor
@@ -131,15 +137,6 @@ class button():
                 self.click = False
         screen.blit(scaled_image, self.rect)
         screen.blit(self.rendertext, self.position)
-
-    # Create Button
-    def createButton(self):
-        font = pygame.font.Font("freesansbold.ttf", 24)
-        image = self.image_nor
-        scaled_image = pygame.transform.scale(image, (self.width, self.height))
-        self.rect = scaled_image.get_rect()
-        self.rect.center = self.position
-        self.rendertext = font.render(self.text, True, main_game.BLACK)
         
 
 class entry_text() :

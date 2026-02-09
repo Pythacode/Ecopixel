@@ -1,4 +1,3 @@
-# -------------------------------- Game -------------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant toute les variable globals du jeux                   #
 # Crée par                                                               #
@@ -10,6 +9,7 @@
 import os
 import json
 import pygame
+import tree
 from game import main_game
 
 class Player() :
@@ -312,10 +312,10 @@ class Player() :
     def plant_act(self):
         self.plant = True
 
-    def move_left(self, dt) :
+    def move_left(self) :
         self.move = True
-        self.x -= self.velocity * dt
+        self.x -= self.velocity * main_game.dt
 
-    def move_right(self, dt) :
+    def move_right(self) :
         self.move = True
-        self.x += self.velocity * dt
+        self.x += self.velocity * main_game.dt
