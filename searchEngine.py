@@ -10,7 +10,6 @@ import threading
 from game import *
 import pygame
 import webbrowser
-from gameView import gameView
 
 class searchView() :
     def __init__(self):

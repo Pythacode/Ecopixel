@@ -8,9 +8,6 @@
 from game import *
 import pygame
 import os
-from gameView import gameView
-from shop import shopView
-from setting import settingView
 
 class menuView():
 
