@@ -43,6 +43,7 @@ class gameView() :
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
             main_game.player.plant_act()
             self.draw_element.append(Tree(main_game.player.x, height - ground_rect[3]))
+            main_game.player.sprout -= 1
 
         # Move player
         if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
