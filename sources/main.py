@@ -75,7 +75,7 @@ data = {
                     'seedling': t.seedling,
                     'growned_up': t.growned_up,
                     'skin_index': t.skin_index
-                    } for t in main_game.game_view.tree]
+                    } for t in main_game.game_view.trees]
             }
     }
 

@@ -24,9 +24,9 @@ class gameView() :
         self.last_frame = 0
         self.header = True
         gamedata = main_game.data.get('game', {})
-        self.tree = []
+        self.trees = []
         for tree in gamedata.get('trees', []) :
-            self.tree.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index')))
+            self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index')))
         self.wait_tree = gamedata.get('wait_tree', None)
 
     def update(self, events) :
@@ -45,9 +45,16 @@ class gameView() :
 
         # Plant Player
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1:
-            main_game.player.plant_act()
-            self.wait_tree = {'x' : main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x, 'y' : 0, 'type' : 'oak'}
-            main_game.player.sprout -= 1
+            x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
+            # Générer une liste de tous les arbres qui sont proche de l'endroit ou le joueur veut planter une pousse
+            t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
+            if len(t) == 0 :
+                main_game.player.plant_act()
+                self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak'}
+                main_game.player.sprout -= 1
+            else :
+                #player.show('Trop proche :/') # Faut dev cette fonction pour que le message s'affiche au dessus du joueur 2s
+                print('Trop proche :/') # en attendant
 
         # Move player
         if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
@@ -62,7 +69,7 @@ class gameView() :
             else :
                 self.offset_x -= main_game.player.velocity * main_game.dt
         
-        for tree in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.tree) :
+        for tree in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.trees) :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
