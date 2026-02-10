@@ -93,8 +93,6 @@ class Tree():
 
         self.x = x
         self.y = y
-
-        print(x, y, time_alive, type, seedling, growned_up)
     
     def change_skin(self) :
         self.skin_index += 1
@@ -116,11 +114,10 @@ class Tree():
         rect[0], rect[1] = self.x+offset_x, ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin["subsurface"], rect)
 
-        self.f += 1 * main_game.dt
+        self.f += main_game.dt
         if self.f >= 100 and not self.growned_up:
             self.time_alive +=1
             self.f = 0
-            print(self.time_alive)
-            if self.time_alive == 50:
+            if self.time_alive == 1000:
                 self.change_skin()
                 self.time_alive = 0
