@@ -74,7 +74,8 @@ data = {
                     'type' : t.type,
                     'seedling': t.seedling,
                     'growned_up': t.growned_up,
-                    'skin_index': t.skin_index
+                    'skin_index': t.skin_index,
+                    'max_alive': t.max_alive
                     } for t in main_game.game_view.trees]
             }
     }
