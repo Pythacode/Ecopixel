@@ -127,7 +127,7 @@ def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame
             for word in line:
                 word_surface = font.render(word, 0, color)
                 word_width, word_height = word_surface.get_size()
-                if x + word_width >= max_width:
+                if x + word_width >= pos[0] + max_width:
                     x = pos[0]  # Reset the x.
                     y += word_height  # Start on new row.
                 screen.blit(word_surface, (x, y))
@@ -326,5 +326,5 @@ main_game.search_view = searchView()
 main_game.shop_view = shopView()
 main_game.settings_view = settingView()
 
-main_game.change_view(main_game.menu_view)
+main_game.change_view(main_game.search_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)
