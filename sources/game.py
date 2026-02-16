@@ -16,7 +16,10 @@ class Game() :
         """
         A class for global variable
         """
-        self.asset_doc = "./../data/"
+        self.asset_doc = self.asset_doc = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de game
+                                                      '..', # Remonte d'un répertoir (Répertoir source)
+                                                      'data' # Dossier data
+                                                    ])) # Obligatoir pour correctement gerer l'execution depuis n'importe quel répertoire
 
         if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) :
             dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r')
