@@ -266,6 +266,11 @@ def draw_header() :
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
+main_game = Game(
+    WIDTH=1280,
+    HEIGHT=720
+) # Garder ici avant l'import, sinon main_game ne seras pas defini
+
 # Permet de créer main_game, dont menuView à besoin
 from menu import menuView
 from gameView import gameView
@@ -273,11 +278,6 @@ from searchEngine import searchView
 from shop import shopView
 from player import Player
 from setting import settingView
-
-main_game = Game(
-    WIDTH=1280,
-    HEIGHT=720
-)
 
 main_game.menu_view = menuView()
 main_game.game_view = gameView()
