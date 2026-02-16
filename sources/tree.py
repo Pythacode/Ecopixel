@@ -9,10 +9,11 @@ import os
 import pygame
 import json
 from game import*
+from random import randint
 
 
 class Tree():
-    def __init__(self, x, y=0, type="", time_alive=0, seedling=True, growned_up=False, skin_index=0):
+    def __init__(self, x, y=0, type="", time_alive=0, seedling=True, growned_up=False, skin_index=0, max_alive=randint(900, 1200)):
         self.image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "tree", "tree.png"]))
 
         imageJsonFile = open(os.sep.join([main_game.asset_doc, "image", "tree", "tree_frame.json"]), 'r')
@@ -80,6 +81,7 @@ class Tree():
         self.type = type
 
         self.time_alive = time_alive
+        self.max_alive = max_alive
         self.f = 0
 
         if self.seedling:
@@ -118,6 +120,6 @@ class Tree():
         if self.f >= 100 and not self.growned_up:
             self.time_alive +=1
             self.f = 0
-            if self.time_alive == 1000:
+            if self.time_alive == self.max_alive:
                 self.change_skin()
                 self.time_alive = 0
