@@ -42,6 +42,7 @@ class Game() :
         self.key_move_right = settings_data.get('key_move_right', pygame.K_d)
         self.key_move_left = settings_data.get('key_move_left', pygame.K_q)
         self.key_plant = settings_data.get('key_plant', pygame.K_e)
+        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE)
 
         pygame.display.set_icon(self.logo)
         pygame.display.set_caption('Ecopixel')
