@@ -326,5 +326,5 @@ main_game.search_view = searchView()
 main_game.shop_view = shopView()
 main_game.settings_view = settingView()
 
-main_game.change_view(main_game.search_view)
+main_game.change_view(main_game.menu_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)

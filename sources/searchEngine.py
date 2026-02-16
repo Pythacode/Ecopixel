@@ -38,6 +38,9 @@ class searchView() :
         self.previous_view = None
 
         self.results_rect = []
+        self.search_message = ['Chargement', 'Chargement.', 'Chargement..', 'Chargement...']
+        self.message_index = 0
+        self.last_change = pygame.time.get_ticks()
 
     def search(self, query:str, max_result=10, lang="fr"):
         """
@@ -71,19 +74,39 @@ class searchView() :
         }
 
         # Réponse de la requete
-        response = requests.post(
-            API_URL,
-            headers=headers,
-            json=data
-        )
+        try :
+            response = requests.post(
+                API_URL,
+                headers=headers,
+                json=data
+            )
+            results = response.json().get('results')
+            self.exploit_result = {
+                    "result" : "succes",
+                    "data" : [{
+                        "title" : r.get('title', "Titre inconu"),
+                        "link" : r.get('link', "Lien inconu"),
+                        "snippet" : r.get('snippet'),
+                        "content" : r.get('content', r.get('snippet', 'Aucune description')).removeprefix("---\\ndescription: ")
+                        } for r in results]
+            } # Suprime les informations inutiles à notre usage
+        except requests.exceptions.ReadTimeout :
+            self.exploit_result = {
+                    "result" : "error",
+                    "type" : 'ReadTimeout'
+                }
+        except requests.exceptions.ConnectionError :
+            self.exploit_result = {
+                    "result" : "error",
+                    "type" : 'ConnectionError'
+                }
+        except :
+            self.exploit_result = {
+                    "result" : "error",
+                    "type" : 'unknow'
+                }
 
-        results = response.json().get('results')
-        self.exploit_result = [{
-                "title" : r.get('title', "Titre inconu"),
-                "link" : r.get('link', "Lien inconu"),
-                "snippet" : r.get('snippet'),
-                "content" : r.get('content', r.get('snippet', 'Aucune description')).removeprefix("---\\ndescription: ")
-            } for r in results] # Suprime les informations inutiles à notre usage
+
         
         self.onsearch = False
         self.searchFiniched = True
@@ -98,41 +121,58 @@ class searchView() :
             pos_x = 20
             gap = 4
             self.results_rect = []
-            for result in self.exploit_result :
+            if self.exploit_result.get('result') == 'succes' :
+                for result in self.exploit_result.get('data') :
 
-                start_y = pos_y
+                    start_y = pos_y
 
-                titleText = self.font.render(result.get('title'), True, main_game.BLACK)
-                urlText = self.url_font.render(result.get('link').removeprefix("https://").removesuffix('/').replace('/', ' > '), True, (142, 142, 142))
+                    titleText = self.font.render(result.get('title'), True, main_game.BLACK)
+                    urlText = self.url_font.render(result.get('link').removeprefix("https://").removesuffix('/').replace('/', ' > '), True, (142, 142, 142))
 
-                main_game.screen.blit(titleText, (pos_x, pos_y))
+                    main_game.screen.blit(titleText, (pos_x, pos_y))
 
-                width, text_height = self.font.size(result.get('title'))
-                pos_y += text_height + gap
+                    width, text_height = self.font.size(result.get('title'))
+                    pos_y += text_height + gap
 
-                main_game.screen.blit(urlText, (pos_x, pos_y))
-                pos_y += text_height + gap
+                    main_game.screen.blit(urlText, (pos_x, pos_y))
+                    pos_y += text_height + gap
 
-                max_width = main_game.screen.get_size()[0] - 2*pos_x
-                text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK, main_game.screen)
-                pos_y += text_height + gap
+                    max_width = main_game.screen.get_size()[0] - 2*pos_x
+                    text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK, main_game.screen)
+                    pos_y += text_height + gap
 
-                if max_width > width :
-                    width = max_width
+                    if max_width > width :
+                        width = max_width
 
-                text_width, text_height = self.text_font.size("A")
-                pos_y += text_height + gap + 5
+                    text_width, text_height = self.text_font.size("A")
+                    pos_y += text_height + gap + 5
 
-                if text_width > width :
-                    width = text_width
+                    if text_width > width :
+                        width = text_width
 
-                self.results_rect.append({
-                    'rect' : pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y),
-                    'link' : result.get('link')
-                })
+                    self.results_rect.append({
+                        'rect' : pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y),
+                        'link' : result.get('link')
+                    })
+            elif self.exploit_result.get('result') == 'error' :
+                if self.exploit_result.get('type') == 'ConnectionError' :
+                    search_text = self.font.render("Pas de connection internet", True, main_game.BLACK)
+                    main_game.screen.blit(search_text, (30, 140))
+                elif self.exploit_result.get('type') == 'ReadTimeout' :
+                    search_text = self.font.render("Délais d'attente dépassé. Verifier votre connection et votre par-feux", True, main_game.BLACK)
+                    main_game.screen.blit(search_text, (30, 140))
+                elif self.exploit_result.get('type') == 'unknow' :
+                    search_text = self.font.render("Une érreur inconue s'est produite", True, main_game.BLACK)
+                    main_game.screen.blit(search_text, (30, 140))
                 
         elif self.onsearch :
-            search_text = self.font.render("Chargement...", True, main_game.BLACK)
+            now = pygame.time.get_ticks()
+            if now - self.last_change > 500 :
+                self.last_change = now
+                self.message_index += 1
+                if self.message_index >= len(self.search_message) :
+                    self.message_index = 0
+            search_text = self.font.render(self.search_message[self.message_index], True, main_game.BLACK)
             main_game.screen.blit(search_text, (30, 140))
 
         width = main_game.screen.get_size()[0]
@@ -162,7 +202,7 @@ class searchView() :
         pygame.mouse.set_cursor(*cursor)
 
         for event in events :
-            if event.type == pygame.MOUSEBUTTONDOWN :
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
                 if back_rect.collidepoint(event.pos) :
                     main_game.change_view(self.previous_view)
                     break
