@@ -26,10 +26,11 @@ class Game() :
 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None
+        
         self.WHITE = (255, 255, 255)
         self.BLACK = (000, 000, 000)
         self.running = True
-        self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) #"freesansbold.ttf"
+        self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"])
         self.scroll_y = 0
         self.scroll_x = 0
         self.touch_pressed = {}
@@ -56,11 +57,6 @@ class Game() :
         self.current_view = new_view
         self.scroll_y = 0
         self.scroll_x = 0
-
-main_game = Game(
-    WIDTH=1280,
-    HEIGHT=720
-)
 
 def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
         """
@@ -171,7 +167,6 @@ class entry_text() :
         self.last_change = 0
         self.cursor = True
         self.cursor_index = 0
-        self.previous_view = None
     
     def update(self, events:list) :
         """
@@ -278,6 +273,11 @@ from searchEngine import searchView
 from shop import shopView
 from player import Player
 from setting import settingView
+
+main_game = Game(
+    WIDTH=1280,
+    HEIGHT=720
+)
 
 main_game.menu_view = menuView()
 main_game.game_view = gameView()
