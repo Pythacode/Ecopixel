@@ -71,7 +71,7 @@ python3 main.py
 
 
 > [!IMPORTANT]
-> Ce projet est sous licence Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).<br>
-> Vous pouvez copier, distribuer et modifier ce projet à condition que ce soit à des fins non commerciales et que vous me créditiez.<br>
-> [Texte complet de la licence](LICENSE)<br>
-> [Site officiel de la licence](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)<br>
+> Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). pour le texte<br>
+> Plus d'information :' [Fichier LICENSE](LICENSE)<br>
+> [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)<br>
+> [Site officiel de la licence CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)

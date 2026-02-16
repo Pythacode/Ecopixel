@@ -2,7 +2,7 @@
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant tout le code du moteur de jeu.                       #
 # Crée par Titouan - https://github.com/Pythacode/                       #
-# License : Creative Commons Attribution-NonCommercial 4.0 International #
+# License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
 # ---------------------------------------------------------------------- #
 
 import pygame
@@ -53,15 +53,31 @@ data = {
                 'orientation' : main_game.player.orientation,
                 'skin_index' : main_game.player.skin_index,
                 'plant' : main_game.player.plant
-            }
-        ,
+            },
         'settings' :
             {
                 'key_move_right' : main_game.key_move_right,
                 'key_move_left' : main_game.key_move_left,
                 'key_plant' : main_game.key_plant,
+            },
+        'game' :
+            {
+                'wait_tree' : None if main_game.game_view.wait_tree == None else {
+                    'x' : main_game.game_view.wait_tree.get('x'),
+                    'y' : main_game.game_view.wait_tree.get('y'),
+                    'type': main_game.game_view.wait_tree.get('type')
+                    },
+                'trees' : [{
+                    'x' : t.x,
+                    'y' : t.y,
+                    'time_alive' : t.time_alive,
+                    'type' : t.type,
+                    'seedling': t.seedling,
+                    'growned_up': t.growned_up,
+                    'skin_index': t.skin_index,
+                    'max_alive': t.max_alive
+                    } for t in main_game.game_view.trees]
             }
-        
     }
 
 with open(os.sep.join([main_game.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
