@@ -58,6 +58,47 @@ class Game() :
         self.scroll_y = 0
         self.scroll_x = 0
 
+def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+        """
+        Calcuate size of a text
+        Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
+
+        :param text: Text to draw
+        :type text: str
+        :param font: Font to draw text
+        :type font: pygame.font
+        :param max_width: Width we cant exceed
+        :type max_width: int
+        :param color: Color of text
+        :type color:pygame.Color | tuple
+        :param screen: Screen where text as display
+        :type screen: pygame.surface
+        :return: The height of text
+        :rtype: int
+        """
+        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+        space = font.size(' ')[0]  # The width of a space.
+        x, y = 0, 0
+        count_line = 1
+        m_width = 0
+        for line in words:
+            for word in line:
+                word_surface = font.render(word, 0, color)
+                word_width, word_height = word_surface.get_size()
+                if x + word_width > m_width :
+                    m_width = x + word_width
+                if x + word_width >= max_width:
+                    if x + word_width > m_width :
+                        m_width = x + word_width
+                    x = 0  # Reset the x.
+                    y += word_height  # Start on new row.
+                x += word_width + space
+            x = 0  # Reset the x.
+            y += word_height  # Start on new row.
+            count_line += 1
+
+        return count_line * word_height, m_width
+
 def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
         """
         Draw `text` on `screen` with lines-split for not exceed `max_width`
@@ -109,7 +150,7 @@ class button():
         self.OnClickFunc = OnClickFunc
         self.text = text
         self.click = False
-        font = pygame.font.Font("freesansbold.ttf", 24)
+        font = pygame.font.Font(main_game.main_font_name, 24)
         image = self.image_nor
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         self.rect = scaled_image.get_rect()

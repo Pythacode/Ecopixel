@@ -69,8 +69,7 @@ class gameView() :
                 self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak'}
                 main_game.player.sprout -= 1
             else :
-                #player.show('Trop proche :/') # Faut dev cette fonction pour que le message s'affiche au dessus du joueur 2s #ah chiant la flm
-                print('Trop proche :/') # en attendant
+                main_game.player.say('Trop proche :/', 2_000)
 
         # Move player
         if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:

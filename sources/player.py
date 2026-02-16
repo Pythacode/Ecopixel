@@ -10,7 +10,7 @@ import os
 import json
 import pygame
 from tree import Tree
-from game import main_game
+from game import main_game, blit_text, size_text
 
 class Player() :
     def __init__(self, center):
@@ -283,6 +283,19 @@ class Player() :
         self.money = playerdata.get('money', 0)
         self.sprout = playerdata.get('sprout', 0)
 
+        self.msg = None
+
+    def say(self, msg, duration):
+        self.msg = {
+            'x' : 50,
+            'y' : 0,
+            'msg' : msg,
+            'created' : pygame.time.get_ticks(),
+            'duration' : duration
+        }
+
+        print(msg)
+
     def change_skin(self) :
             self.skin_index += 1
             if self.plant:
@@ -308,10 +321,22 @@ class Player() :
         if now - self.last_change > (self.actual_skin["duration"]) :
             self.last_change = now
             self.change_skin()
+
         rect = self.actual_skin["subsurface"].get_rect()
-        rect[0], rect[1] = self.x, ground_altitude + self.y - rect[3]
+        y = ground_altitude + self.y - rect[3]
+        rect[0], rect[1] = self.x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
     
+        if self.msg :
+            font = pygame.font.Font(main_game.main_font_name, 24)
+            #w = 400
+            h, w = size_text(self.msg.get('msg'), font, 900, 'black', main_game.screen)
+            pygame.draw.rect(main_game.screen, 'white', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 0, 20)
+            pygame.draw.rect(main_game.screen, 'black', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 3, 20)
+            blit_text(self.msg.get('msg'), (self.x - self.msg.get('x'), y-h+30), font, 900, 'black', main_game.screen)
+            if now - self.msg.get('created') > self.msg.get('duration') :
+                self.msg = None
+
     def plant_act(self):
         self.plant = True
 
