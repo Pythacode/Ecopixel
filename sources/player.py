@@ -294,8 +294,6 @@ class Player() :
             'duration' : duration
         }
 
-        print(msg)
-
     def change_skin(self) :
             self.skin_index += 1
             if self.plant:
