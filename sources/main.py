@@ -25,6 +25,8 @@ while main_game.running:
             main_game.scroll_x -= event.x * 10
         elif event.type == pygame.KEYDOWN :
             main_game.touch_pressed[event.key] = True
+            if event.key == main_game.key_save :
+                main_game.save()
         elif event.type == pygame.KEYUP :
             main_game.touch_pressed[event.key] = False
 
@@ -42,45 +44,6 @@ while main_game.running:
     pygame.display.flip()
 
 # Sauvegarde des données
+main_game.save()
 
-data = {
-        'player' : 
-            {
-                'x' : main_game.player.x,
-                'y' : main_game.player.y,
-                'money' : main_game.player.money,
-                'sprout' : main_game.player.sprout,
-                'orientation' : main_game.player.orientation,
-                'skin_index' : main_game.player.skin_index,
-                'plant' : main_game.player.plant
-            },
-        'settings' :
-            {
-                'key_move_right' : main_game.key_move_right,
-                'key_move_left' : main_game.key_move_left,
-                'key_plant' : main_game.key_plant,
-            },
-        'game' :
-            {
-                'wait_tree' : None if main_game.game_view.wait_tree == None else {
-                    'x' : main_game.game_view.wait_tree.get('x'),
-                    'y' : main_game.game_view.wait_tree.get('y'),
-                    'type': main_game.game_view.wait_tree.get('type')
-                    },
-                'trees' : [{
-                    'x' : t.x,
-                    'y' : t.y,
-                    'time_alive' : t.time_alive,
-                    'type' : t.type,
-                    'seedling': t.seedling,
-                    'growned_up': t.growned_up,
-                    'skin_index': t.skin_index,
-                    'max_alive': t.max_alive
-                    } for t in main_game.game_view.trees]
-            }
-    }
-
-with open(os.sep.join([main_game.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=4)
-    
 pygame.quit()

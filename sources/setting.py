@@ -44,6 +44,11 @@ class settingView():
                 'id' : 'key_pause',
                 'name' : 'Touche pause',
                 'value' : pygame.key.name(main_game.key_pause)
+            },
+            {
+                'id' : 'key_save',
+                'name' : 'Touche sauvegarde',
+                'value' : pygame.key.name(main_game.key_save)
             }
         ]
 
@@ -86,6 +91,7 @@ class settingView():
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN :
                 if back_rect.collidepoint(event.pos) :
+                    main_game.save()
                     main_game.change_view(self.previous_view)
                 if self.edit_id == None :
                     for i in self.key_edit :

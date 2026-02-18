@@ -46,6 +46,7 @@ class Game() :
         self.key_move_left = settings_data.get('key_move_left', pygame.K_q)
         self.key_plant = settings_data.get('key_plant', pygame.K_e)
         self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE)
+        self.key_save = settings_data.get('key_sauv', pygame.K_o)
 
         pygame.display.set_icon(self.logo)
         pygame.display.set_caption('Ecopixel')
@@ -61,6 +62,57 @@ class Game() :
         self.current_view = new_view
         self.scroll_y = 0
         self.scroll_x = 0
+    
+    def save(self) :
+        font = font = pygame.font.Font(self.main_font_name, 24)
+        w, h = font.size('Sauvegarde en cours...')
+        word_surface = font.render('Sauvegarde en cours...', 0, 'black')
+        ws, hs = self.screen.get_size()
+        self.screen.blit(word_surface, (ws - w - 5, hs - h - 5))
+        pygame.display.flip()
+        
+        data = {
+                'player' : 
+                    {
+                        'x' : self.player.x,
+                        'y' : self.player.y,
+                        'money' : self.player.money,
+                        'sprout' : self.player.sprout,
+                        'orientation' : self.player.orientation,
+                        'skin_index' : self.player.skin_index,
+                        'plant' : self.player.plant
+                    },
+                'settings' :
+                    {
+                        'key_move_right' : self.key_move_right,
+                        'key_move_left' : self.key_move_left,
+                        'key_plant' : self.key_plant,
+                        'key_pause' : self.key_pause,
+                        'key_sauv' : self.key_save,
+                    },
+                'game' :
+                    {
+                        'wait_tree' : None if self.game_view.wait_tree == None else {
+                            'x' : self.game_view.wait_tree.get('x'),
+                            'y' : self.game_view.wait_tree.get('y'),
+                            'type': self.game_view.wait_tree.get('type')
+                            },
+                        'trees' : [{
+                            'x' : t.x,
+                            'y' : t.y,
+                            'time_alive' : t.time_alive,
+                            'type' : t.type,
+                            'seedling': t.seedling,
+                            'growned_up': t.growned_up,
+                            'skin_index': t.skin_index,
+                            'max_alive': t.max_alive
+                            } for t in self.game_view.trees]
+                    }
+            }
+
+        with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+            
 
 def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
         """
