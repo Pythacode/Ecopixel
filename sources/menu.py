@@ -17,7 +17,14 @@ class menuView():
         self.font = pygame.font.Font("freesansbold.ttf", 24)
 
         # Logo init
-        self.logo = button(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"]), (640, 200), 48*4, 48*4, self.Logo_Pressed)
+        self.logo = button(
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            (640, 200),
+            48*4, 48*4,
+            self.Logo_Pressed)
+        self.logo.width, self.logo.height = self.logo.image_nor.get_rect()[2:4]
 
         # Play button init
         self.playbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "play_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
@@ -57,11 +64,10 @@ class menuView():
         # Header
         pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, 720), width=0)
 
-        
-        self.logo.update(main_game.screen)
-        self.playbutton.update(main_game.screen)
-        self.quitbutton.update(main_game.screen)
-        self.shopbutton.update(main_game.screen)
-        self.settingsButton.update(main_game.screen)
+        self.logo.update(main_game.screen, ((width/2) - (self.logo.rect[2]), 200))
+        self.playbutton.update(main_game.screen, (640, 360))
+        self.quitbutton.update(main_game.screen, (640, 460))
+        self.shopbutton.update(main_game.screen, (640, 560))
+        self.settingsButton.update(main_game.screen, (640, 660))
 
         
