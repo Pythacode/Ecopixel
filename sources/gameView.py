@@ -87,7 +87,7 @@ class gameView() :
         if main_game.touch_pressed.get(main_game.key_pause, False) and not self.pause:
             self.pause = True
 
-        for tree in filter(lambda e : -e.rect[2] <= e.x + self.offset_x <= width, self.trees) :
+        for tree in self.trees :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
