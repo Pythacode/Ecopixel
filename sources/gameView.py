@@ -8,14 +8,6 @@
 from game import *
 import os
 from tree import Tree
-from dataclasses import dataclass
-
-@dataclass
-class Shop():
-    image = pygame.image.load(os.sep.join([main_game.asset_doc, 'image', 'game', 'shop.png']))
-    rect = image.get_rect()
-    x = 30
-    y = 0
 
 class gameView() :
 
@@ -46,7 +38,7 @@ class gameView() :
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
 
     def update(self, events) :
-        main_game.screen.fill(main_game.WHITE)
+        main_game.screen.fill('white')
 
         ground_rect = self.ground.get_rect()
         width, height = main_game.screen.get_size()

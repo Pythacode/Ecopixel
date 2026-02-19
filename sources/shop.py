@@ -32,10 +32,22 @@ class shopView():
         self.button.update(main_game.screen)
 
     def img(self,width,height,x,y,path):
+        """
+        Données pour la fonction img:
+
+        :param width: Largeur de l'image en int
+        :param height: Hauteur de l'image en int
+        :param x: Position horizontale de l'image en int
+        :param y: Position verticale de l'image en int
+        :param path: Chemin dans les fichier de l'image à afficher en str
+        """
+        # Résultat : Affiche une image sur la fenêtre
+
         image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", path]))
         rect = image.get_rect()
         rect.center = (x, y)
         image = pygame.transform.scale(image, (width,height))
         return image, rect
+    
     def Fonction_quand_on_clique(self):
         print("test")

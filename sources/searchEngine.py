@@ -26,7 +26,7 @@ class searchView() :
         width = main_game.screen.get_size()[0]
         self.search_zone = entry_text(
             main_game.screen,
-            main_game.BLACK,
+            'black',
             (70, 60),
             (width - 80, 40),
             2,
@@ -126,7 +126,7 @@ class searchView() :
 
                     start_y = pos_y
 
-                    titleText = self.font.render(result.get('title'), True, main_game.BLACK)
+                    titleText = self.font.render(result.get('title'), True, 'black')
                     urlText = self.url_font.render(result.get('link').removeprefix("https://").removesuffix('/').replace('/', ' > '), True, (142, 142, 142))
 
                     main_game.screen.blit(titleText, (pos_x, pos_y))
@@ -138,7 +138,7 @@ class searchView() :
                     pos_y += text_height + gap
 
                     max_width = main_game.screen.get_size()[0] - 2*pos_x
-                    text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, main_game.BLACK, main_game.screen)
+                    text_height = blit_text(result.get('snippet'), (pos_x, pos_y), self.text_font, max_width, 'black', main_game.screen)
                     pos_y += text_height + gap
 
                     if max_width > width :
@@ -156,13 +156,13 @@ class searchView() :
                     })
             elif self.exploit_result.get('result') == 'error' :
                 if self.exploit_result.get('type') == 'ConnectionError' :
-                    search_text = self.font.render("Pas de connection internet", True, main_game.BLACK)
+                    search_text = self.font.render("Pas de connection internet", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'ReadTimeout' :
-                    search_text = self.font.render("Délais d'attente dépassé. Verifier votre connection et votre par-feux", True, main_game.BLACK)
+                    search_text = self.font.render("Délais d'attente dépassé. Verifier votre connection et votre par-feux", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'unknow' :
-                    search_text = self.font.render("Une érreur inconue s'est produite", True, main_game.BLACK)
+                    search_text = self.font.render("Une érreur inconue s'est produite", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 
         elif self.onsearch :
@@ -172,13 +172,13 @@ class searchView() :
                 self.message_index += 1
                 if self.message_index >= len(self.search_message) :
                     self.message_index = 0
-            search_text = self.font.render(self.search_message[self.message_index], True, main_game.BLACK)
+            search_text = self.font.render(self.search_message[self.message_index], True, 'black')
             main_game.screen.blit(search_text, (30, 140))
 
         width = main_game.screen.get_size()[0]
 
         # Header
-        pygame.draw.rect(main_game.screen, main_game.WHITE, (0, 40, width, 85), width=0)
+        pygame.draw.rect(main_game.screen, 'white', (0, 40, width, 85), width=0)
 
         back_rect = main_game.back.get_rect()
         back_rect[0], back_rect[1] = 20, 70

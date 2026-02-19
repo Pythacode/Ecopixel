@@ -16,40 +16,39 @@ class Game() :
         """
         A class for global variable
         """
-        self.asset_doc = self.asset_doc = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de game
+        self.asset_doc = self.asset_doc = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                                                       '..', # Remonte d'un répertoir (Répertoir source)
                                                       'data' # Dossier data
                                                     ])) # Obligatoir pour correctement gerer l'execution depuis n'importe quel répertoire
 
-        if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) :
-            dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r')
-            self.data = json.load(dataJsonfile)
+        if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) : # Si une sauvegarde exsiste
+            dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r') # On ouvre le fichier
+            self.data = json.load(dataJsonfile) # On charge la sauvegarde dans le dictionnair `self.data`
         else :
-            self.data = {}
+            self.data = {} # Sinon on enregistre un dictionnair vide pour `self.data`
 
+        # Crée un écran pygame 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-        self.current_view = None
+        self.current_view = None # Défini la vue actuelle à aucune (Les vues on besoin de main_game, impossible donc de les apellé sans avoir créé l'élément)
         
-        self.WHITE = (255, 255, 255)
-        self.BLACK = (000, 000, 000)
-        self.running = True
-        self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"])
-        self.scroll_y = 0
-        self.scroll_x = 0
-        self.touch_pressed = {}
-        self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"]))
-        self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"]))
-        self.player = None
+        self.running = True # Variable qui définie si la boucle principal (dans `main.py` s'arette ou non)
+        self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) # Chemin de la police de base
+        self.scroll_y = 0 # Valeur du scroll vertical
+        self.scroll_x = 0 # Valeur du scroll horizontal
+        self.touch_pressed = {} # Dictionnaire avec toute les touche appuyé
+        self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"])) # Chemin du logo
+        self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la fleche retour
+        self.player = None # Variable joueur, idem que pour `current_view`
         
-        settings_data = self.data.get('settings', {})
-        self.key_move_right = settings_data.get('key_move_right', pygame.K_d)
-        self.key_move_left = settings_data.get('key_move_left', pygame.K_q)
-        self.key_plant = settings_data.get('key_plant', pygame.K_e)
-        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE)
-        self.key_save = settings_data.get('key_sauv', pygame.K_o)
+        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnair `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnair vide
+        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
+        self.key_plant = settings_data.get('key_plant', pygame.K_e) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
 
-        pygame.display.set_icon(self.logo)
-        pygame.display.set_caption('Ecopixel')
+        pygame.display.set_icon(self.logo) # Défini le logo de la fenetre avec celui du jeux
+        pygame.display.set_caption('Ecopixel') # Défini le titre de la fenetre
     
     def change_view(self, new_view) :
         """
@@ -57,20 +56,25 @@ class Game() :
         
         :param new_view: new view
         """
-        self.screen.fill(self.BLACK)
+        self.screen.fill('black')
         new_view.previous_view = self.current_view
         self.current_view = new_view
         self.scroll_y = 0
         self.scroll_x = 0
     
     def save(self) :
-        font = font = pygame.font.Font(self.main_font_name, 24)
-        w, h = font.size('Sauvegarde en cours...')
-        word_surface = font.render('Sauvegarde en cours...', 0, 'black')
-        ws, hs = self.screen.get_size()
-        self.screen.blit(word_surface, (ws - w - 5, hs - h - 5))
-        pygame.display.flip()
+        """
+        Sauvegarde les données du jeu
+        Un texte "sauvegarde en cours" s'afficheras en bas à droite et l'écran vas freeze le temps de la sauvegarde
+        """
+        font = font = pygame.font.Font(self.main_font_name, 24) # Charge la police
+        w, h = font.size('Sauvegarde en cours...') # Optien la taille du texte
+        word_surface = font.render('Sauvegarde en cours...', 0, 'black') # Crée un élément affichable a partir du texte
+        ws, hs = self.screen.get_size() # Obtient la taille de l'écran
+        self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
+        pygame.display.flip() # Actualise l'affichage
         
+        # Cré un dictionnair avec les données a sauvegarder
         data = {
                 'player' : 
                     {
@@ -110,8 +114,8 @@ class Game() :
                     }
             }
 
-        with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+        with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+            json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
             
 
 def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
@@ -197,6 +201,18 @@ def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame
 class button():
 
     def __init__(self, image_nor, image_mouse, image_click, position, width, height, OnClickFunc, text=""):
+        """
+        Initialise les paramètres d'un bouton
+        
+        :param image_nor: Chemin de l'image normale dans les fichier sous la forme "os.sep.join([])"
+        :param image_mouse: Chemin de l'image hover dans les fichier sous la forme "os.sep.join([])"
+        :param image_click: Chemin de l'image cliqué dans les fichier sous la forme "os.sep.join([])"
+        :param position: Position sous forme de tuple (x,y)
+        :param width: Largeur du bouton en int
+        :param height: Hauteur de bouton en int
+        :param OnClickFunc: Fonction executé quand le bouton est cliqué
+        :param text: (Optionnel) Texte à afficher sur le bouton en str
+        """
         self.image_nor = pygame.image.load(image_nor)
         self.image_mouse = pygame.image.load(image_mouse)
         self.image_click = pygame.image.load(image_click)
@@ -204,14 +220,16 @@ class button():
         self.height = height
         self.OnClickFunc = OnClickFunc
         self.text = text
+        self.position = position
         self.click = False
         font = pygame.font.Font(main_game.main_font_name, 24)
         image = self.image_nor
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         self.rect = scaled_image.get_rect()
-        self.rendertext = font.render(self.text, True, main_game.BLACK)
+        self.rendertext = font.render(self.text, True, 'black')
 
-    def update(self, screen, position):
+    def update(self, screen, position=""):
+        if position == "" : position = self.position
         self.rect.center = position
         image = self.image_nor
         if self.rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
@@ -312,10 +330,10 @@ class entry_text() :
             text = ''.join(self.text)
         
         pygame.draw.rect(self.surface, self.color, self.search_zone, self.width, border_radius=self.border_radius)
-        search_text = self.font.render(text, True, main_game.BLACK)
+        search_text = self.font.render(text, True, 'black')
         self.surface.blit(search_text, (self.x+10, self.y+5))
         if self.cursor and self.active :
-            cursor = self.font.render("|", True, main_game.BLACK)
+            cursor = self.font.render("|", True, 'black')
             self.surface.blit(cursor, (self.x + 10 + self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), self.y+5))
 
         return return_value
@@ -341,7 +359,7 @@ def draw_header() :
     scaled_coin = pygame.transform.scale(coin_image, (30, 30))
     main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
 
-    coin_count = font.render(str(main_game.player.money), True, main_game.WHITE)
+    coin_count = font.render(str(main_game.player.money), True, 'white')
     main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
     # Sprout
@@ -356,7 +374,7 @@ def draw_header() :
     scaled_coin = pygame.transform.scale(coin_image, (30, 30))
     main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
 
-    coin_count = font.render(str(main_game.player.sprout), True, main_game.WHITE)
+    coin_count = font.render(str(main_game.player.sprout), True, 'white')
     main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
 

@@ -1,6 +1,6 @@
 # ------------------------------ Setting ------------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
-# Fichier contenant le menu des réglages.                                #
+# Fichier contenant le code du menu des réglages.                        #
 # Crée par Titouan - https://github.com/Pythacode/                       #
 # License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
 # ---------------------------------------------------------------------- #
@@ -64,7 +64,7 @@ class settingView():
 
         for setting in self.settings :
             # Titre
-            title_text = self.font.render(setting.get('name'), True, main_game.BLACK)
+            title_text = self.font.render(setting.get('name'), True, 'black')
 
             main_game.screen.blit(title_text, (10, pos_y + main_game.scroll_y))
 
@@ -73,7 +73,7 @@ class settingView():
             
             width, height = self.font.size(text)
             x = screen_width - 10 - width
-            key_text = self.font.render(text, True, main_game.BLACK)
+            key_text = self.font.render(text, True, 'black')
 
             main_game.screen.blit(key_text, (x, pos_y + main_game.scroll_y))
 
