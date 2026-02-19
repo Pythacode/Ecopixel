@@ -1,4 +1,4 @@
-# ![Logo du jeu](/data/image/icon/logo.png){width=100 height=100} ecosia_simulator
+# <img src="/data/image/icon/logo.png" alt="Logo du jeu" width="50" height="50"> ecosia_simulator
 
 Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagnerait en faisant des recherches sur le web
 
