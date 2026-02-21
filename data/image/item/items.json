@@ -18,5 +18,10 @@
         "name" : "pot",
         "price" : "5$",
         "skin" : "pot.png"
+    },
+    {
+        "name" : "house upgrade",
+        "price": "100$",
+        "skin": "house_upg.png"
     }
 ]

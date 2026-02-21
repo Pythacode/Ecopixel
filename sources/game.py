@@ -73,8 +73,9 @@ class Game() :
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
         pygame.display.flip() # Actualise l'affichage
-        
-        # Cré un dictionnair avec les données a sauvegarder
+        house = self.game_view.h
+
+        # Crée un dictionnaire avec les données à sauvegarder
         data = {
                 'player' : 
                     {
@@ -110,7 +111,10 @@ class Game() :
                             'growned_up': t.growned_up,
                             'skin_index': t.skin_index,
                             'max_alive': t.max_alive
-                            } for t in self.game_view.trees]
+                            } for t in self.game_view.trees],
+                        'house':{
+                            'lvl': house.lvl
+                        }
                     }
             }
 

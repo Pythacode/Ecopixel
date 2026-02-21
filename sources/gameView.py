@@ -8,6 +8,7 @@
 from game import *
 import os
 from tree import Tree
+from house import House
 
 class gameView() :
 
@@ -33,6 +34,9 @@ class gameView() :
             self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
         self.wait_tree = gamedata.get('wait_tree', None)
 
+        house_data = gamedata.get('house', {})
+        self.h = House(house_data.get('lvl'))
+
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
@@ -51,10 +55,14 @@ class gameView() :
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]
 
+        x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
+        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and abs(self.h.x + 200 - x) < 100:
+                main_game.change_view(main_game.search_view)
+
         # Plant Player
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1:
             x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
-            # Générer une liste de tous les arbres qui sont proche de l'endroit ou le joueur veut planter une pousse
+            # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
             t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
             if len(t) == 0 :
                 main_game.player.plant_act()
@@ -62,6 +70,7 @@ class gameView() :
                 main_game.player.sprout -= 1
             else :
                 main_game.player.say('Trop proche :/', 2_000)
+        
 
         # Move player
         if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
@@ -82,7 +91,10 @@ class gameView() :
         for tree in self.trees :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
+        self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
         main_game.player.draw(main_game.screen, height - ground_rect[3])
+
 
         if self.pause:
             # Header Pause Menu
