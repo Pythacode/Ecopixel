@@ -37,7 +37,7 @@ class settingView():
             },
             {
                 'id' : 'key_plant',
-                'name' : 'Touche planter',
+                'name' : 'Touche action',
                 'value' : pygame.key.name(main_game.key_plant)
             },
             {
