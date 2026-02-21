@@ -34,7 +34,7 @@ class gameView() :
         self.wait_tree = gamedata.get('wait_tree', None)
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
-        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed, text="Réglages")
+        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
 
     def update(self, events) :
@@ -97,9 +97,9 @@ class gameView() :
             main_game.screen.blit(PM_bg, PM_bg_rect)
 
             # Pause Buttons
-            self.resumebutton.update(main_game.screen)
-            self.settingsButton.update(main_game.screen)
-            self.quitbutton.update(main_game.screen)
+            self.resumebutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100))
+            self.settingsButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2))
+            self.quitbutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100))
 
         for event in events :
             if event.type == pygame.KEYDOWN:

@@ -30,13 +30,13 @@ class menuView():
         self.playbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "play_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
 
         # Quit button init
-        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 460), 48*4, 24*4, self.QuitButton_Pressed, text="")
+        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 660), 48*4, 24*4, self.QuitButton_Pressed, text="")
 
         # Shop button init
         self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
 
         # Settings button init
-        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 660), 48*4, 24*4, self.settingsButton_Pressed, text="Réglages")
+        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (640, 460), 48*4, 24*4, self.settingsButton_Pressed)
 
         self.header = False
         self.previous_view = None
@@ -62,12 +62,12 @@ class menuView():
         width, height = main_game.screen.get_size() 
 
         # Header
-        pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, 720), width=0)
+        pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, height), width=0)
 
         self.logo.update(main_game.screen, ((width/2) - (self.logo.rect[2]), 200))
-        self.playbutton.update(main_game.screen, (640, 360))
-        self.quitbutton.update(main_game.screen, (640, 460))
-        self.shopbutton.update(main_game.screen, (640, 560))
-        self.settingsButton.update(main_game.screen, (640, 660))
+        self.playbutton.update(main_game.screen, ((width/2), 360))
+        self.quitbutton.update(main_game.screen, ((width/2), 460))
+        self.shopbutton.update(main_game.screen, ((width/2), 560))
+        self.settingsButton.update(main_game.screen, ((width/2), 660))
 
         
