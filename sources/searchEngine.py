@@ -202,7 +202,6 @@ class searchView() :
         pygame.mouse.set_cursor(*cursor)
 
         for event in events :
-            print(event, main_game.key_back)
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if back_rect.collidepoint(event.pos) :
                     main_game.change_view(self.previous_view)
