@@ -46,7 +46,7 @@ class Game() :
         self.key_plant = settings_data.get('key_plant', pygame.K_e) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
         self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
         self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
-        self.key_back = settings_data.get('key_back', pygame.K_o) # Charge la clé `key_back` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
 
         pygame.display.set_icon(self.logo) # Défini le logo de la fenetre avec celui du jeux
         pygame.display.set_caption('Ecopixel') # Défini le titre de la fenetre
@@ -95,6 +95,7 @@ class Game() :
                         'key_plant' : self.key_plant,
                         'key_pause' : self.key_pause,
                         'key_sauv' : self.key_save,
+                        'key_back' : self.key_back,
                     },
                 'game' :
                     {
