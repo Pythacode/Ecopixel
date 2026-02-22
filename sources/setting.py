@@ -49,6 +49,11 @@ class settingView():
                 'id' : 'key_save',
                 'name' : 'Touche sauvegarde',
                 'value' : pygame.key.name(main_game.key_save)
+            },
+            {
+                'id' : 'key_back',
+                'name' : 'Touche retour',
+                'value' : pygame.key.name(main_game.key_back)
             }
         ]
 
@@ -102,5 +107,5 @@ class settingView():
                     setattr(main_game, self.edit_id, event.key)
                     self.edit_id = None
             
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE :
+            elif event.type == pygame.KEYDOWN and event.key == main_game.key_back :
                 main_game.change_view(self.previous_view)

@@ -85,7 +85,7 @@ class gameView() :
                 self.offset_x -= main_game.player.velocity * main_game.dt
         
         # Open Pause Menu
-        if main_game.touch_pressed.get(main_game.key_pause, False) and not self.pause:
+        if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
             self.pause = True
 
         for tree in self.trees :
