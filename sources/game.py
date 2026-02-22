@@ -317,10 +317,9 @@ class entry_text() :
                     elif event.key == pygame.K_RIGHT:
                         if self.cursor_index < len(self.text) :
                             self.cursor_index +=1
-                    else:
-                        if event.unicode != "" :
-                            self.text.insert(self.cursor_index, event.unicode)
-                            self.cursor_index +=1
+                if event.type == pygame.TEXTINPUT :
+                    self.text.insert(self.cursor_index, event.text)
+                    self.cursor_index +=1
 
         if self.active :
             now = pygame.time.get_ticks()
