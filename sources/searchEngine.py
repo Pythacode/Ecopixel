@@ -122,6 +122,7 @@ class searchView() :
             gap = 4
             self.results_rect = []
             if self.exploit_result.get('result') == 'succes' :
+                main_game.player.sprout += 1
                 for result in self.exploit_result.get('data') :
 
                     start_y = pos_y
@@ -156,13 +157,13 @@ class searchView() :
                     })
             elif self.exploit_result.get('result') == 'error' :
                 if self.exploit_result.get('type') == 'ConnectionError' :
-                    search_text = self.font.render("Pas de connection internet", True, 'black')
+                    search_text = self.font.render("Pas de connection internet.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'ReadTimeout' :
-                    search_text = self.font.render("Délais d'attente dépassé. Vérifier votre connection et votre pare-feux", True, 'black')
+                    search_text = self.font.render("Délais d'attente dépassé. Vérifier votre connection et votre pare-feux.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'unknow' :
-                    search_text = self.font.render("Une erreur inconnue s'est produite", True, 'black')
+                    search_text = self.font.render("Une erreur inconnue s'est produite.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 
         elif self.onsearch :
@@ -209,6 +210,5 @@ class searchView() :
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :
                         webbrowser.open(i.get('link'))
-                        main_game.player.sprout += 1
             elif event.type == pygame.KEYDOWN and event.key == main_game.key_back :
                 main_game.change_view(self.previous_view)
