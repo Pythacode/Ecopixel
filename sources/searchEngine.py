@@ -159,10 +159,10 @@ class searchView() :
                     search_text = self.font.render("Pas de connection internet", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'ReadTimeout' :
-                    search_text = self.font.render("Délais d'attente dépassé. Verifier votre connection et votre par-feux", True, 'black')
+                    search_text = self.font.render("Délais d'attente dépassé. Vérifier votre connection et votre pare-feux", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'unknow' :
-                    search_text = self.font.render("Une érreur inconue s'est produite", True, 'black')
+                    search_text = self.font.render("Une erreur inconnue s'est produite", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 
         elif self.onsearch :

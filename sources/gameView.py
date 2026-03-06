@@ -38,6 +38,7 @@ class gameView() :
         house_data = gamedata.get('house', {})
         self.h = House(lvl=house_data.get('lvl', 1))
         self.s = Shop_place(-500)
+        self.eimg = pygame.image.load(os.sep.join([main_game.asset_doc,"image","button","Ebtn.png"]))
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
@@ -56,12 +57,6 @@ class gameView() :
             ground_rect[0], ground_rect[1] = x + ground_offset, height - ground_rect[3]
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]
-
-        x = main_game.player.x - self.offset_x
-        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and abs(self.h.x + 200 - x) < 100:
-                main_game.change_view(main_game.search_view)
-        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and abs(self.s.x + 150 - x) < 130:
-                main_game.change_view(main_game.shop_view)
 
         # Plant Player
         if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
@@ -100,6 +95,21 @@ class gameView() :
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
+        x = main_game.player.x - self.offset_x
+        if abs(self.h.x + 200 - x) < 100:
+            img = pygame.transform.scale(self.eimg, (72, 72))
+            rect = img.get_rect()
+            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+            main_game.screen.blit(img, rect)
+            if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
+                    main_game.change_view(main_game.search_view)
+        if abs(self.s.x + 150 - x) < 130:
+            img = pygame.transform.scale(self.eimg, (72, 72))
+            rect = img.get_rect()
+            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+            main_game.screen.blit(img, rect)
+            if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
+                main_game.change_view(main_game.shop_view)
 
         if self.pause:
             # Header Pause Menu
