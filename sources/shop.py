@@ -19,9 +19,9 @@ class shopView():
         self.image_arrosoir,self.rect_arrosoir = self.img(288,288, (200, 150),"item","arrosoir.png")
         self.image_engrais,self.rect_engrais = self.img(192,192,(450,150),"item","engrais.png")
 
-        self.arrosoir_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (180,300), 192, 192/2, self.Fonction_quand_on_clique,"Arrosoir")
-        self.engrais_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (450,300), 192, 192/2, self.Fonction_quand_on_clique,"Engrais")
-        self.vendre_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (1160,75), 192+25, 192/3, self.Fonction_quand_on_clique,"Vendre")
+        self.arrosoir_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (180,300), 192, 192/2, self.Acheter_arrosoir,"Arrosoir")
+        self.engrais_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (450,300), 192, 192/2, self.Acheter_engrais,"Engrais")
+        self.vendre_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (1160,75), 192+25, 192/3, self.Vendre_item,"Vendre")
         self.upgrade_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (180,650), 192, 192/2, self.Amelioration,"Ameliorer la Maison")
 
         self.items = json.load(tilsetJsonFile)
@@ -38,6 +38,10 @@ class shopView():
         self.engrais_btn.update(main_game.screen)
         self.vendre_btn.update(main_game.screen)
         self.upgrade_btn.update(main_game.screen)
+        if self.items[0]["quantity"] == 0:
+            main_game.screen.blit(self.image_rupture,self.rect_rupture)
+        if self.items[2]["quantity"] == 0:
+            main_game.screen.blit(self.image_rupture,self.rect_rupture)
 
     def img(self,width,height,position,dossier,png):
         """
@@ -57,10 +61,19 @@ class shopView():
         rect.center = position
         return image, rect
     
-    def Fonction_quand_on_clique(self):
-        main_game.screen.blit(self.image_rupture,self.rect_rupture)
-        
+    def Acheter_arrosoir(self):
+        main_game.player.money -= self.items[0]["price"]
+        if self.items[0]["quantity"] > 0:
+            self.items[0]["quantity"] -= 1
 
     def Amelioration(self):
+        main_game.player.money -= self.items[2]["price"]
+        if self.items[2]["quantity"] > 0:
+            self.items[2]["quantity"] -= 1
+    
+    def Acheter_engrais(self):
+        print("Engrais acheté")
 
-        print("test")
+    def Vendre_item(self):
+        #main_game.player.money += self.items[3]["price"]*main_game.player.fruit
+        print("Fruit vendu")
