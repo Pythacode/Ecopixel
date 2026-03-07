@@ -36,9 +36,9 @@ class settingView():
                 'value' : pygame.key.name(main_game.key_move_left)
             },
             {
-                'id' : 'key_plant',
+                'id' : 'key_action',
                 'name' : 'Touche action',
-                'value' : pygame.key.name(main_game.key_plant)
+                'value' : pygame.key.name(main_game.key_action)
             },
             {
                 'id' : 'key_pause',

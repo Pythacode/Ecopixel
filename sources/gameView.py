@@ -59,7 +59,7 @@ class gameView() :
             x += ground_rect[2]
 
         # Plant Player
-        if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
+        if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
             x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
             # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
             t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
@@ -101,14 +101,14 @@ class gameView() :
             rect = img.get_rect()
             rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
             main_game.screen.blit(img, rect)
-            if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
+            if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant:
                     main_game.change_view(main_game.search_view)
         if abs(self.s.x + 150 - x) < 130:
             img = pygame.transform.scale(self.eimg, (72, 72))
             rect = img.get_rect()
             rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
             main_game.screen.blit(img, rect)
-            if main_game.touch_pressed.get(main_game.key_plant, False) and not main_game.player.plant:
+            if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant:
                 main_game.change_view(main_game.shop_view)
 
         if self.pause:

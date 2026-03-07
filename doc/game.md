@@ -31,7 +31,7 @@ Il s'agit d'une class qui contient les variables globals du jeux.
 - `logo` : Image du logo du jeu
 - `back` : Image de la flèche retour du jeu
 - `player` : Le joueur
-- `key_move_right`, `key_move_left`, `key_plant` : Touche enregistré ou par défault.
+- `key_move_right`, `key_move_left`, `key_action` : Touche enregistré ou par défault.
 
 ### Fonctions
 

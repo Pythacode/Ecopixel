@@ -43,7 +43,7 @@ class Game() :
         settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnair `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnair vide
         self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
         self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
-        self.key_plant = settings_data.get('key_plant', pygame.K_e) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
         self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
         self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
         self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
@@ -92,7 +92,7 @@ class Game() :
                     {
                         'key_move_right' : self.key_move_right,
                         'key_move_left' : self.key_move_left,
-                        'key_plant' : self.key_plant,
+                        'key_action' : self.key_action,
                         'key_pause' : self.key_pause,
                         'key_sauv' : self.key_save,
                         'key_back' : self.key_back,
