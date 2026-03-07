@@ -1,6 +1,6 @@
 # <img src="./data/image/icon/logo.png" alt="Logo du jeu" width="50"> Ecopixel
 
-Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagnerait en faisant des recherches sur le web
+Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web
 
 ## Sommaire
 
@@ -86,8 +86,7 @@ Les touches par défault sont les usivante :
 - Touche retour : `Échape`
 - Touche sauvegarde : `o`
 
-
 > Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).<br>
-> Plus d'information :' [Fichier LICENSE](LICENSE)<br>
-> [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)<br>
-> [Site officiel de la licence CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)
+> Plus d'information : [Fichier LICENSE](LICENSE)<br>
+> [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)
+
