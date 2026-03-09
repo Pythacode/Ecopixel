@@ -283,6 +283,7 @@ class Player() :
         self.money = playerdata.get('money', 0)
         self.sprout = playerdata.get('sprout', 0)
         self.fertilizer = playerdata.get('fertilizer', 0)
+        self.fruits = playerdata.get('fruits', 0)
 
         self.msg = None
 

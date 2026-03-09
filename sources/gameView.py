@@ -43,6 +43,7 @@ class gameView() :
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
+        self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, main_game.tuto.next(), text="Jouer")
 
     def update(self, events) :
         main_game.screen.fill('white')
@@ -111,7 +112,27 @@ class gameView() :
             if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant:
                 main_game.change_view(main_game.shop_view)
 
-        if self.pause:
+        if main_game.tuto.get_avancement() == "present" : # Tuto Menu
+            self.H_width = main_game.screen.get_width() - (150 * 2)
+            self.H_height = main_game.screen.get_height() - (50 * 2)
+            PM_bg = pygame.Surface((self.H_width, self.H_height))
+            position = (main_game.screen.get_width()/2, main_game.screen.get_height()/2)
+            PM_bg.set_alpha(128)
+            PM_bg.fill((0, 0, 0))
+            PM_bg_rect = PM_bg.get_rect()
+            PM_bg_rect.center = position
+            main_game.screen.blit(PM_bg, PM_bg_rect)
+
+            font = pygame.font.Font(main_game.main_font_name, 24) # Charge la police
+            ws, hs = main_game.screen.get_size() # Obtient la taille de l'écran
+
+            h, w = size_text(main_game.tuto.get_message(), font, ws/2)
+
+            blit_text(main_game.tuto.get_message(), (ws/2 - w/2, hs/2 - h/2), font, ws/2, "white", main_game.screen)
+
+            self.tutoButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2+h+50))
+            
+        elif self.pause:
             # Header Pause Menu
             self.H_width = main_game.screen.get_width() - (150 * 2)
             self.H_height = main_game.screen.get_height() - (50 * 2)
@@ -128,6 +149,7 @@ class gameView() :
             self.settingsButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2))
             self.quitbutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100))
 
+
         for event in events :
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:
@@ -136,6 +158,8 @@ class gameView() :
                 if event.key == main_game.key_move_right:
                     main_game.player.orientation = "RIGHT"
                     main_game.player.move = True
+                if event.key == main_game.key_help:
+                    main_game.tuto.help()
             if event.type == pygame.KEYUP:
                 if event.key == main_game.key_move_left or event.key == main_game.key_move_right:
                     main_game.player.move = False

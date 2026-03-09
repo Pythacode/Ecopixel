@@ -54,6 +54,11 @@ class settingView():
                 'id' : 'key_back',
                 'name' : 'Touche retour',
                 'value' : pygame.key.name(main_game.key_back)
+            },
+            {
+                'id' : 'key_help',
+                'name' : 'Touche aide',
+                'value' : pygame.key.name(main_game.key_help)
             }
         ]
 

@@ -47,6 +47,7 @@ class Game() :
         self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
         self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
         self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
 
         pygame.display.set_icon(self.logo) # Défini le logo de la fenetre avec celui du jeux
         pygame.display.set_caption('Ecopixel') # Défini le titre de la fenetre
@@ -68,7 +69,7 @@ class Game() :
         Sauvegarde les données du jeu
         Un texte "sauvegarde en cours" s'afficheras en bas à droite et l'écran vas freeze le temps de la sauvegarde
         """
-        font = font = pygame.font.Font(self.main_font_name, 24) # Charge la police
+        font = pygame.font.Font(self.main_font_name, 24) # Charge la police
         w, h = font.size('Sauvegarde en cours...') # Optien la taille du texte
         word_surface = font.render('Sauvegarde en cours...', 0, 'black') # Crée un élément affichable a partir du texte
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
@@ -125,7 +126,7 @@ class Game() :
             json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
             
 
-def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+def size_text(text:str, font:pygame.font, max_width:int) -> int:
         """
         Calcuate size of a text
         Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
@@ -136,10 +137,6 @@ def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tu
         :type font: pygame.font
         :param max_width: Width we cant exceed
         :type max_width: int
-        :param color: Color of text
-        :type color:pygame.Color | tuple
-        :param screen: Screen where text as display
-        :type screen: pygame.surface
         :return: The height of text
         :rtype: int
         """
@@ -150,7 +147,7 @@ def size_text(text:str, font:pygame.font, max_width:int, color:pygame.Color | tu
         m_width = 0
         for line in words:
             for word in line:
-                word_surface = font.render(word, 0, color)
+                word_surface = font.render(word, 0, 'white')
                 word_width, word_height = word_surface.get_size()
                 if x + word_width > m_width :
                     m_width = x + word_width
@@ -404,6 +401,7 @@ from searchEngine import searchView
 from shop import shopView
 from player import Player
 from setting import settingView
+from tuto import Tuto
 
 main_game.menu_view = menuView()
 main_game.game_view = gameView()
@@ -413,3 +411,5 @@ main_game.settings_view = settingView()
 
 main_game.change_view(main_game.menu_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)
+
+main_game.tuto = Tuto()
