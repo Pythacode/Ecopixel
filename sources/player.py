@@ -329,7 +329,7 @@ class Player() :
     
         if self.msg :
             font = pygame.font.Font(main_game.main_font_name, 24)
-            h, w = size_text(self.msg.get('msg'), font, 900, 'black', main_game.screen)
+            h, w = size_text(self.msg.get('msg'), font, 900)
             pygame.draw.rect(main_game.screen, 'white', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 0, 20)
             pygame.draw.rect(main_game.screen, 'black', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 3, 20)
             blit_text(self.msg.get('msg'), (self.x - self.msg.get('x'), y-h+30), font, 900, 'black', main_game.screen)
