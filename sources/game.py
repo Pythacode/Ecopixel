@@ -353,7 +353,7 @@ def draw_header() :
     data = (
         (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), str(main_game.player.money)), # Coin
         (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
-        (os.sep.join([main_game.asset_doc, "image", "item", "engrais.png"]), str(main_game.player.fertilizer)) # Fertilizer
+        (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)) # Fertilizer
     )
 
     start_pos = 20
