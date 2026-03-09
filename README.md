@@ -67,7 +67,7 @@ python3 sources/main.py
 ```
 
 Vous pouvez lancer le script depuis n'importe que répertoire, il est concus pour retrouver le chemin du dossier data automatiquement à partir de son propre emplacement.
-Ainsi vous pouvez aussi executer la commande dirrectement depuis le répertoire source :
+Ainsi vous pouvez aussi executer la commande dirrectement depuis le répertoire `sources` :
 
 ```shell
 cd sources
@@ -86,7 +86,7 @@ Les touches par défault sont les usivante :
 - Touche retour : `Échape`
 - Touche sauvegarde : `o`
 
-> Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0).<br>
+> Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) pour le texte.<br>
 > Plus d'information : [Fichier LICENSE](LICENSE)<br>
 > [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)
-
+> [Site officiel de la licence CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)

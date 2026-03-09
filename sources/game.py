@@ -84,6 +84,7 @@ class Game() :
                         'y' : self.player.y,
                         'money' : self.player.money,
                         'sprout' : self.player.sprout,
+                        'fertilizer' : self.player.fertilizer,
                         'orientation' : self.player.orientation,
                         'skin_index' : self.player.skin_index,
                         'plant' : self.player.plant
@@ -352,35 +353,41 @@ def draw_header() :
     scaled_logo = pygame.transform.scale(main_game.logo, (35, 35))
     main_game.screen.blit(scaled_logo, (2.5, 2.5))
 
-    # Coin
-    gap = 84 + font.size(str(main_game.player.money))[0]
-    if gap > 300 : gap = 100
-    start_pos = gap if gap > 100 else 100
-    w = gap-40
+    data = (
+        (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), str(main_game.player.money)), # Coin
+        (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
+        (os.sep.join([main_game.asset_doc, "image", "item", "engrais.png"]), str(main_game.player.fertilizer)) # Fertilizer
+    )
+
+    start_pos = 20
+    gap = 40
+
+    for image, label in data :
+
+        w = font.size(label)[0] + gap
+        start_pos += w
+
+        pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, w, 30), border_radius=20)
+
+        image = pygame.image.load(image)
+        scaled_image = pygame.transform.scale(image, (30, 30))
+        main_game.screen.blit(scaled_image, (width - start_pos - 5, 5))
+
+        coin_count = font.render(label, True, 'white')
+        main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
+
+        start_pos += 20 # Gap betwen count
+        
+    """
 
     pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, w, 30), border_radius=20)
 
-    coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]))
+    coin_image = pygame.image.load()
     scaled_coin = pygame.transform.scale(coin_image, (30, 30))
     main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
 
-    coin_count = font.render(str(main_game.player.money), True, 'white')
-    main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
-
-    # Sprout
-    gap = 84 + font.size(str(main_game.player.sprout))[0]
-    if gap > 300 : gap = 100
-    start_pos += gap if gap > 100 else 100
-    w = gap-40
-
-    pygame.draw.rect(main_game.screen, (131, 50, 43), (width - start_pos, 5, w, 30), border_radius=20)
-
-    coin_image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]))
-    scaled_coin = pygame.transform.scale(coin_image, (30, 30))
-    main_game.screen.blit(scaled_coin, (width - start_pos - 10, 5))
-
-    coin_count = font.render(str(main_game.player.sprout), True, 'white')
-    main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
+    coin_count = font.render(, True, 'white')
+    main_game.screen.blit(coin_count, (width - start_pos + 30, 3))"""
 
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
@@ -389,8 +396,8 @@ main_game = Game(
     WIDTH=1280,
     HEIGHT=720
 ) # Garder ici avant l'import, sinon main_game ne seras pas defini
-
 # Permet de créer main_game, dont menuView à besoin
+
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
