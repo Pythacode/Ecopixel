@@ -395,13 +395,15 @@ main_game = Game(
 ) # Garder ici avant l'import, sinon main_game ne seras pas defini
 # Permet de créer main_game, dont menuView à besoin
 
+from tuto import Tuto
+main_game.tuto = Tuto()
+
 from menu import menuView
 from gameView import gameView
 from searchEngine import searchView
 from shop import shopView
 from player import Player
 from setting import settingView
-from tuto import Tuto
 
 main_game.menu_view = menuView()
 main_game.game_view = gameView()
@@ -411,5 +413,3 @@ main_game.settings_view = settingView()
 
 main_game.change_view(main_game.menu_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)
-
-main_game.tuto = Tuto()
