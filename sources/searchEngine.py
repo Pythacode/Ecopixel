@@ -132,7 +132,6 @@ class searchView() :
             gap = 4
             self.results_rect = []
             if self.exploit_result.get('result') == 'succes' :
-                main_game.player.sprout += 1
                 for result in self.exploit_result.get('data') :
 
                     start_y = pos_y
@@ -178,7 +177,7 @@ class searchView() :
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'unknow' :
                     print(self.exploit_result["error"])
-                    search_text = self.font.render("Une erreur inconnue s'est produite.", True, 'black')
+                    search_text = self.font.render(f"Une erreur inconnue s'est produite : {self.exploit_result["error"]}", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
             else :
                 self.min_scroll_y = 0
@@ -202,8 +201,6 @@ class searchView() :
         back_rect[0], back_rect[1] = 20, 70
         main_game.screen.blit(main_game.back, back_rect)
 
-        #(70, 20, width - 80, 40)        
-
         text = self.search_zone.update(events)
 
         if isinstance(text, str) :
@@ -226,6 +223,7 @@ class searchView() :
                     break
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :
+                        main_game.player.sprout += 1
                         webbrowser.open(i.get('link'))
             elif event.type == pygame.KEYDOWN and event.key == main_game.key_back :
                 main_game.change_view(self.previous_view)
