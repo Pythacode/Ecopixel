@@ -57,60 +57,16 @@ class gameView() :
         while x < width :
             ground_rect[0], ground_rect[1] = x + ground_offset, height - ground_rect[3]
             main_game.screen.blit(self.ground, ground_rect)
-            x += ground_rect[2]
-
-        # Plant Player
-        if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
-            x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
-            # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
-            t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-            if len(t) == 0 :
-                main_game.player.plant_act()
-                self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak'}
-                main_game.player.sprout -= 1
-            else :
-                main_game.player.say('Trop proche :/', 2_000)
-        
-
-        # Move player
-        if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
-            if main_game.player.x > 200 :
-                main_game.player.move_left()
-            else :
-                self.offset_x += main_game.player.velocity * main_game.dt
-        if main_game.touch_pressed.get(main_game.key_move_right, False) and not main_game.player.plant:
-            if main_game.player.x < width - main_game.player.size[1] - 200 :
-                main_game.player.move_right()
-            else :
-                self.offset_x -= main_game.player.velocity * main_game.dt
-        
-        # Open Pause Menu
-        if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
-            self.pause = True
-
-        for tree in self.trees :
-            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+            x += ground_rect[2]       
 
         self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         self.s.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
-        x = main_game.player.x - self.offset_x
-        if abs(self.h.x + 200 - x) < 100:
-            img = pygame.transform.scale(self.eimg, (72, 72))
-            rect = img.get_rect()
-            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
-            main_game.screen.blit(img, rect)
-            if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant:
-                    main_game.change_view(main_game.search_view)
-        if abs(self.s.x + 150 - x) < 130:
-            img = pygame.transform.scale(self.eimg, (72, 72))
-            rect = img.get_rect()
-            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
-            main_game.screen.blit(img, rect)
-            if main_game.touch_pressed.get(main_game.key_action, False) and not main_game.player.plant:
-                main_game.change_view(main_game.shop_view)
+        # Open Pause Menu
+        if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
+            self.pause = True
 
         if main_game.tuto.get_avancement() == "present" : # Tuto Menu
             self.H_width = main_game.screen.get_width() - (150 * 2)
@@ -131,6 +87,7 @@ class gameView() :
             blit_text(main_game.tuto.get_message(), (ws/2 - w/2, hs/2 - h/2), font, ws/2, "white", main_game.screen)
 
             self.tutoButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2+h+50))
+            return
             
         elif self.pause:
             # Header Pause Menu
@@ -147,8 +104,64 @@ class gameView() :
             # Pause Buttons
             self.resumebutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100))
             self.settingsButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2))
-            self.quitbutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100))
+            self.quitbutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100)) 
+            return
 
+        # Move player
+        if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
+            if main_game.player.x > 200 :
+                main_game.player.move_left()
+            else :
+                self.offset_x += main_game.player.velocity * main_game.dt
+        if main_game.touch_pressed.get(main_game.key_move_right, False) and not main_game.player.plant:
+            if main_game.player.x < width - main_game.player.size[1] - 200 :
+                main_game.player.move_right()
+            else :
+                self.offset_x -= main_game.player.velocity * main_game.dt
+
+        for tree in self.trees :
+            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
+        x = main_game.player.x - self.offset_x
+
+        # Display action touche
+        # If distance between center of house & shop < half of his :
+        #     display_action_touch
+        if (abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2) or (abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2):
+            img = pygame.transform.scale(self.eimg, (72, 72))
+            rect = img.get_rect()
+            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+            main_game.screen.blit(img, rect)
+
+        if main_game.touch_pressed.get(main_game.key_action, False) :
+            
+            # Search
+            if abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2:
+                img = pygame.transform.scale(self.eimg, (72, 72))
+                rect = img.get_rect()
+                rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+                main_game.screen.blit(img, rect)
+                main_game.change_view(main_game.search_view)
+
+            # Shop
+            if abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2:
+                img = pygame.transform.scale(self.eimg, (72, 72))
+                rect = img.get_rect()
+                rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+                main_game.screen.blit(img, rect)
+                main_game.change_view(main_game.shop_view)
+
+            # Plant
+            elif not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
+                x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
+                # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
+                t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
+                if len(t) == 0 : # Verrifier si elle est vide
+                    main_game.player.plant_act()
+                    self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak'}
+                    main_game.player.sprout -= 1
+                else :
+                    main_game.player.say('Trop proche :/', 2_000)
 
         for event in events :
             if event.type == pygame.KEYDOWN:
