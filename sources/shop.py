@@ -12,8 +12,7 @@ from game import*
 class shopView():
     def __init__ (self):
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "image", "item", "items.json"]))
-        #draw_header()
-
+        
         self.image_arrosoir,self.rect_arrosoir = self.img(288,288, (200, 150),"item","arrosoir.png")
         self.image_rupture_arrosoir,self.rect_rupture_arrosoir = self.img(288,288, (200,150),"shop","Rupture.png")
 
