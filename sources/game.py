@@ -107,19 +107,22 @@ class Game() :
                             'y' : self.game_view.wait_tree.get('y'),
                             'type': self.game_view.wait_tree.get('type')
                             },
-                        'trees' : [{
-                            'x' : t.x,
-                            'y' : t.y,
-                            'time_alive' : t.time_alive,
-                            'type' : t.type,
-                            'seedling': t.seedling,
-                            'growned_up': t.growned_up,
-                            'skin_index': t.skin_index,
-                            'max_alive': t.max_alive
-                            } for t in self.game_view.trees],
+                        'trees' : [
+                                {
+                                    'x' : t.x,
+                                    'y' : t.y,
+                                    'time_alive' : t.time_alive,
+                                    'type' : t.type,
+                                    'seedling': t.seedling,
+                                    'growned_up': t.growned_up,
+                                    'skin_index': t.skin_index,
+                                    'max_alive': t.max_alive
+                                } for t in self.game_view.trees
+                            ],
                         'house':{
                             'lvl': self.house.lvl
-                        }
+                            },
+                        'tuto_advancement' : self.tuto.advencement
                     }
             }
 

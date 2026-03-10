@@ -68,7 +68,7 @@ class gameView() :
         if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
             self.pause = True
 
-        if main_game.tuto.get_avancement() == "present" : # Tuto Menu
+        if main_game.tuto.get_advancement() == "present" : # Tuto Menu
             self.H_width = main_game.screen.get_width() - (150 * 2)
             self.H_height = main_game.screen.get_height() - (50 * 2)
             PM_bg = pygame.Surface((self.H_width, self.H_height))

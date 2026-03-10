@@ -115,8 +115,6 @@ class searchView() :
                     "type" : 'unknow',
                     "error" : e
                 }
-
-
         
         self.onsearch = False
         self.searchFiniched = True
