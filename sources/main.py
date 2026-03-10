@@ -24,7 +24,24 @@ while main_game.running:
         
         # Losrque l'utilisateur scrolle
         elif event.type == pygame.MOUSEWHEEL:
-            main_game.scroll_y -= event.y * 10
+            print(
+                  event.y,
+                  main_game.scroll_y,
+                  main_game.current_view.min_scroll_y,
+                  main_game.current_view.min_scroll_y > main_game.scroll_y - event.y * 10
+                )
+            if hasattr(main_game.current_view, "min_scroll_y") and event.y > 0 :
+                if main_game.current_view.min_scroll_y < main_game.scroll_y - event.y * 10 :
+                    main_game.scroll_y -= event.y * 10
+                else :
+                    main_game.scroll_y = main_game.current_view.min_scroll_y
+            elif hasattr(main_game.current_view, "max_scroll_y") and event.y < 0 :
+                if main_game.current_view.max_scroll_y > main_game.scroll_y - event.y * 10 :
+                    main_game.scroll_y -= event.y * 10
+                else :
+                    main_game.scroll_y = main_game.current_view.max_scroll_y
+            #else :
+            #    main_game.scroll_y -= event.y * 10
             main_game.scroll_x -= event.x * 10
 
         # lorsqu'il appuie sur une touche

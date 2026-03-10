@@ -42,6 +42,8 @@ class searchView() :
         self.message_index = 0
         self.last_change = pygame.time.get_ticks()
 
+        self.min_scroll_y = self.max_scroll_y = 0
+
     def search(self, query:str, max_result=10, lang="fr"):
         """
         Recherche `query` grace à l'API de search1API
@@ -80,7 +82,9 @@ class searchView() :
                 headers=headers,
                 json=data
             )
+            print(response.json())
             results = response.json().get('results')
+            print(results)
             self.exploit_result = {
                     "result" : "succes",
                     "data" : [{
@@ -100,10 +104,11 @@ class searchView() :
                     "result" : "error",
                     "type" : 'ConnectionError'
                 }
-        except :
+        except Exception as e :
             self.exploit_result = {
                     "result" : "error",
-                    "type" : 'unknow'
+                    "type" : 'unknow',
+                    "error" : e
                 }
 
 
@@ -112,7 +117,7 @@ class searchView() :
         self.searchFiniched = True
 
     def update(self, events) :
-        # Fonction appelée à chaque frame pour géré l'affichage
+        # Fonction appelée à chaque frame pour gérer l'affichage
 
         main_game.screen.fill((255, 201, 157))
 
@@ -155,7 +160,11 @@ class searchView() :
                         'rect' : pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y),
                         'link' : result.get('link')
                     })
+                screen_width, screen_height = main_game.screen.get_size() 
+                self.min_scroll_y = pos_y - screen_height
+                self.min_scroll_y = 0 if self.min_scroll_y < 0 else self.min_scroll_y
             elif self.exploit_result.get('result') == 'error' :
+                self.min_scroll_y = 0
                 if self.exploit_result.get('type') == 'ConnectionError' :
                     search_text = self.font.render("Pas de connection internet.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
@@ -163,8 +172,11 @@ class searchView() :
                     search_text = self.font.render("Délais d'attente dépassé. Vérifier votre connection et votre pare-feux.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
                 elif self.exploit_result.get('type') == 'unknow' :
+                    print(self.exploit_result["error"])
                     search_text = self.font.render("Une erreur inconnue s'est produite.", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
+            else :
+                self.min_scroll_y = 0
                 
         elif self.onsearch :
             now = pygame.time.get_ticks()

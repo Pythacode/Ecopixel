@@ -21,6 +21,8 @@ class settingView():
         self.header = False
         self.key_edit = []
         self.previous_view = None
+        self.max_scroll_y = 0
+        self.min_scroll_y = 0
 
     def update(self, events) :
 
@@ -62,7 +64,7 @@ class settingView():
             }
         ]
 
-        screen_width, height = main_game.screen.get_size() 
+        screen_width, screen_height = main_game.screen.get_size() 
 
         main_game.screen.fill((255, 201, 157))
 
@@ -94,9 +96,13 @@ class settingView():
 
             pos_y += self.font.size(setting.get('name'))[1] + 20
 
+        self.min_scroll_y = pos_y - screen_height
+        self.min_scroll_y = 0 if self.min_scroll_y < 0 else self.min_scroll_y
+
         back_rect = main_game.back.get_rect()
         back_rect[0], back_rect[1] = 10, 10
         main_game.screen.blit(main_game.back, back_rect)
+
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN :
