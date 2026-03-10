@@ -33,6 +33,8 @@ class House():
         self.actual_skin = self.house1
         self.all_houses = [self.house1, self.house2, self.house3, self.house4]
 
+        self.change_skin()
+
     def change_skin(self):
         self.actual_skin = self.all_houses[self.lvl - 1]
 

@@ -41,6 +41,8 @@ class shopView():
         self.header = True
         self.previous_view = None
 
+        self.buy_cooldown = 0
+
         
     def  update (self,event):
         main_game.screen.fill("#ffe75d")
@@ -83,29 +85,34 @@ class shopView():
         return image, rect
     
     def Acheter_arrosoir(self):
-        main_game.player.money -= self.items[0]["price"]
-        if self.items[0]["quantity"] > 0:
+        if self.items[0]["quantity"] > 0 and main_game.player.money > self.items[0]['price']:
             self.items[0]["quantity"] -= 1
+            main_game.player.money -= self.items[0]["price"]
     
     def Acheter_fertilizer(self):
-        main_game.player.money -= self.items[1]["price"]
-        main_game.player.fertilizer += 1
+        if main_game.player.money > self.items[1]['price'] and self.buy_cooldown + 5 * main_game.dt < pygame.time.get_ticks():
+            main_game.player.money -= self.items[1]["price"]
+            main_game.player.fertilizer += 1
+            self.buy_cooldown = pygame.time.get_ticks()
 
     def Amelioration1(self):
-        main_game.player.money -= self.items[2]["price"]
-        if self.items[2]["quantity"] > 0:
+        if self.items[2]["quantity"] > 0 and main_game.player.money > self.items[2]['price']:
+            main_game.player.money -= self.items[2]["price"]
             self.items[2]["quantity"] -= 1
-        main_game.screen.blit(self.image_house3,self.rect_house3)
+            main_game.house.lvl = 2
+            main_game.screen.blit(self.image_house3,self.rect_house3)
         
     def Amelioration2(self):
-        main_game.player.money -= self.items[3]["price"]
-        if self.items[3]["quantity"] > 0:
+        if self.items[3]["quantity"] > 0 and main_game.player.money > self.items[3]['price']:
+            main_game.player.money -= self.items[3]["price"]
             self.items[3]["quantity"] -= 1
-        main_game.screen.blit(self.image_house3,self.rect_house4)
+            main_game.house.lvl = 3
+            main_game.screen.blit(self.image_house3,self.rect_house4)
 
     def Amelioration3(self):
-        main_game.player.money -= self.items[4]["price"]
-        if self.items[4]["quantity"] > 0:
+        if self.items[4]["quantity"] > 0 and main_game.player.money > self.items[4]['price']:
+            main_game.player.money -= self.items[4]["price"]
+            main_game.house.lvl = 4
             self.items[4]["quantity"] -= 1
 
     def Vendre_item(self):
