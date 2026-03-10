@@ -10,6 +10,9 @@ import threading
 from game import *
 import pygame
 import webbrowser
+import re
+
+CLEAN_HTML_BALISE_REGEX = '<.*?>'
 
 class searchView() :
     def __init__(self):
@@ -44,56 +47,58 @@ class searchView() :
 
         self.min_scroll_y = self.max_scroll_y = 0
 
-    def search(self, query:str, max_result=10, lang="fr"):
+    def search(self, query:str, lang="fr"):
         """
-        Recherche `query` grace à l'API de search1API
-        https://www.search1api.com/#features
+        Recherche `query` grace à l'API de wikipedia
         
         :param query: Chaine de caractère à rechercher
         :type query: str
-        :param max_result: Nombre maximum de résultats attendus.
-        :type max_result: int
         :param lang: Langue de la recherche
         :type lang: str
         """
 
         self.searchFiniched = False
 
-        API_URL = "https://api.search1api.com/search"
+        API_URL = f"https://fr.wikipedia.org/w/api.php"
         
         # Paramètre de la recherche
         data = {
-            "query": query,
-            "max_results": max_result,
-            "crawl_results": 2,  
-            "image": False,
-            "language": lang
+            "action": "query",
+            "list": "search",
+            "srsearch": query,
+            "format": "json",
+            "origin": "*"
         }
 
         # Headers de la requete
         headers = {
-            "Content-Type": "application/json" # Réponse attendus en JSON
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
         }
 
         # Réponse de la requete
         try :
-            response = requests.post(
-                API_URL,
-                headers=headers,
-                json=data
-            )
-            print(response.json())
-            results = response.json().get('results')
-            print(results)
-            self.exploit_result = {
-                    "result" : "succes",
-                    "data" : [{
-                        "title" : r.get('title', "Titre inconu"),
-                        "link" : r.get('link', "Lien inconu"),
-                        "snippet" : r.get('snippet'),
-                        "content" : r.get('content', r.get('snippet', 'Aucune description')).removeprefix("---\\ndescription: ")
-                        } for r in results]
-            } # Suprime les informations inutiles à notre usage
+            response = requests.get(API_URL, params=data, headers=headers)
+            data = response.json()
+
+            if response.status_code != 200 :
+                self.exploit_result = {
+                    "result" : "error",
+                    "type" : 'unknow',
+                    "error" : "Coded'érreur : {response.status_code}"
+                }
+                
+            else :
+                self.exploit_result = {
+                        "result" : "succes",
+                        "data" : [
+                                {
+                                    "title" : resultat.get('title', "Titre inconu"),
+                                    "link" : f"https://fr.wikipedia.org/wiki/{resultat.get('title', "Lien inconu")}",
+                                    "snippet" : re.sub(CLEAN_HTML_BALISE_REGEX, '',resultat.get('snippet'))
+                                } for resultat in data["query"]["search"]
+                            ]
+                } # Suprime les informations inutiles à notre usage
+        
         except requests.exceptions.ReadTimeout :
             self.exploit_result = {
                     "result" : "error",
