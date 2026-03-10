@@ -39,6 +39,7 @@ class Game() :
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"])) # Chemin du logo
         self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la fleche retour
         self.player = None # Variable joueur, idem que pour `current_view`
+        self.house = None # Variable maison
         
         settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnair `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnair vide
         self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
@@ -75,7 +76,6 @@ class Game() :
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
         pygame.display.flip() # Actualise l'affichage
-        house = self.game_view.h
 
         # Crée un dictionnaire avec les données à sauvegarder
         data = {
@@ -88,7 +88,8 @@ class Game() :
                         'fertilizer' : self.player.fertilizer,
                         'orientation' : self.player.orientation,
                         'skin_index' : self.player.skin_index,
-                        'plant' : self.player.plant
+                        'plant' : self.player.plant,
+                        'fruits': self.player.fruits
                     },
                 'settings' :
                     {
@@ -117,7 +118,7 @@ class Game() :
                             'max_alive': t.max_alive
                             } for t in self.game_view.trees],
                         'house':{
-                            'lvl': house.lvl
+                            'lvl': self.house.lvl
                         }
                     }
             }
@@ -353,7 +354,8 @@ def draw_header() :
     data = (
         (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), str(main_game.player.money)), # Coin
         (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
-        (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)) # Fertilizer
+        (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)), # Fertilizer
+        (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), str(main_game.player.fruits)) # Fruits
     )
 
     start_pos = 20
@@ -413,3 +415,4 @@ main_game.settings_view = settingView()
 
 main_game.change_view(main_game.menu_view)
 main_game.player = Player(main_game.screen.get_size()[0] / 2)
+main_game.house = main_game.game_view.h
