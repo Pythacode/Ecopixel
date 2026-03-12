@@ -285,14 +285,14 @@ class Player() :
         self.fertilizer = playerdata.get('fertilizer', 0)
         self.fruits = playerdata.get('fruits', 0)
 
-        self.msg = None
+        self.msg = []
 
     def say(self, msg, duration):
-        self.msg = {
+        self.msg.append({
             'msg' : msg,
             'created' : pygame.time.get_ticks(),
             'duration' : duration
-        }
+        })
 
     def change_skin(self) :
             self.skin_index += 1
@@ -325,17 +325,18 @@ class Player() :
         rect[0], rect[1] = self.x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
     
-        if self.msg :
+        if len(self.msg) != 0 :
+            msg = self.msg[0]
             font = pygame.font.Font(main_game.main_font_name, 24)
-            h, w = size_text(self.msg.get('msg'), font, 300)
+            h, w = size_text(msg.get('msg'), font, 300)
             padding = 10
             rect_w = w + 2*padding
             start_pos = self.x + rect[2]/2-rect_w/2
-            pygame.draw.rect(main_game.screen, 'white', (start_pos, y-h+10, rect_w, h+20), 0, 20)
-            pygame.draw.rect(main_game.screen, 'black', (start_pos, y-h+10, rect_w, h+20), 3, 20)
-            blit_text(self.msg.get('msg'), (start_pos + padding, y-h+10), font, 300, 'black', main_game.screen)
-            if now - self.msg.get('created') > self.msg.get('duration') :
-                self.msg = None
+            pygame.draw.rect(main_game.screen, 'white', (start_pos, y-h+10, rect_w, h+10), 0, 20)
+            pygame.draw.rect(main_game.screen, 'black', (start_pos, y-h+10, rect_w, h+10), 3, 20)
+            blit_text(msg.get('msg'), (start_pos + padding, y-h+10), font, 300, 'black', main_game.screen)
+            if now - msg.get('created') > msg.get('duration') :
+                del self.msg[0]
 
     def plant_act(self):
         self.plant = True
