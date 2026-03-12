@@ -289,8 +289,6 @@ class Player() :
 
     def say(self, msg, duration):
         self.msg = {
-            'x' : 50,
-            'y' : 0,
             'msg' : msg,
             'created' : pygame.time.get_ticks(),
             'duration' : duration
@@ -329,10 +327,13 @@ class Player() :
     
         if self.msg :
             font = pygame.font.Font(main_game.main_font_name, 24)
-            h, w = size_text(self.msg.get('msg'), font, 900)
-            pygame.draw.rect(main_game.screen, 'white', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 0, 20)
-            pygame.draw.rect(main_game.screen, 'black', (self.x-self.msg.get('x')-10, y-h+20, w+20, h), 3, 20)
-            blit_text(self.msg.get('msg'), (self.x - self.msg.get('x'), y-h+30), font, 900, 'black', main_game.screen)
+            h, w = size_text(self.msg.get('msg'), font, 300)
+            padding = 10
+            rect_w = w + 2*padding
+            start_pos = self.x + rect[2]/2-rect_w/2
+            pygame.draw.rect(main_game.screen, 'white', (start_pos, y-h+10, rect_w, h+20), 0, 20)
+            pygame.draw.rect(main_game.screen, 'black', (start_pos, y-h+10, rect_w, h+20), 3, 20)
+            blit_text(self.msg.get('msg'), (start_pos + padding, y-h+10), font, 300, 'black', main_game.screen)
             if now - self.msg.get('created') > self.msg.get('duration') :
                 self.msg = None
 
