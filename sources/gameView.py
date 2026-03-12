@@ -63,6 +63,11 @@ class gameView() :
         self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         self.s.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
+        for tree in self.trees :
+            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        for fruit in self.fruits :
+            fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
         # Open Pause Menu
@@ -119,11 +124,6 @@ class gameView() :
                 main_game.player.move_right()
             else :
                 self.offset_x -= main_game.player.velocity * main_game.dt
-
-        for tree in self.trees :
-            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-        for fruit in self.fruits :
-            fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         x = main_game.player.x - self.offset_x
 
