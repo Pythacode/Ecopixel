@@ -30,3 +30,8 @@ class Fruit():
         rect = self.actual_skin.get_rect()
         rect[0], rect[1] = self.x+offset_x, ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin, rect)
+
+        x = main_game.player.x - offset_x
+        if abs(self.x - 25 - x) < 100:
+            main_game.player.fruits += 1
+            main_game.game_view.fruits.remove(self)

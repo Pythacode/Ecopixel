@@ -86,7 +86,7 @@ class Tree():
         self.f = 0
 
         self.apple_spawn = 0
-        self.max_apple = randint(10,14)
+        self.max_apple = randint(900,1200)
 
         if self.seedling:
             self.skin_list = self.seedling_skin_list
@@ -133,4 +133,4 @@ class Tree():
             if self.apple_spawn > self.max_apple:
                 self.apple_spawn = 0
                 if self.type == "oak":
-                    main_game.game_view.fruits.append(Fruit(self.x + randint(-100, 100), 0, "oak"))
+                    main_game.game_view.fruits.append(Fruit(self.x + self.size[0]/2 + randint(-100, 100), 0, "oak"))
