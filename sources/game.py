@@ -165,7 +165,7 @@ def size_text(text:str, font:pygame.font, max_width:int) -> int:
             y += word_height  # Start on new row.
             count_line += 1
 
-        return count_line * word_height, m_width
+        return y, m_width
 
 def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
         """
