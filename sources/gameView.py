@@ -34,6 +34,7 @@ class gameView() :
         for tree in gamedata.get('trees', []) :
             self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
         self.wait_tree = gamedata.get('wait_tree', None)
+        self.fruits = []
 
         house_data = gamedata.get('house', {})
         self.h = House(lvl=house_data.get('lvl', 1))
@@ -121,6 +122,8 @@ class gameView() :
 
         for tree in self.trees :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        for fruit in self.fruits :
+            fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
         x = main_game.player.x - self.offset_x
 

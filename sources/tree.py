@@ -10,6 +10,7 @@ import pygame
 import json
 from game import*
 from random import randint
+from fruits import Fruit
 
 
 class Tree():
@@ -84,6 +85,9 @@ class Tree():
         self.max_alive = max_alive
         self.f = 0
 
+        self.apple_spawn = 0
+        self.max_apple = randint(900,1200)
+
         if self.seedling:
             self.skin_list = self.seedling_skin_list
         else:
@@ -117,9 +121,16 @@ class Tree():
         surface.blit(self.actual_skin["subsurface"], rect)
 
         self.f += main_game.dt
-        if self.f >= 100 and not self.growned_up:
-            self.time_alive +=1
+        if self.f >= 100:
+            if not self.growned_up:
+                self.time_alive +=1
+            else:
+                self.apple_spawn += 1
             self.f = 0
-            if self.time_alive == self.max_alive:
+            if self.time_alive == self.max_alive and not self.growned_up:
                 self.change_skin()
                 self.time_alive = 0
+            if self.apple_spawn > self.max_apple:
+                self.apple_spawn = 0
+                if self.type == "oak":
+                    main_game.game_view.fruits.append(Fruit(self.x + self.size[0]/2 + randint(-100, 100), 0, "oak"))
