@@ -337,7 +337,8 @@ class Player() :
             blit_text(msg.get('msg'), (start_pos + padding, y-h+10), font, 300, 'black', main_game.screen)
             if now - msg.get('created') > msg.get('duration') :
                 del self.msg[0]
-                self.msg[0]['created'] = now
+                if len(self.msg) != 0 : 
+                    self.msg[0]['created'] = now
 
     def plant_act(self):
         self.plant = True
