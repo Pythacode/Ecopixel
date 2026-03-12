@@ -129,81 +129,6 @@ class Game() :
         with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
             json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
             
-
-def size_text(text:str, font:pygame.font, max_width:int) -> int:
-        """
-        Calcuate size of a text
-        Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
-
-        :param text: Text to draw
-        :type text: str
-        :param font: Font to draw text
-        :type font: pygame.font
-        :param max_width: Width we cant exceed
-        :type max_width: int
-        :return: The height of text
-        :rtype: int
-        """
-        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-        space = font.size(' ')[0]  # The width of a space.
-        x, y = 0, 0
-        count_line = 1
-        m_width = 0
-        for line in words:
-            for word in line:
-                word_surface = font.render(word, 0, 'white')
-                word_width, word_height = word_surface.get_size()
-                if x + word_width >= max_width:
-                    x = 0  # Reset the x.
-                    y += word_height  # Start on new row.
-                else :                    
-                    if x + word_width > m_width :
-                        m_width = x + word_width
-                x += word_width + space
-            x = 0  # Reset the x.
-            y += word_height  # Start on new row.
-            count_line += 1
-        return y, m_width
-
-def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
-        """
-        Draw `text` on `screen` with lines-split for not exceed `max_width`
-        Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
-
-        :param text: Text to draw
-        :type text: str
-        :param pos: A tuple with position `(x, y)`
-        :type pos: tuple
-        :param font: Font to draw text
-        :type font: pygame.font
-        :param max_width: Width we cant exceed
-        :type max_width: int
-        :param color: Color of text
-        :type color:pygame.Color | tuple
-        :param screen: Screen where text as display
-        :type screen: pygame.surface
-        :return: The height of text
-        :rtype: int
-        """
-        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-        space = font.size(' ')[0]  # The width of a space.
-        x, y = pos
-        count_line = 1
-        for line in words:
-            for word in line:
-                word_surface = font.render(word, 0, color)
-                word_width, word_height = word_surface.get_size()
-                if x + word_width >= pos[0] + max_width:
-                    x = pos[0]  # Reset the x.
-                    y += word_height  # Start on new row.
-                screen.blit(word_surface, (x, y))
-                x += word_width + space
-            x = pos[0]  # Reset the x.
-            y += word_height  # Start on new row.
-            count_line += 1
-
-        return count_line * word_height
-
 class button():
 
     def __init__(self, image_nor, image_mouse, image_click, position, width, height, OnClickFunc, text=""):
@@ -253,7 +178,6 @@ class button():
                 self.click = False
         screen.blit(scaled_image, self.rect)
         screen.blit(self.rendertext, position)
-        
 
 class entry_text() :
     def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
@@ -390,6 +314,79 @@ def draw_header() :
     main_game.screen.blit(coin_count, (width - start_pos + 30, 3))"""
 
 
+def size_text(text:str, font:pygame.font, max_width:int) -> int:
+        """
+        Calcuate size of a text
+        Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
+
+        :param text: Text to draw
+        :type text: str
+        :param font: Font to draw text
+        :type font: pygame.font
+        :param max_width: Width we cant exceed
+        :type max_width: int
+        :return: The height of text
+        :rtype: int
+        """
+        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+        space = font.size(' ')[0]  # The width of a space.
+        x, y = 0, 0
+        count_line = 1
+        m_width = 0
+        for line in words:
+            for word in line:
+                word_surface = font.render(word, 0, 'white')
+                word_width, word_height = word_surface.get_size()
+                if x + word_width >= max_width:
+                    x = 0  # Reset the x.
+                    y += word_height  # Start on new row.
+                else :                    
+                    if x + word_width > m_width :
+                        m_width = x + word_width
+                x += word_width + space
+            x = 0  # Reset the x.
+            y += word_height  # Start on new row.
+            count_line += 1
+        return y, m_width
+
+def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+        """
+        Draw `text` on `screen` with lines-split for not exceed `max_width`
+        Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
+
+        :param text: Text to draw
+        :type text: str
+        :param pos: A tuple with position `(x, y)`
+        :type pos: tuple
+        :param font: Font to draw text
+        :type font: pygame.font
+        :param max_width: Width we cant exceed
+        :type max_width: int
+        :param color: Color of text
+        :type color:pygame.Color | tuple
+        :param screen: Screen where text as display
+        :type screen: pygame.surface
+        :return: The height of text
+        :rtype: int
+        """
+        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+        space = font.size(' ')[0]  # The width of a space.
+        x, y = pos
+        count_line = 1
+        for line in words:
+            for word in line:
+                word_surface = font.render(word, 0, color)
+                word_width, word_height = word_surface.get_size()
+                if x + word_width >= pos[0] + max_width:
+                    x = pos[0]  # Reset the x.
+                    y += word_height  # Start on new row.
+                screen.blit(word_surface, (x, y))
+                x += word_width + space
+            x = pos[0]  # Reset the x.
+            y += word_height  # Start on new row.
+            count_line += 1
+
+        return count_line * word_height
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
 main_game = Game(

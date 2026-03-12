@@ -1,6 +1,9 @@
-# <img src="./data/image/icon/logo.png" alt="Logo du jeu" width="50"> Ecopixel
+![Écopixel](/data/image/icon/long_logo.png)
 
-Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web
+Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web.
+
+[Présentation](presentation.md).
+[Documentation](docs/sommaire.md)
 
 ## Sommaire
 
@@ -13,7 +16,7 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédi
 
 ## Installation
 
-> [!TIP]
+> [!NOTE]
 > Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre installation, vous devriez peut-être utiliser `python` et `python3 -m pip` à la place.
 
 ### Avec venv
@@ -84,6 +87,7 @@ Les touches par défault sont les usivante :
 - Touche action : `e`
 - Droite - Gauche : `d` - `q`
 - Touche retour : `Échape`
+- Touche pause : `Échape`
 - Touche sauvegarde : `o`
 
 > Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) pour le texte.<br>
