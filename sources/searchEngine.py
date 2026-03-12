@@ -84,10 +84,11 @@ class searchView() :
                 self.exploit_result = {
                     "result" : "error",
                     "type" : 'unknow',
-                    "error" : "Coded'érreur : {response.status_code}"
+                    "error" : "Code d'érreur : {response.status_code}"
                 }
                 
             else :
+                main_game.player.sprout += 1
                 self.exploit_result = {
                         "result" : "succes",
                         "data" : [
@@ -221,7 +222,6 @@ class searchView() :
                     break
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :
-                        main_game.player.sprout += 1
                         webbrowser.open(i.get('link'))
             elif event.type == pygame.KEYDOWN and event.key == main_game.key_back :
                 main_game.change_view(self.previous_view)
