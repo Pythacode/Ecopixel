@@ -10,6 +10,8 @@ Définit les variable & les fonction globale
 - [Classe `Button`](#button-class)
     - [init](#func-init)
     - [update](#func-update)
+- [Les fonctions](#fonctions-1)
+- [Les variables](#variables)
 
 ## Class Game
 > Documentation écrite par Titouan
@@ -90,7 +92,7 @@ Il s'agit d'une class qui ajoute une zone de texte
 - `cursor` : Faut-il afficher le curseur
 - `cursor_index` : index du curseur
 
-### Fonctions
+# Fonctions
 
 - update<br>
     Fonction à appeller à chaque boucle du jeu, elle actualise la zone de texte.
@@ -98,6 +100,8 @@ Il s'agit d'une class qui ajoute une zone de texte
 ## Fonction draw_header
 
 Fonction qui crée et affiche le header. doit être apellée à chaque tour du jeu.
+
+# Variables
 
 ## Variable main_game
 
