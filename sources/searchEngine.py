@@ -47,7 +47,7 @@ class searchView() :
 
         self.min_scroll_y = self.max_scroll_y = 0
 
-    def search(self, query:str, lang="fr"):
+    def search(self, query:str):
         """
         Recherche `query` grace à l'API de wikipedia
         
@@ -88,13 +88,13 @@ class searchView() :
                 }
                 
             else :
-                main_game.player.sprout += 1
+                main_game.player.sprout += main_game.game_view.h.lvl
                 self.exploit_result = {
                         "result" : "succes",
                         "data" : [
                                 {
                                     "title" : resultat.get('title', "Titre inconu"),
-                                    "link" : f"https://fr.wikipedia.org/wiki/{resultat.get('title', "Lien inconu")}",
+                                    "link" : f"https://fr.wikipedia.org/wiki/{resultat.get('title')}",
                                     "snippet" : re.sub(CLEAN_HTML_BALISE_REGEX, '',resultat.get('snippet'))
                                 } for resultat in data["query"]["search"]
                             ]
