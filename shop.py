@@ -1,7 +1,3 @@
-import os
-import json
-from game import*
-
 class shopView():
     def __init__ (self):
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc,"item.Json"]))

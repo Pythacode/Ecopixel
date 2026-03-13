@@ -1,0 +1,46 @@
+{
+   "Idle 0": {
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Idle 1": {
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Idle 2": {
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Run 0": {
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 1": {
+    "frame": { "x": 0, "y": 19, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 2": {
+    "frame": { "x": 10, "y": 19, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 3": {
+    "frame": { "x": 20, "y": 19, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 4": {
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 5": {
+    "frame": { "x": 0, "y": 38, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 6": {
+    "frame": { "x": 10, "y": 38, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Run 7": {
+    "frame": { "x": 20, "y": 38, "w": 10, "h": 19 },
+    "duration": 100
+   }
+}

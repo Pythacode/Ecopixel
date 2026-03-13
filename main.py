@@ -1,5 +1,5 @@
 # ------------------------- Fichier Principal -------------------------- #
-# Lien du dépot : https://github.com/Pythacode/ecosia_simulator/         #
+# Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant tout le code du moteur de jeu.                       #
 # Crée par Titouan - https://github.com/Pythacode/                       #
 # License : Creative Commons Attribution-NonCommercial 4.0 International #
