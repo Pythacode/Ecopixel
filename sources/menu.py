@@ -1,0 +1,73 @@
+# -------------------------------- Menu -------------------------------- #
+# Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
+# Fichier contenant tout le code du menu principal.                      #
+# Crée par Lucas - https://github.com/GreGrenier                         #
+# License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
+# ---------------------------------------------------------------------- #
+
+from game import *
+import pygame
+import os
+
+class menuView():
+
+    def __init__(self) :
+
+        pygame.init()
+        self.font = pygame.font.Font("freesansbold.ttf", 24)
+
+        # Logo init
+        self.logo = button(
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            os.sep.join([main_game.asset_doc, "image", "icon", "long_logo.png"]),
+            (640, 200),
+            48*4, 48*4,
+            self.Logo_Pressed)
+        self.logo.width, self.logo.height = self.logo.image_nor.get_rect()[2:4]
+
+        # Play button init
+        self.playbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "play_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "play_button_click.png"]), (640, 360), 48*4, 24*4, self.PlayButton_Pressed, text="")
+
+        # Quit button init
+        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 660), 48*4, 24*4, self.QuitButton_Pressed, text="")
+
+        # Shop button init
+        self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
+
+        # Settings button init
+        self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (640, 460), 48*4, 24*4, self.settingsButton_Pressed)
+
+        self.header = False
+        self.previous_view = None
+
+    def PlayButton_Pressed(self):
+        main_game.change_view(main_game.game_view)
+
+    def QuitButton_Pressed(self):
+        main_game.running = False 
+
+    def Logo_Pressed(self):
+        babysfx = pygame.mixer.Sound(os.sep.join([main_game.asset_doc, "sfx", "BabyNoise.mp3"]))
+        babysfx.play()
+
+    def ShopButton_Pressed(self):
+        main_game.change_view(main_game.shop_view)
+
+    def settingsButton_Pressed(self):
+        main_game.change_view(main_game.settings_view)
+
+    def update(self, events) :
+
+        width, height = main_game.screen.get_size() 
+
+        # Header
+        pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, height), width=0)
+
+        self.logo.update(main_game.screen, ((width/2) - (self.logo.rect[2]), 200))
+        self.playbutton.update(main_game.screen, ((width/2), 360))
+        self.quitbutton.update(main_game.screen, ((width/2), 460))
+        self.shopbutton.update(main_game.screen, ((width/2), 560))
+        self.settingsButton.update(main_game.screen, ((width/2), 660))
+
+        
