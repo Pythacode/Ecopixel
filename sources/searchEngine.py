@@ -89,6 +89,7 @@ class searchView() :
                 
             else :
                 main_game.player.sprout += main_game.game_view.h.lvl
+                main_game.tuto.next("search")
                 self.exploit_result = {
                         "result" : "succes",
                         "data" : [
