@@ -7,9 +7,9 @@
 
 from game import *
 import os
-from tree import Tree
-from house import House
-from shop_place import Shop_place
+from sprites.tree import Tree
+from buildings.house import House
+from buildings.shop_place import Shop_place
 
 class gameView() :
 

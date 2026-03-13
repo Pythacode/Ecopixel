@@ -9,7 +9,7 @@
 import os
 import json
 import pygame
-from tree import Tree
+from sprites.tree import Tree
 from game import main_game, blit_text, size_text
 
 class Player() :
