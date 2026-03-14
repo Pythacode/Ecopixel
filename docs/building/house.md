@@ -1,8 +1,12 @@
 # house.py
+Permet d'afficher la maison
 
 ## Sommaire
 
-
+- [Class House](#class-house)
+    - [Paramètres](#paramètres)
+    - [Attributs](#attributs)
+    - [Fonctions](#fonctions)
 
 ## Class House
 
