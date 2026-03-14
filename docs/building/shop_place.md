@@ -1,8 +1,12 @@
 # shop_place.py
+Permet d'afficher le shop
 
 ## Sommaire
 
-
+- [Class Shop_place](#class-shop_place)
+    - [Paramètres](#paramètres)
+    - [Attributs](#attributs)
+    - [Fonctions](#fonctions)
 
 ## Class Shop_place
 

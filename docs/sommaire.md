@@ -5,3 +5,5 @@
     - [Classe `Game`](game.md#class-game)
     - [Classe `Button`](game.md#button-class)
     - [Classe `Entry_text`](game.py#class-entry_text)
+- [Fichier `house.py`](building/house.md)
+- [Fichier `shop_place.py`](building/shop_place.md)
