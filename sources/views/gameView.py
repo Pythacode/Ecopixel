@@ -32,7 +32,7 @@ class gameView() :
         gamedata = main_game.data.get('game', {})
         self.trees = []
         for tree in gamedata.get('trees', []) :
-            self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
+            self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('fertilized'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
         self.wait_tree = gamedata.get('wait_tree', None)
         self.fruits = []
 
@@ -162,8 +162,12 @@ class gameView() :
                 if len(t) == 0 : # Verrifier si elle est vide
                     main_game.tuto.next("plant")
                     main_game.player.plant_act()
-                    self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak'}
                     main_game.player.sprout -= 1
+                    if main_game.player.fertilizer > 0:
+                        main_game.player.fertilizer -= 1
+                        self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': True}
+                    else:
+                        self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': False}
                 else :
                     main_game.player.say('Trop proche :/', 2_000)
 

@@ -14,7 +14,7 @@ from sprites.fruits import Fruit
 
 
 class Tree():
-    def __init__(self, x, y=0, type="", time_alive=0, seedling=True, growned_up=False, skin_index=0, max_alive=randint(900, 1200)):
+    def __init__(self, x, y=0, type="", fertilized=False, time_alive=0, seedling=True, growned_up=False, skin_index=0, max_alive=randint(900, 1200)):
         self.image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "tree", "tree.png"]))
 
         imageJsonFile = open(os.sep.join([main_game.asset_doc, "image", "tree", "tree_frame.json"]), 'r')
@@ -81,10 +81,15 @@ class Tree():
         self.growned_up = growned_up
         self.type = type
 
-        self.time_alive = time_alive
-        self.max_alive = max_alive
-        self.f = 0
+        self.fertilized = fertilized
 
+        self.time_alive = time_alive
+        if self.fertilized:
+            self.max_alive = randint(600, 900)
+        else:
+            self.max_alive = max_alive
+        self.f = 0
+        
         self.apple_spawn = 0
         self.max_apple = randint(900,1200)
 
