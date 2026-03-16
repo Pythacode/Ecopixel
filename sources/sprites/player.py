@@ -284,6 +284,7 @@ class Player() :
         self.sprout = playerdata.get('sprout', 0)
         self.fertilizer = playerdata.get('fertilizer', 0)
         self.fruits = playerdata.get('fruits', 0)
+        self.arrosoir = playerdata.get('arrosoir', False)
 
         self.msg = []
 

@@ -89,7 +89,8 @@ class Game() :
                         'orientation' : self.player.orientation,
                         'skin_index' : self.player.skin_index,
                         'plant' : self.player.plant,
-                        'fruits': self.player.fruits
+                        'fruits': self.player.fruits,
+                        'arrosoir': self.player.arrosoir
                     },
                 'settings' :
                     {

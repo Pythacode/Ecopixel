@@ -87,6 +87,7 @@ class shopView():
         if self.items[0]["quantity"] > 0 and main_game.player.money > self.items[0]['price']:
             self.items[0]["quantity"] -= 1
             main_game.player.money -= self.items[0]["price"]
+            main_game.player.arrosoir = True
     
     def Acheter_fertilizer(self):
         if main_game.player.money > self.items[1]['price'] and self.buy_cooldown + 5 * main_game.dt < pygame.time.get_ticks():
