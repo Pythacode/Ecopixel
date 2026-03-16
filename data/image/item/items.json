@@ -1,33 +1,23 @@
 [
     {
         "name" : "arrosoir",
-        "price" : 25,
-        "skin" : "arrosoir.png",
-        "quantity" : 1
+        "price" : 25
     },
     {
         "name" : "fertilizer",
-        "price" : 3,
-        "skin" : "fertilizer.png",
-        "quantity" : 10
+        "price" : 3
     },
     {
         "name" : "house upgrade 1",
-        "price": 25,
-        "skin": "house2.png",
-        "quantity" : 1
+        "price": 25
     },
     {
         "name" : "house upgrade 2",
-        "price": 50,
-        "skin": "house3.png",
-        "quantity" : 1
+        "price": 50
     },
     {
         "name" : "house upgrade 3",
-        "price": 200,
-        "skin": "house4.png",
-        "quantity" : 1
+        "price": 200
     },
     {
         "name" : "fruit",
