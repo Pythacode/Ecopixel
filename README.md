@@ -92,5 +92,5 @@ Les touches par défault sont les usivante :
 
 > Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) pour le texte.<br>
 > Plus d'information : [Fichier LICENSE](LICENSE)<br>
-> [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)
+> [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)  
 > [Site officiel de la licence CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)
