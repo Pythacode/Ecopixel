@@ -164,6 +164,7 @@ class button():
 
     def update(self, screen, position=""):
         if position == "" : position = self.position
+        buttonpos = (position[0] - self.rendertext.get_size()[0]/2, position[1] - self.rendertext.get_size()[1]/2)
         self.rect.center = position
         image = self.image_nor
         if self.rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
@@ -175,12 +176,12 @@ class button():
                 self.click = False
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, self.rect)
-        screen.blit(self.rendertext, position)
+        screen.blit(self.rendertext, buttonpos)
         if self.click == True and self.OnClickFunc != None:
                 self.OnClickFunc()
                 self.click = False
         screen.blit(scaled_image, self.rect)
-        screen.blit(self.rendertext, position)
+        screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
     def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
