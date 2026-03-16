@@ -1,3 +1,4 @@
+# -------------------------------- Shop -------------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
 # Fichier contenant tout le code du moteur de recherche.                 #
 # Crée par Pierrick - https://github.com/PtitBillyboy                    #
