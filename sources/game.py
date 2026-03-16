@@ -106,7 +106,8 @@ class Game() :
                         'wait_tree' : None if self.game_view.wait_tree == None else {
                             'x' : self.game_view.wait_tree.get('x'),
                             'y' : self.game_view.wait_tree.get('y'),
-                            'type': self.game_view.wait_tree.get('type')
+                            'type': self.game_view.wait_tree.get('type'),
+                            'fertilized': self.game_view.wait_tree.get('fertilized')
                             },
                         'trees' : [
                                 {
@@ -117,7 +118,8 @@ class Game() :
                                     'seedling': t.seedling,
                                     'growned_up': t.growned_up,
                                     'skin_index': t.skin_index,
-                                    'max_alive': t.max_alive
+                                    'max_alive': t.max_alive,
+                                    'fertilized': t.fertilized
                                 } for t in self.game_view.trees
                             ],
                         'house':{
