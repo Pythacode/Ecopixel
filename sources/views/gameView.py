@@ -149,7 +149,7 @@ class gameView() :
                 main_game.change_view(main_game.search_view)
 
             # Shop
-            if abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2:
+            elif abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
                 rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
@@ -157,21 +157,24 @@ class gameView() :
                 main_game.change_view(main_game.shop_view)
 
             # Plant
-            elif not main_game.player.plant and main_game.player.sprout >= 1 and not abs(self.h.x + 200 - x) < 100:
-                x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
-                # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
-                t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-                if len(t) == 0 : # Verrifier si elle est vide
-                    main_game.tuto.next("plant")
-                    main_game.player.plant_act()
-                    main_game.player.sprout -= 1
-                    if main_game.player.fertilizer > 0:
-                        main_game.player.fertilizer -= 1
-                        self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': True}
-                    else:
-                        self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': False}
+            elif not main_game.player.plant :
+                if main_game.player.sprout >= 1 :
+                    x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
+                    # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
+                    t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
+                    if len(t) == 0 : # Verrifier si elle est vide
+                        main_game.tuto.next("plant")
+                        main_game.player.plant_act()
+                        main_game.player.sprout -= 1
+                        if main_game.player.fertilizer > 0:
+                            main_game.player.fertilizer -= 1
+                            self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': True}
+                        else:
+                            self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': False}
+                    else :
+                        main_game.player.say('Trop proche :/', 2_000)
                 else :
-                    main_game.player.say('Trop proche :/', 2_000)
+                    main_game.player.say("Pas de pousse :/", 2_000)
 
         for event in events :
             if event.type == pygame.KEYDOWN:
