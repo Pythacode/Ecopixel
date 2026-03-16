@@ -26,12 +26,12 @@ class gameView() :
 
 
     def __init__(self):
-        self.offset_x = 0
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
         self.header = True
         self.pause = False
         gamedata = main_game.data.get('game', {})
+        self.offset_x = gamedata.get('offset_x', 0)
         self.trees = []
         for tree in gamedata.get('trees', []) :
             self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('fertilized'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))

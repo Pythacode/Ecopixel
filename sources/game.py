@@ -105,6 +105,7 @@ class Game() :
                     },
                 'game' :
                     {
+                        'offset_x' : self.game_view.offset_x,
                         'wait_tree' : None if self.game_view.wait_tree == None else {
                             'x' : self.game_view.wait_tree.get('x'),
                             'y' : self.game_view.wait_tree.get('y'),
