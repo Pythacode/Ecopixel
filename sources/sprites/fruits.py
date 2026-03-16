@@ -33,5 +33,6 @@ class Fruit():
 
         x = main_game.player.x - offset_x
         if abs(self.x - 25 - x) < 100:
+            main_game.tuto.next("recolte")
             main_game.player.fruits += 1
             main_game.game_view.fruits.remove(self)

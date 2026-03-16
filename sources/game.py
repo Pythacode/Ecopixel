@@ -398,12 +398,12 @@ main_game = Game(
 from tuto import Tuto
 main_game.tuto = Tuto()
 
-from menu import menuView
-from gameView import gameView
-from searchEngine import searchView
-from shop import shopView
-from player import Player
-from setting import settingView
+from views.menu import menuView
+from views.gameView import gameView
+from views.searchEngine import searchView
+from views.shop import shopView
+from views.setting import settingView
+from sprites.player import Player
 
 main_game.menu_view = menuView()
 main_game.game_view = gameView()

@@ -10,7 +10,7 @@ import pygame
 import json
 from game import*
 from random import randint
-from fruits import Fruit
+from sprites.fruits import Fruit
 
 
 class Tree():

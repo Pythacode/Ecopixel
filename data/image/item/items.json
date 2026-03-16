@@ -13,19 +13,19 @@
     },
     {
         "name" : "house upgrade 1",
-        "price": 10,
+        "price": 25,
         "skin": "house2.png",
         "quantity" : 1
     },
     {
         "name" : "house upgrade 2",
-        "price": 25,
+        "price": 50,
         "skin": "house3.png",
         "quantity" : 1
     },
     {
         "name" : "house upgrade 3",
-        "price": 50,
+        "price": 200,
         "skin": "house4.png",
         "quantity" : 1
     },

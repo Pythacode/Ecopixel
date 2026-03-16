@@ -10,7 +10,7 @@ import pygame
 
 class Tuto() :
     def __init__(self):
-        self.step = ["present", "search", "plant", "recolte", "buy"]
+        self.steps = ["present", "search", "plant", "recolte", "buy", "Finish"]
         self.advencement = main_game.data.get('game', {}).get('tuto_advancement', 0)
         self.messages = {
             "present" : f"Bienvenu sur Écopixel.\nNous allons te guider pas à pas pour que tu aprenne à jouer. Si tu est bloqué·e, appuie sur la touche {pygame.key.name(main_game.key_help)}.",
@@ -21,14 +21,15 @@ class Tuto() :
         }
 
     def get_message(self) :
-        return self.messages.get(self.step[self.advencement], "")
+        return self.messages.get(self.steps[self.advencement], "")
         
     def get_advancement(self) -> str :
-        return self.step[self.advencement]
+        return self.steps[self.advencement]
 
     def help(self) :
         main_game.player.say(self.get_message(), 2000)
     
-    def next(self):
-        self.advencement += 1
-        self.help()
+    def next(self, source):
+        if source == self.steps[self.advencement] :
+            self.advencement += 1
+            self.help()

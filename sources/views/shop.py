@@ -115,5 +115,6 @@ class shopView():
             self.items[4]["quantity"] -= 1
 
     def Vendre_item(self):
+        main_game.tuto.next("buy")
         main_game.player.money += self.items[5]["price"]*main_game.player.fruits
         main_game.player.fruits = 0
