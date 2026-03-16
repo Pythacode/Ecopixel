@@ -385,6 +385,7 @@ def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame
         space = font.size(' ')[0]  # The width of a space.
         x, y = pos
         count_line = 1
+        word_height = 0 # Si `text` est vide, revoie pas d'erreur
         for line in words:
             for word in line:
                 word_surface = font.render(word, 0, color)
