@@ -286,7 +286,8 @@ def draw_header() :
         (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), str(main_game.player.money)), # Coin
         (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
         (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)), # Fertilizer
-        (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), str(main_game.player.fruits)) # Fruits
+        (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), str(main_game.player.fruits)), # Fruits
+        (os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"]), "") # Fruits
     )
 
     start_pos = 20
@@ -306,7 +307,12 @@ def draw_header() :
         coin_count = font.render(label, True, 'white')
         main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
+        Arrosoir = font.render(label,True,'White')
+        main_game.screen.blit(Arrosoir,(width - start_pos + 30, 3))
+
         start_pos += 20 # Gap betwen count
+
+
         
     """
 
