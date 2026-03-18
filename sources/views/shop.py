@@ -14,20 +14,20 @@ class shopView():
     def __init__ (self):
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "image", "item", "items.json"]))
         
-        self.image_arrosoir,self.rect_arrosoir = self.img(288,288, (200, 150),"item","arrosoir.png")
-        self.image_rupture_arrosoir,self.rect_rupture_arrosoir = self.img(288,288, (200,150),"shop","Rupture.png")
+        self.image_arrosoir,self.rect_arrosoir = img(160*1.5,160, (200, 150),"item","arrosoir.png")
+        self.image_rupture_arrosoir,self.rect_rupture_arrosoir = img(288,288, (200,150),"shop","Rupture.png")
 
-        self.image_fertilizer,self.rect_fertilizer = self.img(192,192,(600,150),"item","fertilizer.png")
-        self.image_rupture_fertilizer,self.rect_rupture_fertilizer = self.img(192,192, (600,150),"shop","Rupture.png")
+        self.image_fertilizer,self.rect_fertilizer = img(192,192,(600,150),"item","fertilizer.png")
+        self.image_rupture_fertilizer,self.rect_rupture_fertilizer = img(192,192, (600,150),"shop","Rupture.png")
 
-        self.image_house2,self.rect_house2 = self.img(288,288, (200,450),"houses","house2.png")
-        self.image_rupture_house2,self.rect_rupture_house2 = self.img(288,288, (200,450),"shop","Rupture.png")
+        self.image_house2,self.rect_house2 = img(288,288, (200,450),"houses","house2.png")
+        self.image_rupture_house2,self.rect_rupture_house2 = img(288,288, (200,450),"shop","Rupture.png")
 
-        self.image_house3,self.rect_house3 = self.img(288,288, (600,450),"houses","house3.png")
-        self.image_rupture_house3,self.rect_rupture_house3 = self.img(288,288, (600,450),"shop","Rupture.png")
+        self.image_house3,self.rect_house3 = img(288,288, (600,450),"houses","house3.png")
+        self.image_rupture_house3,self.rect_rupture_house3 = img(288,288, (600,450),"shop","Rupture.png")
 
-        self.image_house4,self.rect_house4 = self.img(288,288, (1000,450),"houses","house4.png")
-        self.image_rupture_house4,self.rect_rupture_house4 = self.img(288,288, (1000,450),"shop","Rupture.png")
+        self.image_house4,self.rect_house4 = img(288,288, (1000,450),"houses","house4.png")
+        self.image_rupture_house4,self.rect_rupture_house4 = img(288,288, (1000,450),"shop","Rupture.png")
         
         self.arrosoir_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (180,300), 192, 192/2, self.Acheter_arrosoir,"Arrosoir")
         self.fertilizer_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (600,300), 192, 192/2, self.Acheter_fertilizer,"Fertilizer")
@@ -67,30 +67,11 @@ class shopView():
         if main_game.house.lvl == 4:
             main_game.screen.blit(self.image_rupture_house4,self.rect_rupture_house4)
 
-
-    def img(self,width,height,position,dossier,png):
-        """
-        Données pour la fonction img:
-
-        :param width: Largeur de l'image en int
-        :param height: Hauteur de l'image en int
-        :param x: Position horizontale de l'image en int
-        :param y: Position verticale de l'image en int
-        :param path: Chemin dans les fichier de l'image à afficher en str
-        """
-        # Résultat : Affiche une image sur la fenêtre
-
-        image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", dossier, png]))
-        image = pygame.transform.scale(image, (width,height))
-        rect = image.get_rect()
-        rect.center = position
-        return image, rect
     
     def Acheter_arrosoir(self):
         if main_game.player.arrosoir == False and main_game.player.money > self.items[0]['price']:
             main_game.player.money -= self.items[0]["price"]
             main_game.player.arrosoir = True
-            "arrosoir.png".draw_header()
     
     def Acheter_fertilizer(self):
         if main_game.player.money > self.items[1]['price'] and self.buy_cooldown + 5 * main_game.dt < pygame.time.get_ticks():

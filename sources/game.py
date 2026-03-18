@@ -21,39 +21,39 @@ class Game() :
         self.asset_doc = self.asset_doc = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                                                       '..', # Remonte d'un répertoir (Répertoir source)
                                                       'data' # Dossier data
-                                                    ])) # Obligatoir pour correctement gerer l'execution depuis n'importe quel répertoire
+                                                    ])) # Obligatoire pour gérer correctement l'execution depuis n'importe quel répertoire
 
         if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) : # Si une sauvegarde exsiste
             dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r') # On ouvre le fichier
-            self.data = json.load(dataJsonfile) # On charge la sauvegarde dans le dictionnair `self.data`
+            self.data = json.load(dataJsonfile) # On charge la sauvegarde dans le dictionnaire `self.data`
         else :
-            self.data = {} # Sinon on enregistre un dictionnair vide pour `self.data`
+            self.data = {} # Sinon on enregistre un dictionnaire vide pour `self.data`
 
         # Crée un écran pygame 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
-        self.current_view = None # Défini la vue actuelle à aucune (Les vues on besoin de main_game, impossible donc de les apellé sans avoir créé l'élément)
+        self.current_view = None # Défini la vue actuelle à aucune (Les vues on besoin de main_game, impossible donc de les appelé sans avoir créé l'élément)
         
-        self.running = True # Variable qui définie si la boucle principal (dans `main.py` s'arette ou non)
+        self.running = True # Variable qui définie si la boucle principal (dans `main.py` s'arrete ou non)
         self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) # Chemin de la police de base
         self.scroll_y = 0 # Valeur du scroll vertical
         self.scroll_x = 0 # Valeur du scroll horizontal
         self.touch_pressed = {} # Dictionnaire avec toute les touche appuyé
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"])) # Chemin du logo
-        self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la fleche retour
+        self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la flèche retour
         self.player = None # Variable joueur, idem que pour `current_view`
         self.house = None # Variable maison
         
-        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnair `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnair vide
-        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
-        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
-        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnair `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
+        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnaire `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnaire vide
+        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
+        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
+        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
 
-        pygame.display.set_icon(self.logo) # Défini le logo de la fenetre avec celui du jeux
-        pygame.display.set_caption('Ecopixel') # Défini le titre de la fenetre
+        pygame.display.set_icon(self.logo) # Défini le logo de la fenêtre avec celui du jeux
+        pygame.display.set_caption('Ecopixel') # Défini le titre de la fenêtre
     
     def change_view(self, new_view) :
         """
@@ -288,7 +288,6 @@ def draw_header() :
         (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
         (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)), # Fertilizer
         (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), str(main_game.player.fruits)), # Fruits
-        (os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"]), "") # Fruits
     )
 
     start_pos = 20
@@ -308,8 +307,9 @@ def draw_header() :
         coin_count = font.render(label, True, 'white')
         main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
-        Arrosoir = font.render(label,True,'White')
-        main_game.screen.blit(Arrosoir,(width - start_pos + 30, 3))
+        image_arrosoir,rect_arrosoir = img(45,30, (840, 20),"item","arrosoir.png")
+        if main_game.player.arrosoir == True :
+            main_game.screen.blit(image_arrosoir,rect_arrosoir)
 
         start_pos += 20 # Gap betwen count
 
@@ -401,6 +401,24 @@ def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame
             count_line += 1
 
         return count_line * word_height
+
+def img(width,height,position,dossier,png):
+    """
+    Données pour la fonction img:
+    :param width: Largeur de l'image en int
+    :param height: Hauteur de l'image en int
+    :param x: Position horizontale de l'image en int
+    :param y: Position verticale de l'image en int
+    :param path: Chemin dans les fichier de l'image à afficher en str
+    """
+        # Résultat : Affiche une image sur la fenêtre
+
+    image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", dossier, png]))
+    image = pygame.transform.scale(image, (width,height))
+    rect = image.get_rect()
+    rect.center = position
+    return image, rect
+
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
 main_game = Game(
