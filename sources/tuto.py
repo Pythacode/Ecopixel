@@ -10,6 +10,7 @@ import pygame
 
 class Tuto() :
     def __init__(self):
+        
         self.steps = ["present", "search", "plant", "recolte", "buy", "Finish"]
         self.advencement = main_game.data.get('game', {}).get('tuto_advancement', 0)
         self.messages = {
@@ -21,16 +22,22 @@ class Tuto() :
             "Finish" : f"Le tuto est fini, la suite du jeu arrive."
         }
 
-    def get_message(self) :
+    def get_message(self) -> str :
         return self.messages.get(self.steps[self.advencement], "")
         
     def get_advancement(self) -> str :
         return self.steps[self.advencement]
 
-    def help(self) :
+    def help(self) -> None:
         main_game.player.say(self.get_message(), 2000)
     
-    def next(self, source):
+    def next(self, source) -> None:
+        """
+        Passed to next step.
+
+        :param source: Source de la demande de changement d'étape.
+        :type source: None
+        """
         if source == self.steps[self.advencement] :
             self.advencement += 1
             self.help()

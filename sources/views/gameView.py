@@ -26,6 +26,9 @@ class gameView() :
 
 
     def __init__(self):
+        """
+        init function
+        """
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
         self.header = True
@@ -49,6 +52,9 @@ class gameView() :
         self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, lambda : main_game.tuto.next("present"), text="Jouer")
 
     def update(self, events) :
+        """
+        Update function
+        """
         main_game.screen.fill('white')
 
         ground_rect = self.ground.get_rect()
