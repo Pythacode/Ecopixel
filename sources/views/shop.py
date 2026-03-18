@@ -13,6 +13,10 @@ from game import*
 class shopView():
     def __init__ (self):
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "image", "item", "items.json"]))
+        self.items = json.load(tilsetJsonFile)
+        self.header = True
+        self.previous_view = None
+        
         
         self.image_arrosoir,self.rect_arrosoir = img(160*1.5,160, (200, 150),"item","arrosoir.png")
         self.image_rupture_arrosoir,self.rect_rupture_arrosoir = img(288,288, (200,150),"shop","Rupture.png")
@@ -37,9 +41,11 @@ class shopView():
         self.upgrade3_btn = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (1000,650), 192, 192/2, self.Amelioration3,"Ameliorer la Maison")
         self.Retour_btn = button(os.sep.join([main_game.asset_doc, "image", "icon", "back.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "back.png"]), os.sep.join([main_game.asset_doc, "image", "icon", "back.png"]), (40,60), 50, 50/2, self.Retour,"")
 
-        self.items = json.load(tilsetJsonFile)
-        self.header = True
-        self.previous_view = None
+        self.prix_arrosoir_btn = button(os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), (400,150), 50, 50/2, self.Rien,"prix : "+str(self.items[0]["price"]))
+        self.prix_fertilizer_btn = button(os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), (800,150), 50, 50/2, self.Rien,"prix : "+str(self.items[1]["price"]))
+        self.prix_upgrade1_btn = button(os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), (400,450), 50, 50/2, self.Rien,"prix : "+str(self.items[2]["price"]))
+        self.prix_upgrade2_btn = button(os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), (800,450), 50, 50/2, self.Rien,"prix : "+str(self.items[3]["price"]))
+        self.prix_upgrade3_btn = button(os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), os.sep.join([main_game.asset_doc, "image", "item", "fond.png"]), (1200,450), 50, 50/2, self.Rien,"prix : "+str(self.items[4]["price"]))
 
         self.buy_cooldown = 0
 
@@ -50,9 +56,12 @@ class shopView():
         main_game.screen.blit(self.image_fertilizer,self.rect_fertilizer)
         main_game.screen.blit(self.image_house2,self.rect_house2)
         self.arrosoir_btn.update(main_game.screen)
+        self.prix_arrosoir_btn.update(main_game.screen)
         self.fertilizer_btn.update(main_game.screen)
+        self.prix_fertilizer_btn.update(main_game.screen)
         self.vendre_btn.update(main_game.screen)
         self.upgrade1_btn.update(main_game.screen)
+        self.prix_upgrade1_btn.update(main_game.screen)
         self.Retour_btn.update(main_game.screen)
         if main_game.player.arrosoir == True:
             main_game.screen.blit(self.image_rupture_arrosoir,self.rect_rupture_arrosoir)
@@ -60,10 +69,12 @@ class shopView():
             main_game.screen.blit(self.image_rupture_house2,self.rect_rupture_house2)
             main_game.screen.blit(self.image_house3,self.rect_house3)
             self.upgrade2_btn.update(main_game.screen)
+            self.prix_upgrade2_btn.update(main_game.screen)
         if main_game.house.lvl >= 3:
             main_game.screen.blit(self.image_rupture_house3,self.rect_rupture_house3)
             main_game.screen.blit(self.image_house4,self.rect_house4)
             self.upgrade3_btn.update(main_game.screen)
+            self.prix_upgrade3_btn.update(main_game.screen)
         if main_game.house.lvl == 4:
             main_game.screen.blit(self.image_rupture_house4,self.rect_rupture_house4)
 
@@ -104,3 +115,6 @@ class shopView():
     def Retour(self):
         main_game.save()
         main_game.change_view(self.previous_view)
+
+    def Rien(self):
+        return None
