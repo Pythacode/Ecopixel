@@ -70,7 +70,7 @@ class shopView():
 
     def img(self,width,height,position,dossier,png):
         """
-        Données pour la fonction img:
+        Affiche une image sur la fenêtre
 
         :param width: Largeur de l'image en int
         :param height: Hauteur de l'image en int
@@ -78,7 +78,6 @@ class shopView():
         :param y: Position verticale de l'image en int
         :param path: Chemin dans les fichier de l'image à afficher en str
         """
-        # Résultat : Affiche une image sur la fenêtre
 
         image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", dossier, png]))
         image = pygame.transform.scale(image, (width,height))
