@@ -353,8 +353,7 @@ class Player() :
             'position' : self.x,
             "offset_x" : main_game.game_view.offset_x
         }
-        message = json.dumps(message)
-        self.client.send(message.encode('utf-8'))
+        main_game.send_message(message)
 
     def move_right(self) :
         self.move = True
