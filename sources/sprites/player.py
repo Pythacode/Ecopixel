@@ -348,6 +348,13 @@ class Player() :
     def move_left(self) :
         self.move = True
         self.x -= self.velocity * main_game.dt
+        message = {
+            "type" : 'move',
+            'position' : self.x,
+            "offset_x" : main_game.game_view.offset_x
+        }
+        message = json.dumps(message)
+        self.client.send(message.encode('utf-8'))
 
     def move_right(self) :
         self.move = True

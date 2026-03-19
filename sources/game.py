@@ -32,17 +32,16 @@ class Game() :
         else :
             serverConfig = {}
 
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))
 
         message = {
             "type" : 'init',
             'version' : '1'
         }
-        message = json.dumps(message)
-        client.send(message.encode('utf-8'))
 
-        data = client.recv(1124).decode('utf-8')
+        self.send_message(message)
+        data = self.client.recv(1124).decode('utf-8')
         data = json.loads(data)
 
         if not data['accept'] :
@@ -50,7 +49,7 @@ class Game() :
             pygame.quit()
             sys.exit()
             
-        data = client.recv(data['data_game_lenght']).decode('utf-8')
+        data = self.client.recv(data['data_game_lenght']).decode('utf-8')
         data = json.loads(data)
 
         if data.get('type', False) == "data_game" :
@@ -87,7 +86,11 @@ class Game() :
 
         pygame.display.set_icon(self.logo) # Défini le logo de la fenêtre avec celui du jeux
         pygame.display.set_caption('Ecopixel') # Défini le titre de la fenêtre
-    
+
+    def send_message(self, msg:dict) :
+        message = json.dumps(msg) + "\n"
+        self.client.send(message.encode('utf-8'))
+
     def change_view(self, new_view) :
         """
         Docstring for change_view

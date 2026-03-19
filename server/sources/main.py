@@ -123,28 +123,45 @@ def init_conn(message, client_socket) :
     client_socket.sendall(data_game_message.encode('utf-8'))
 
 def handle_client(client_socket, address):
-    while client_socket.fileno() != -1:
-        data = client_socket.recv(1024)
-        if not data:
-            break
-        data = json.loads(data)
-        log.log(f"New message receive : \"{data}\" by {address[0]}:{address[1]}")
-        s.dispatch(data, client_socket)
-    client_socket.shutdown(socket.SHUT_RDWR)
+    buffer = ""
+    try :
+        while True:
+            chunk = client_socket.recv(4096).decode('utf-8')
+            if not chunk:
+                break
+            buffer += chunk
+            while "\n" in buffer:
+                line, buffer = buffer.split("\n", 1)
+                data = json.loads(line)
+                log.log(f"New message receive by {address[0]}:{address[1]} : {data}")
+                s.dispatch(data, client_socket)
+    except ConnectionResetError :
+        pass
+    try:
+        client_socket.shutdown(socket.SHUT_RDWR)
+    except OSError:
+        pass
     client_socket.close()
+
+players = []
+server.settimeout(1.0)
 
 try :
     while True:
-        client_socket, address = server.accept()
+        try :
+            client_socket, address = server.accept()
+        except socket.timeout:
+            continue
         log.log(f"New connection of {address[0]}:{address[1]}")
+        players.append(client_socket)
         thread = threading.Thread(target=handle_client, args=(client_socket, address))
         thread.daemon = True
         thread.start()
 except KeyboardInterrupt :
     log.log("Close server by user")
-except OSError :
-    log.error("Close server by OSError")
+except OSError as e:
+    log.error(f"Close server by OSError : {e}")
 except Exception as e :
-    log.error(f"Server close by {e} error")
+    log.error(f"Close server by {e} error")
 finally :
     server.close()
