@@ -5,3 +5,6 @@ venv
 asset-create-files
 data_game.json
 .vscode/settings.json
+*config.json
+*server*
+logs
