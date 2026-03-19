@@ -136,13 +136,17 @@ class gameView() :
         x = main_game.player.x - self.offset_x
 
         # Display action touche
-        # If distance between center of house & shop < half of his :
+        # If distance between center of house & shop < half of his size :
         #     display_action_touch
         if (abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2) or (abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2):
             img = pygame.transform.scale(self.eimg, (72, 72))
             rect = img.get_rect()
             rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+            pos = (main_game.player.x + 48, height - ground_rect[3] - 290)
             main_game.screen.blit(img, rect)
+            font = pygame.font.Font(main_game.main_font_name, 48) # Charge la police
+            text = font.render(pygame.key.name(main_game.key_action), True, 'black')
+            main_game.screen.blit(text, pos)
 
         if main_game.touch_pressed.get(main_game.key_action, False) :
             
@@ -168,7 +172,7 @@ class gameView() :
                     x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
                     # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
                     t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-                    if len(t) == 0 : # Verrifier si elle est vide
+                    if len(t) == 0 : # Vérifier si elle est vide
                         main_game.tuto.next("plant")
                         main_game.player.plant_act()
                         main_game.player.sprout -= 1
