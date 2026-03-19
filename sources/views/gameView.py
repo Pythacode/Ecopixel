@@ -12,6 +12,7 @@ import os
 from sprites.tree import Tree
 from buildings.house import House
 from buildings.shop_place import Shop_place
+from sprites.cloud import Cloud
 
 class gameView() :
 
@@ -46,10 +47,14 @@ class gameView() :
         self.s = Shop_place(-500)
         self.eimg = pygame.image.load(os.sep.join([main_game.asset_doc,"image","button","Ebtn.png"]))
 
+        self.clouds = [Cloud() for i in range(0,1000)]
+
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
         self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, lambda : main_game.tuto.next("present"), text="Jouer")
+
+        self.cloud1 = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "background", "cloud1.png"]))
 
     def update(self, events) :
         """
@@ -68,6 +73,9 @@ class gameView() :
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]       
 
+        for cloud in self.clouds:
+            cloud.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
         self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         self.s.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
@@ -75,7 +83,6 @@ class gameView() :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         for fruit in self.fruits :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
         # Open Pause Menu
@@ -185,6 +192,7 @@ class gameView() :
                         main_game.player.say('Trop proche :/', 2_000)
                 else :
                     main_game.player.say("Pas de pousse :/", 2_000)
+
 
         for event in events :
             if event.type == pygame.KEYDOWN:
