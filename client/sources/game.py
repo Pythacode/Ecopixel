@@ -10,6 +10,8 @@
 import pygame
 import os
 import json
+import sys
+import socket
 
 pygame.init()
 
@@ -23,11 +25,42 @@ class Game() :
                                                       'data' # Dossier data
                                                     ])) # Obligatoire pour gérer correctement l'execution depuis n'importe quel répertoire
 
-        if os.path.exists(os.sep.join([self.asset_doc, "data_game.json"])) : # Si une sauvegarde exsiste
-            dataJsonfile = open(os.sep.join([self.asset_doc, "data_game.json"]), 'r') # On ouvre le fichier
-            self.data = json.load(dataJsonfile) # On charge la sauvegarde dans le dictionnaire `self.data`
+        # Connection au serveur
+        if os.path.exists(os.sep.join([self.asset_doc, "server_config.json"])) :
+            serverJsonfile = open(os.sep.join([self.asset_doc, "server_config.json"]), 'r') 
+            serverConfig = json.load(serverJsonfile)
         else :
-            self.data = {} # Sinon on enregistre un dictionnaire vide pour `self.data`
+            serverConfig = {}
+
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))
+
+        message = {
+            "type" : 'init',
+            'version' : '1'
+        }
+        message = json.dumps(message)
+        client.send(message.encode('utf-8'))
+
+        data = client.recv(1124).decode('utf-8')
+        data = json.loads(data)
+
+        if not data['accept'] :
+            print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
+            pygame.quit()
+            sys.exit()
+            
+        data = client.recv(data['data_game_lenght']).decode('utf-8')
+        data = json.loads(data)
+
+        if data.get('type', False) == "data_game" :
+            self.data = data.get("data", {})
+            username = input("Enter username\n> ")
+            self.data["player"] = self.data.get("players", {}).get(username, {})
+            if self.data.get("players", False) : del self.data["players"]
+        else :
+            sys.exit(1)
+
 
         # Crée un écran pygame 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)

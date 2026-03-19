@@ -92,9 +92,24 @@ log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 def init_conn(message, client_socket) :
     compatible_version = ['1']
     if message['version'] in compatible_version :
+        
+        try :
+            sauv_file = open(os.sep.join([dataFolder, "json", "data_game.json"]))
+            sauv = json.load(sauv_file)
+        except FileNotFoundError :
+            log.error("Sauv file doesn't exsist. Use empty sauv")
+            sauv = {}
+
+        data_game_message = {
+            "type": "data_game",
+            "data" : sauv
+        }
+        data_game_message = json.dumps(data_game_message) + "\n"
+
         message = {
             "type": "init",
-            "accept" : True
+            "accept" : True,
+            "data_game_lenght": len(data_game_message)
         }
     else :
         message = {
@@ -104,8 +119,8 @@ def init_conn(message, client_socket) :
 
     json_connexion_message = json.dumps(message) + "\n"
     client_socket.sendall(json_connexion_message.encode('utf-8'))
-    client_socket.shutdown(socket.SHUT_RDWR)
-    client_socket.close()
+
+    client_socket.sendall(data_game_message.encode('utf-8'))
 
 def handle_client(client_socket, address):
     while client_socket.fileno() != -1:
@@ -115,6 +130,7 @@ def handle_client(client_socket, address):
         data = json.loads(data)
         log.log(f"New message receive : \"{data}\" by {address[0]}:{address[1]}")
         s.dispatch(data, client_socket)
+    client_socket.shutdown(socket.SHUT_RDWR)
     client_socket.close()
 
 try :
