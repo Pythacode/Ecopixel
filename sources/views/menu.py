@@ -32,9 +32,6 @@ class menuView():
         # Quit button init
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (640, 660), 48*4, 24*4, self.QuitButton_Pressed, text="")
 
-        # Shop button init
-        self.shopbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 560), 48*4, 24*4, self.ShopButton_Pressed, text="Shop")
-
         # Settings button init
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (640, 460), 48*4, 24*4, self.settingsButton_Pressed)
 
@@ -51,9 +48,6 @@ class menuView():
         babysfx = pygame.mixer.Sound(os.sep.join([main_game.asset_doc, "sfx", "BabyNoise.mp3"]))
         babysfx.play()
 
-    def ShopButton_Pressed(self):
-        main_game.change_view(main_game.shop_view)
-
     def settingsButton_Pressed(self):
         main_game.change_view(main_game.settings_view)
 
@@ -67,7 +61,6 @@ class menuView():
         self.logo.update(main_game.screen, ((width/2) - (self.logo.rect[2]), 200))
         self.playbutton.update(main_game.screen, ((width/2), 360))
         self.quitbutton.update(main_game.screen, ((width/2), 460))
-        self.shopbutton.update(main_game.screen, ((width/2), 560))
-        self.settingsButton.update(main_game.screen, ((width/2), 660))
+        self.settingsButton.update(main_game.screen, ((width/2), 560))
 
         
