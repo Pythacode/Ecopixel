@@ -343,11 +343,12 @@ def draw_header() :
         coin_count = font.render(label, True, 'white')
         main_game.screen.blit(coin_count, (width - start_pos + 30, 3))
 
-        image_arrosoir,rect_arrosoir = img(45,30, (840, 20),"item","arrosoir.png")
-        if main_game.player.arrosoir == True :
-            main_game.screen.blit(image_arrosoir,rect_arrosoir)
-
         start_pos += 20 # Gap betwen count
+
+        image_arrosoir,rect_arrosoir = img(45,30, (width - start_pos - 20, 20),"item","arrosoir.png")
+    if main_game.player.arrosoir == True :
+        main_game.screen.blit(image_arrosoir,rect_arrosoir)
+
 
 
         

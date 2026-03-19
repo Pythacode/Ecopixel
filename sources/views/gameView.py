@@ -12,6 +12,8 @@ import os
 from sprites.tree import Tree
 from buildings.house import House
 from buildings.shop_place import Shop_place
+from sprites.cloud import Cloud
+from sprites.moutain import Mountain
 
 class gameView() :
 
@@ -46,10 +48,15 @@ class gameView() :
         self.s = Shop_place(-500)
         self.eimg = pygame.image.load(os.sep.join([main_game.asset_doc,"image","button","Ebtn.png"]))
 
+        self.clouds = [Cloud() for i in range(1000)]
+        self.mountains = [Mountain() for i in range(250)]
+
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
         self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
         self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, lambda : main_game.tuto.next("present"), text="Jouer")
+
+        self.cloud1 = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "background", "cloud1.png"]))
 
     def update(self, events) :
         """
@@ -68,6 +75,11 @@ class gameView() :
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]       
 
+        for cloud in self.clouds:
+            cloud.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        for mountain in self.mountains:
+            mountain.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
         self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         self.s.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
@@ -75,7 +87,6 @@ class gameView() :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         for fruit in self.fruits :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
         # Open Pause Menu
@@ -136,13 +147,17 @@ class gameView() :
         x = main_game.player.x - self.offset_x
 
         # Display action touche
-        # If distance between center of house & shop < half of his :
+        # If distance between center of house & shop < half of his size :
         #     display_action_touch
         if (abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2) or (abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2):
             img = pygame.transform.scale(self.eimg, (72, 72))
             rect = img.get_rect()
             rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+            pos = (main_game.player.x + 48, height - ground_rect[3] - 290)
             main_game.screen.blit(img, rect)
+            font = pygame.font.Font(main_game.main_font_name, 48) # Charge la police
+            text = font.render(pygame.key.name(main_game.key_action), True, 'black')
+            main_game.screen.blit(text, pos)
 
         if main_game.touch_pressed.get(main_game.key_action, False) :
             
@@ -168,7 +183,7 @@ class gameView() :
                     x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
                     # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
                     t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-                    if len(t) == 0 : # Verrifier si elle est vide
+                    if len(t) == 0 : # Vérifier si elle est vide
                         main_game.tuto.next("plant")
                         main_game.player.plant_act()
                         main_game.player.sprout -= 1
@@ -181,6 +196,7 @@ class gameView() :
                         main_game.player.say('Trop proche :/', 2_000)
                 else :
                     main_game.player.say("Pas de pousse :/", 2_000)
+
 
         for event in events :
             if event.type == pygame.KEYDOWN:
