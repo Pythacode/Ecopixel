@@ -39,14 +39,14 @@ class loggeur() :
 
     def error(self, message) :
         now = datetime.now()
-        time = now.strftime("%d/%m/%Y %H:%M:%S")
+        time = now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         message = f"[{time}] [ERROR] : {message}\n"
         self.file.write(message)
         print(Fore.RED, message, Fore.RESET, sep="", end="")
 
     def log(self, message) :
         now = datetime.now()
-        time = now.strftime("%d/%m/%Y %H:%M:%S")
+        time = now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         message = f"[{time}] [INFO] : {message}\n"
         self.file.write(message)
         print(message, end="")

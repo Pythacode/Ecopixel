@@ -12,6 +12,11 @@ import os
 import json
 import sys
 import socket
+import queue
+import threading
+
+inbox = queue.Queue()   # messages reçus du serveur
+outbox = queue.Queue()  # messages à envoyer au serveur
 
 pygame.init()
 
@@ -25,38 +30,24 @@ class Game() :
                                                       'data' # Dossier data
                                                     ])) # Obligatoire pour gérer correctement l'execution depuis n'importe quel répertoire
 
-        # Connection au serveur
-        if os.path.exists(os.sep.join([self.asset_doc, "server_config.json"])) :
-            serverJsonfile = open(os.sep.join([self.asset_doc, "server_config.json"]), 'r') 
-            serverConfig = json.load(serverJsonfile)
-        else :
-            serverConfig = {}
-
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))
-
         message = {
             "type" : 'init',
             'version' : '1'
         }
-
-        self.send_message(message)
-        data = self.client.recv(1124).decode('utf-8')
-        data = json.loads(data)
+        
+        outbox.put(message)
+        data = inbox.get()
 
         if not data['accept'] :
             print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
             pygame.quit()
             sys.exit()
-            
-        data = self.client.recv(data['data_game_lenght']).decode('utf-8')
-        data = json.loads(data)
+        
+        outbox.put(message)
+        data = inbox.get()
 
         if data.get('type', False) == "data_game" :
             self.data = data.get("data", {})
-            username = input("Enter username\n> ")
-            self.data["player"] = self.data.get("players", {}).get(username, {})
-            if self.data.get("players", False) : del self.data["players"]
         else :
             sys.exit(1)
 
@@ -455,6 +446,47 @@ def img(width,height,position,dossier,png):
     rect = image.get_rect()
     rect.center = position
     return image, rect
+
+inbox = queue.Queue()   # messages reçus du serveur
+outbox = queue.Queue()  # messages à envoyer au serveur
+
+def network_thread():
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    serverJsonPath = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
+                                                      '..', # Remonte d'un répertoir (Répertoir source)
+                                                      'data', # Dossier data
+                                                      "server_config.json"
+                                                    ]))
+
+    if os.path.exists(serverJsonPath) :
+        serverJsonfile = open(serverJsonPath, 'r') 
+        serverConfig = json.load(serverJsonfile)
+    else :
+        serverConfig = {}
+    client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))  
+
+    # Thread d'envoi
+    def send_loop():
+        while True:
+            data = outbox.get()  # attend qu'un message soit à envoyer
+            message = json.dumps(data) + "\n"
+            client.sendall(message.encode('utf-8'))
+
+    threading.Thread(target=send_loop, daemon=True).start()
+
+    # Réception dans ce thread
+    buffer = ""
+    while True:
+        chunk = client.recv(4096).decode('utf-8')
+        if not chunk:
+            break
+        buffer += chunk
+        while "\n" in buffer:
+            line, buffer = buffer.split("\n", 1)
+            inbox.put(json.loads(line))
+
+threading.Thread(target=network_thread, daemon=True).start()
 
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 

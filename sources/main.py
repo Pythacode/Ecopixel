@@ -19,6 +19,13 @@ while main_game.running:
 
         events = pygame.event.get()
 
+        try:
+            while True:
+                message = inbox.get_nowait()
+                # traitement
+        except queue.Empty:
+            pass
+
         # Écout des évenement
         for event in events:
             # Quand l'utilisateur ferme la fenetre
