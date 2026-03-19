@@ -8,8 +8,35 @@
 import pygame
 import json
 from game import *
+import socket
+import sys
 
 last_frame = 0
+
+# Connection au serveur
+if os.path.exists(os.sep.join([main_game.asset_doc, "server_config.json"])) :
+    serverJsonfile = open(os.sep.join([main_game.asset_doc, "server_config.json"]), 'r') 
+    serverConfig = json.load(serverJsonfile)
+else :
+    serverConfig = {}
+
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))
+
+message = {
+    "type" : 'init',
+    'version' : '1'
+}
+message = json.dumps(message)
+client.send(message.encode('utf-8'))
+
+messagerecv = client.recv(1124).decode('utf-8')
+messagerecv = json.loads(messagerecv)
+
+if not messagerecv['accept'] :
+    print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
+    pygame.quit()
+    sys.exit()
 
 # Boucle principal du jeu
 while main_game.running:
