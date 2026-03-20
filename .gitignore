@@ -3,7 +3,8 @@ __pycache__
 *.pyc
 venv
 asset-create-files
-data_game.json
+sauv_game.json
 .vscode/settings.json
 logs
 *config.json
+*settings*

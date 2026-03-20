@@ -9,10 +9,10 @@ from game import main_game
 import pygame
 
 class Tuto() :
-    def __init__(self):
+    def __init__(self, advencement):
         
         self.steps = ["present", "search", "plant", "recolte", "buy", "Finish"]
-        self.advencement = main_game.data.get('game', {}).get('tuto_advancement', 0)
+        self.advencement = advencement
         self.messages = {
             "present" : f"Bienvenu sur Écopixel.\nNous allons te guider pas à pas pour que tu aprenne à jouer. Si tu est bloqué·e, appuie sur la touche {pygame.key.name(main_game.key_help)}.",
             "search" : f"Vas devant ta maison et appuie sur {pygame.key.name(main_game.key_action)}, ensuite, fait des recherches pour gagner des pousses ",

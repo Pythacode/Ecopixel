@@ -15,9 +15,6 @@ import socket
 import queue
 import threading
 
-inbox = queue.Queue()   # messages reçus du serveur
-outbox = queue.Queue()  # messages à envoyer au serveur
-
 pygame.init()
 
 class Game() :
@@ -30,27 +27,7 @@ class Game() :
                                                       'data' # Dossier data
                                                     ])) # Obligatoire pour gérer correctement l'execution depuis n'importe quel répertoire
 
-        message = {
-            "type" : 'init',
-            'version' : '1'
-        }
-        
-        outbox.put(message)
-        data = inbox.get()
-
-        if not data['accept'] :
-            print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
-            pygame.quit()
-            sys.exit()
-        
-        outbox.put(message)
-        data = inbox.get()
-
-        if data.get('type', False) == "data_game" :
-            self.data = data.get("data", {})
-        else :
-            sys.exit(1)
-
+        self.jsonPath = os.sep.join([self.asset_doc, 'json'])
 
         # Crée un écran pygame 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -65,18 +42,27 @@ class Game() :
         self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la flèche retour
         self.player = None # Variable joueur, idem que pour `current_view`
         self.house = None # Variable maison
+
+        if os.path.exists(os.sep.join([self.jsonPath, "settings.json"])) :
+            settings = open(os.sep.join([self.jsonPath, "settings.json"]), 'r')
+            settings = json.load(settings)
+        else :
+            settings = {}
         
-        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnaire `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnaire vide
-        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
-        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
-        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
+        self.key_move_right = settings.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_move_left = settings.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
+        self.key_action = settings.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
+        self.key_pause = settings.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_save = settings.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
+        self.key_back = settings.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
+        self.key_help = settings.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
 
         pygame.display.set_icon(self.logo) # Défini le logo de la fenêtre avec celui du jeux
         pygame.display.set_caption('Ecopixel') # Défini le titre de la fenêtre
+        
+        self.inbox = queue.Queue()   # messages reçus du serveur
+        self.outbox = queue.Queue()  # messages à envoyer au serveur
+        self.connect = False
 
     def send_message(self, msg:dict) :
         message = json.dumps(msg) + "\n"
@@ -88,6 +74,9 @@ class Game() :
         
         :param new_view: new view
         """
+        if isinstance(new_view, type) :
+            new_view = new_view()
+            
         self.screen.fill('black')
         new_view.previous_view = self.current_view
         self.current_view = new_view
@@ -107,7 +96,7 @@ class Game() :
         pygame.display.flip() # Actualise l'affichage
 
         # Crée un dictionnaire avec les données à sauvegarder
-        data = {
+        sauv = {
                 'player' : 
                     {
                         'x' : self.player.x,
@@ -120,15 +109,6 @@ class Game() :
                         'plant' : self.player.plant,
                         'fruits': self.player.fruits,
                         'arrosoir': self.player.arrosoir
-                    },
-                'settings' :
-                    {
-                        'key_move_right' : self.key_move_right,
-                        'key_move_left' : self.key_move_left,
-                        'key_action' : self.key_action,
-                        'key_pause' : self.key_pause,
-                        'key_sauv' : self.key_save,
-                        'key_back' : self.key_back,
                     },
                 'game' :
                     {
@@ -158,9 +138,47 @@ class Game() :
                         'tuto_advancement' : self.tuto.advencement
                     }
             }
+        
+        settings = {
+                    'key_move_right' : self.key_move_right,
+                    'key_move_left' : self.key_move_left,
+                    'key_action' : self.key_action,
+                    'key_pause' : self.key_pause,
+                    'key_sauv' : self.key_save,
+                    'key_back' : self.key_back,
+                }
 
-        with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
-            json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+        with open(os.sep.join([self.asset_doc, 'sauv_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+            json.dump(sauv, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+
+        with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+            json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+
+    def network_thread(self, port, hostname):
+        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        client.connect((hostname, port))  
+        self.connect = True
+
+        # Thread d'envoi
+        def send_loop():
+            while True:
+                data = self.outbox.get()  # attend qu'un message soit à envoyer
+                message = json.dumps(data) + "\n"
+                client.sendall(message.encode('utf-8'))
+
+        threading.Thread(target=send_loop, daemon=True).start()
+
+        # Réception dans ce thread
+        buffer = ""
+        while True:
+            chunk = client.recv(4096).decode('utf-8')
+            if not chunk:
+                break
+            buffer += chunk
+            while "\n" in buffer:
+                line, buffer = buffer.split("\n", 1)
+                self.inbox.put(json.loads(line))
             
 class button():
 
@@ -460,47 +478,6 @@ def img(width,height,position,dossier,png):
     rect.center = position
     return image, rect
 
-inbox = queue.Queue()   # messages reçus du serveur
-outbox = queue.Queue()  # messages à envoyer au serveur
-
-def network_thread():
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    serverJsonPath = os.path.abspath(os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
-                                                      '..', # Remonte d'un répertoir (Répertoir source)
-                                                      'data', # Dossier data
-                                                      "server_config.json"
-                                                    ]))
-
-    if os.path.exists(serverJsonPath) :
-        serverJsonfile = open(serverJsonPath, 'r') 
-        serverConfig = json.load(serverJsonfile)
-    else :
-        serverConfig = {}
-    client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("PORT", 2123)))  
-
-    # Thread d'envoi
-    def send_loop():
-        while True:
-            data = outbox.get()  # attend qu'un message soit à envoyer
-            message = json.dumps(data) + "\n"
-            client.sendall(message.encode('utf-8'))
-
-    threading.Thread(target=send_loop, daemon=True).start()
-
-    # Réception dans ce thread
-    buffer = ""
-    while True:
-        chunk = client.recv(4096).decode('utf-8')
-        if not chunk:
-            break
-        buffer += chunk
-        while "\n" in buffer:
-            line, buffer = buffer.split("\n", 1)
-            inbox.put(json.loads(line))
-
-threading.Thread(target=network_thread, daemon=True).start()
-
 # INSEREZ LES CLASSES ET FONCTIONS ICI
 
 main_game = Game(
@@ -508,9 +485,6 @@ main_game = Game(
     HEIGHT=720
 ) # Garder ici avant l'import, sinon main_game ne seras pas defini
 # Permet de créer main_game, dont menuView à besoin
-
-from tuto import Tuto
-main_game.tuto = Tuto()
 
 from views.menu import menuView
 from views.gameView import gameView
@@ -520,12 +494,11 @@ from views.setting import settingView
 from views.server import serverView
 from sprites.player import Player
 
-main_game.menu_view = menuView()
-#main_game.game_view = gameView()
-main_game.search_view = searchView()
-main_game.shop_view = shopView()
-main_game.settings_view = settingView()
-main_game.server_view = serverView()
+main_game.menu_view = menuView
+main_game.game_view = gameView
+main_game.search_view = searchView
+main_game.shop_view = shopView
+main_game.settings_view = settingView
+main_game.server_view = serverView
 
 main_game.change_view(main_game.menu_view)
-#main_game.player = Player(main_game.screen.get_size()[0] / 2)

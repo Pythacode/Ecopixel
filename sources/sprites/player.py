@@ -267,7 +267,14 @@ class Player() :
         self.move_skin_list = (self.run0, self.run1, self.run2, self.run3, self.run4, self.run5, self.run6, self.run7)
         self.plant_skin_list = (self.plant0, self.plant1, self.plant2, self.plant3, self.plant4, self.plant5, self.plant6, self.plant7, self.plant8, self.plant9, self.plant10, self.plant11, self.plant12, self.plant13, self.plant14)
 
-        outbox.put({"type":"get_info_player", "username":input("Username\n>")})
+        if main_game.connect :
+            pass
+        else :
+            if os.path.exists(os.sep.join([main_game.jsonPath, "data_game.json"])) :
+                playerdata = open(os.sep.join([main_game.jsonPath, "data_game.json"], 'r'))
+                playerdata = json.load(self.data)
+            else :
+                playerdata = {}
 
         self.actual_skin = self.idle0
         self.skin_index = playerdata.get('skin_index', 0)
@@ -348,12 +355,6 @@ class Player() :
     def move_left(self) :
         self.move = True
         self.x -= self.velocity * main_game.dt
-        message = {
-            "type" : 'move',
-            'position' : self.x,
-            "offset_x" : main_game.game_view.offset_x
-        }
-        outbox.put(message)
 
     def move_right(self) :
         self.move = True

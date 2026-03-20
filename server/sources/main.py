@@ -94,7 +94,7 @@ def init_conn(message, client_socket) :
     if message['version'] in compatible_version :
         
         try :
-            sauv_file = open(os.sep.join([dataFolder, "json", "data_game.json"]))
+            sauv_file = open(os.sep.join([dataFolder, "json", "sauv_game.json"]))
             sauv = json.load(sauv_file)
         except FileNotFoundError :
             log.error("Sauv file doesn't exsist. Use empty sauv")

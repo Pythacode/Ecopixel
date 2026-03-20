@@ -1,0 +1,23 @@
+{
+    "player": {
+        "x": 640.0,
+        "y": 0,
+        "money": 0,
+        "sprout": 0,
+        "fertilizer": 0,
+        "orientation": "RIGHT",
+        "skin_index": 0,
+        "plant": false,
+        "fruits": 0,
+        "arrosoir": false
+    },
+    "game": {
+        "offset_x": 0,
+        "wait_tree": null,
+        "trees": [],
+        "house": {
+            "lvl": 1
+        },
+        "tuto_advancement": 0
+    }
+}

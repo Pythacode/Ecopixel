@@ -21,7 +21,7 @@ while main_game.running:
 
         try:
             while True:
-                message = inbox.get_nowait()
+                message = main_game.inbox.get_nowait()
                 # traitement
         except queue.Empty:
             pass

@@ -16,7 +16,7 @@ class serverView():
         pygame.init()
 
         # Join button init
-        self.serverbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 600), 48*4, 24*4, self.serverButton_Pressed, text="Jouer")
+        self.serverbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (640, 600), 48*4, 24*4, self.connect, text="Jouer")
         
         width, height = main_game.screen.get_size() 
         self.width_cont = 500
@@ -30,7 +30,7 @@ class serverView():
         self.username_entry = entry_text(main_game.screen, 'black', (width/2-self.width_cont/2, 380), (self.width_cont, 40), 2, 25, self.font, backround_color='white')
         self.password_entry = entry_text(main_game.screen, 'black', (width/2-self.width_cont/2, 480), (self.width_cont, 40), 2, 25, self.font, backround_color='white', replace="·")
 
-        serverJsonPath = os.path.sep.join([main_game.asset_doc, "server_config.json"])
+        serverJsonPath = os.sep.join([main_game.asset_doc, 'json' 'server_config.json'])
 
         if os.path.exists(serverJsonPath) :
             serverJsonfile = open(serverJsonPath, 'r') 
@@ -43,6 +43,34 @@ class serverView():
 
         self.header = False
         self.previous_view = None
+
+    def connect(self) :
+        port = int(''.join(self.port_entry.text))
+        hostname = ''.join(self.hostname_entry.text)
+        data = {
+                "HOST" : hostname,
+                "PORT" : port
+            }
+
+        with open(os.sep.join([main_game.asset_doc, 'json' 'server_config.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de config
+            json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+
+        threading.Thread(target=main_game.network_thread, args=(port, hostname), daemon=True).start()
+
+        message = {
+            "type" : 'init',
+            'version' : '1'
+        }
+        
+        main_game.outbox.put(message)
+        data = main_game.inbox.get()
+
+        if not data['accept'] :
+            print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
+            pygame.quit()
+            sys.exit()
+
+        main_game.change_view(main_game.game_view)
 
     def serverButton_Pressed(self):
         main_game.change_view(main_game.server_view)

@@ -14,6 +14,9 @@ from buildings.house import House
 from buildings.shop_place import Shop_place
 from sprites.cloud import Cloud
 from sprites.moutain import Mountain
+from sprites.player import Player
+
+from tuto import Tuto
 
 class gameView() :
 
@@ -31,11 +34,22 @@ class gameView() :
         """
         init function
         """
+
+        main_game.player = Player(main_game.screen.get_size()[0] / 2)
+
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
         self.header = True
         self.pause = False
-        gamedata = main_game.data.get('game', {})
+
+        if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) :
+            gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"], 'r'))
+            gamedata = json.load(self.data).get('game', {})
+        else :
+            gamedata = {}
+        
+        main_game.tuto = Tuto(gamedata.get('tuto_advancement', 0))
+
         self.offset_x = gamedata.get('offset_x', 0)
         self.trees = []
         for tree in gamedata.get('trees', []) :
