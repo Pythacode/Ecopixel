@@ -214,7 +214,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
+    def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color=(0, 0, 0, 0), replace=None):
         """
         A entry text
         
@@ -245,19 +245,32 @@ class entry_text() :
         self.last_change = 0
         self.cursor = True
         self.cursor_index = 0
+        self.backround_color = backround_color
+        self.replace=replace
     
-    def update(self, events:list) :
+    def update(self, events:list, pos=None, size=None) :
         """
         Update function
         
         :param events: List of pygame evenements
         :type events: list
         """
+        if pos :
+            x, y = pos
+            self.search_zone[0:2] = pos
+        else :
+            x, y = self.x, self.y
+
+        if size :
+            self.search_zone[2:4] = size
+
         return_value = None
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP:
                 if self.search_zone.collidepoint(event.pos):
                     self.active = True
+                else :
+                    self.active = False
             if self.active :
                 if event.type == pygame.KEYDOWN :
                     if event.key == pygame.K_RETURN:
@@ -286,18 +299,18 @@ class entry_text() :
                 self.cursor = not self.cursor
                 self.last_change = now
             
-            text = self.text[:]
-            text = ''.join(text)
-
-        else :
-            text = ''.join(self.text)
+        text = ''.join(self.text)
         
+        if self.replace :
+            text = self.replace * len(text)
+
+        pygame.draw.rect(self.surface, self.backround_color, self.search_zone, border_radius=self.border_radius)
         pygame.draw.rect(self.surface, self.color, self.search_zone, self.width, border_radius=self.border_radius)
         search_text = self.font.render(text, True, 'black')
-        self.surface.blit(search_text, (self.x+10, self.y+5))
+        self.surface.blit(search_text, (x+10, y+5))
         if self.cursor and self.active :
             cursor = self.font.render("|", True, 'black')
-            self.surface.blit(cursor, (self.x + 10 + self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), self.y+5))
+            self.surface.blit(cursor, (x + 10 + self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), y+5))
 
         return return_value
 
@@ -464,7 +477,7 @@ def network_thread():
         serverConfig = json.load(serverJsonfile)
     else :
         serverConfig = {}
-    client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("IP", 2123)))  
+    client.connect((serverConfig.get("HOST", "127.0.0.1"), serverConfig.get("PORT", 2123)))  
 
     # Thread d'envoi
     def send_loop():
@@ -504,14 +517,15 @@ from views.gameView import gameView
 from views.searchEngine import searchView
 from views.shop import shopView
 from views.setting import settingView
+from views.server import serverView
 from sprites.player import Player
 
 main_game.menu_view = menuView()
-main_game.game_view = gameView()
+#main_game.game_view = gameView()
 main_game.search_view = searchView()
 main_game.shop_view = shopView()
 main_game.settings_view = settingView()
+main_game.server_view = serverView()
 
 main_game.change_view(main_game.menu_view)
-main_game.player = Player(main_game.screen.get_size()[0] / 2)
-main_game.house = main_game.game_view.h
+#main_game.player = Player(main_game.screen.get_size()[0] / 2)

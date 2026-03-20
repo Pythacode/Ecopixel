@@ -83,7 +83,7 @@ except FileNotFoundError :
     log.error("Config file doesn't exsist. Use default config")
     config = {}
 
-server.bind((config.get("HOST", "0.0.0.0"), config.get("IP", 2123)))
+server.bind((config.get("HOST", "0.0.0.0"), config.get("PORT", 2123)))
 server.listen(5)
 
 log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
