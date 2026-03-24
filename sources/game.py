@@ -33,24 +33,24 @@ class Game() :
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None # Défini la vue actuelle à aucune (Les vues on besoin de main_game, impossible donc de les appelé sans avoir créé l'élément)
         
-        self.running = True # Variable qui définie si la boucle principal (dans `main.py` s'arrete ou non)
+        self.running = True # Variable qui définie si la boucle principale (dans `main.py`) s'arrete ou non
         self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) # Chemin de la police de base
         self.scroll_y = 0 # Valeur du scroll vertical
         self.scroll_x = 0 # Valeur du scroll horizontal
-        self.touch_pressed = {} # Dictionnaire avec toute les touche appuyé
+        self.touch_pressed = {} # Dictionnaire avec toutes les touches appuyées
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"])) # Chemin du logo
         self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la flèche retour
         self.player = None # Variable joueur, idem que pour `current_view`
         self.house = None # Variable maison
         
-        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnaire `self.data` dans settings_data. Si la clé `settings` n'exsiste pas, on enregistre un dictionnaire vide
-        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche q
-        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche d
-        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche o
-        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche echape
-        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnaire `settings_data`. Si elle n'exsiste pas, on charge la valeur par default : le code de la touche h
+        settings_data = self.data.get('settings', {}) # Charge la valeur de la clé `settings` du dictionnaire `self.data` dans settings_data. Si la clé `settings` n'existe pas, on enregistre un dictionnaire vide
+        self.key_move_right = settings_data.get('key_move_right', pygame.K_d) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche d
+        self.key_move_left = settings_data.get('key_move_left', pygame.K_q) # Charge la clé `key_move_left` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche q
+        self.key_action = settings_data.get('key_action', pygame.K_e) # Charge la clé `key_move_right` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche d
+        self.key_pause = settings_data.get('key_pause', pygame.K_ESCAPE) # Charge la clé `key_pause` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche echape
+        self.key_save = settings_data.get('key_sauv', pygame.K_o) # Charge la clé `key_sauv` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche o
+        self.key_back = settings_data.get('key_back', pygame.K_ESCAPE) # Charge la clé `key_back` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche echape
+        self.key_help = settings_data.get('key_help', pygame.K_h) # Charge la clé `key_help` du dictionnaire `settings_data`. Si elle n'existe pas, on charge la valeur par default : le code de la touche h
 
         pygame.display.set_icon(self.logo) # Défini le logo de la fenêtre avec celui du jeux
         pygame.display.set_caption('Ecopixel') # Défini le titre de la fenêtre
@@ -73,7 +73,7 @@ class Game() :
         Un texte "sauvegarde en cours" s'afficheras en bas à droite et l'écran vas freeze le temps de la sauvegarde
         """
         font = pygame.font.Font(self.main_font_name, 24) # Charge la police
-        w, h = font.size('Sauvegarde en cours...') # Optien la taille du texte
+        w, h = font.size('Sauvegarde en cours...') # Obtient la taille du texte
         word_surface = font.render('Sauvegarde en cours...', 0, 'black') # Crée un élément affichable a partir du texte
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
@@ -133,7 +133,7 @@ class Game() :
             }
 
         with open(os.sep.join([self.asset_doc, 'data_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
-            json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+            json.dump(data, f, ensure_ascii=False, indent=4) # Enregistrer les données sous forme de JSON
             
 class button():
 
@@ -425,7 +425,7 @@ def img(width,height,position,dossier,png):
 main_game = Game(
     WIDTH=1280,
     HEIGHT=720
-) # Garder ici avant l'import, sinon main_game ne seras pas defini
+) # Garder ici avant l'import, sinon main_game ne sera pas defini
 # Permet de créer main_game, dont menuView à besoin
 
 from tuto import Tuto

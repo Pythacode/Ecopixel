@@ -99,7 +99,7 @@ class searchView() :
                                     "snippet" : re.sub(CLEAN_HTML_BALISE_REGEX, '',resultat.get('snippet'))
                                 } for resultat in data["query"]["search"]
                             ]
-                } # Suprime les informations inutiles à notre usage
+                } # Supprime les informations inutiles à notre usage
         
         except requests.exceptions.ReadTimeout :
             self.exploit_result = {
