@@ -94,12 +94,12 @@ Il s'agit d'une classe qui ajoute une zone de texte
 
 # Fonctions
 
-- update<br>
-    Fonction à appeller à chaque boucle du jeu, elle actualise la zone de texte.
+## Fonction `update`
+Fonction à appeller à chaque boucle du jeu, elle actualise la zone de texte.
 
-## Fonction draw_header
-
-Fonction qui crée et affiche le header. doit être appelé à chaque tour du jeu.
+## Fonction `draw_header`
+Fonction qui crée et affiche le header. Doit être appelé à chaque tour du jeu ou le header doit être affiché.
+Le header est une bande marron en haut de l'écran, avec des compteur d'argent, de pousse...
 
 # Variables
 

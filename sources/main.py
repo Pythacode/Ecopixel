@@ -1,6 +1,6 @@
 # ------------------------- Fichier Principal -------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
-# Fichier contenant tout le code du moteur de jeu.                       #
+# Fichier contenant tout le code de la boucle principal du jeu.          #
 # Crée par Titouan - https://github.com/Pythacode/                       #
 # License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
 # ---------------------------------------------------------------------- #
