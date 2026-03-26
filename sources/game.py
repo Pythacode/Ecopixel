@@ -187,7 +187,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
+    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
         """
         A entry text
         
@@ -363,7 +363,7 @@ def size_text(text:str, font:pygame.font, max_width:int) -> int:
             count_line += 1
         return y, m_width
 
-def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color, screen:pygame.surface) -> int:
         """
         Draw `text` on `screen` with lines-split for not exceed `max_width`
         Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
