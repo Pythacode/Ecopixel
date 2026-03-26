@@ -6,11 +6,11 @@ Définit les variable & les fonction globale
 - [Classs `Game`](#class-game)
     - [Paramètre](#paramètre)
     - [Attributs](#attribut)
-    - [Fonctions](#fonctions)
+    - [Fonctions](#fonctions-1)
 - [Classe `Button`](#button-class)
     - [init](#func-init)
     - [update](#func-update)
-- [Les fonctions](#fonctions-1)
+- [Les fonctions](#fonctions)
 - [Les variables](#variables)
 
 ## Class Game
@@ -92,10 +92,15 @@ Il s'agit d'une classe qui ajoute une zone de texte
 - `cursor` : Faut-il afficher le curseur
 - `cursor_index` : index du curseur
 
-# Fonctions
+## Fonctions
 
-## Fonction `update`
-Fonction à appeller à chaque boucle du jeu, elle actualise la zone de texte.
+### Fonctions `__init__` : 
+Fonction pour initialiser la zone de texte. Prend en argument la surface ou l'on doit l'afficher, la couleur de la bordure, la position, la taille, la largeur de la bordure, l'arrondi des angles et la police d'affichage.
+
+### Fonction `update`
+Fonction à appeller à chaque boucle du jeu, elle actualise la zone de texte. il faut lui fournur les évènements pygame.[^1]
+
+# Fonctions
 
 ## Fonction `draw_header`
 Fonction qui crée et affiche le header. Doit être appelé à chaque tour du jeu ou le header doit être affiché.
@@ -106,3 +111,5 @@ Le header est une bande marron en haut de l'écran, avec des compteur d'argent, 
 ## Variable main_game
 
 Un élément [Game](#class-game) avec plusieur vues qui sont définis.
+
+[^1]: Plus tard, il faudras fournir les coordonées et la taille. Voir la branche `server` pour plus d'information
