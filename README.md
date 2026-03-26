@@ -21,6 +21,13 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédi
 > [!NOTE]
 > Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre installation, vous devriez peut-être utiliser `python` et `python3 -m pip` à la place.
 
+Version de python sur lequel le pregrammé à été dévelopée / tester :
+
+- Python 3.12.3
+- Python 3.13.3
+- Python 3.13.12
+
+
 ### Avec venv
 
 [Documentation officiel](https://docs.python.org/3/library/venv.html "Documentation officiel venv")

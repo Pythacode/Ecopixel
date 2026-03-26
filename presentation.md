@@ -17,3 +17,7 @@ Par la suite, nous allons présenter notre projet à la journée des talents de 
 - Lucas : Joueurs, pommes, vue du menu, vue du jeux (nuages, montagnes...) et arbres, classe boutton, graphisme...
 - Titouan : Base du jeux et du système de vue, base de la vue du jeux, vue des paramètres et du moteur de recherche. classe des zones de textes et classe main_game. Création du tuto
 - pierrick : Vue du shop et économie
+
+# Usage de l'IA
+
+Nous n'avons pas utilisé d'IA dans le projet
