@@ -58,8 +58,9 @@ class serverView():
         threading.Thread(target=main_game.network_thread, args=(port, hostname), daemon=True).start()
 
         message = {
-            "type" : 'init',
-            'version' : '1'
+            "type" : 'login',
+            'username' : self.username_entry.text,
+            'password' : self.username_entry.text
         }
         
         main_game.outbox.put(message)
