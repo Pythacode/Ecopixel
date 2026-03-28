@@ -86,7 +86,7 @@ try :
     config_file = open(os.sep.join([dataFolder, "json", "config.json"]))
     config = json.load(config_file)
 except FileNotFoundError :
-    log.error("Config file doesn't exsist. Use default config")
+    log.warn("Config file doesn't exsist. Use default config")
     config = {}
 
 server.bind((config.get("HOST", "0.0.0.0"), config.get("PORT", 2123)))
