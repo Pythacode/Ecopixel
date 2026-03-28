@@ -7,7 +7,7 @@ dbPath = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de
                         'ecopixel.db'
                     ])
 
-filePath = "./install.sql"
+filePath = os.sep.join([os.path.split(__file__)[0], "install.sh"])
 
 with open(filePath, "r", encoding="utf-8") as f:
     sql = f.read()
