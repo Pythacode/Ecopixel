@@ -5,6 +5,9 @@ from datetime import datetime
 import json
 import threading
 import sqlite3
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -84,6 +87,27 @@ def get_conn(): # By claude.ai
 
 def get_cursor(): # By claude.ai
     return get_conn().cursor()
+
+clé_privée = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+clé_publique_pem = clé_privée.public_key().public_bytes(
+    serialization.Encoding.PEM,
+    serialization.PublicFormat.SubjectPublicKeyInfo
+)
+
+OAEP = padding.OAEP(
+    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+    algorithm=hashes.SHA256(),
+    label=None
+)
+
+def déchiffrer_aes(clé_aes, iv, données_chiffrées):
+    cipher = Cipher(algorithms.AES(clé_aes), modes.CBC(iv))
+    déchiffreur = cipher.decryptor()
+    données = déchiffreur.update(données_chiffrées) + déchiffreur.finalize()
+    # Retirer le padding PKCS7
+    pad = données[-1]
+    return données[:-pad]
+
 
 log = loggeur()
 s = Serveur()
