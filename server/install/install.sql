@@ -8,5 +8,5 @@ CREATE TABLE IF NOT EXISTS players (
     sprout INTEGER DEFAULT 0,
     fertilizer INTEGER DEFAULT 0,
     fruits INTEGER DEFAULT 0,
-    arrosoir BOOL DEFAULT 0
+    arrosoir BOOL INTEGER DEFAULT 0
 )

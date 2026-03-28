@@ -8,6 +8,7 @@ import sqlite3
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+import base64
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -81,7 +82,7 @@ _local = threading.local()
 
 def get_conn(): # By claude.ai
     if not hasattr(_local, "conn"):
-        _local.conn = sqlite3.connect("ecopixel.db")
+        _local.conn = sqlite3.connect(os.sep.join([dataFolder, "ecopixel.db"]))
         _local.conn.row_factory = sqlite3.Row  # accès par nom de colonne
     return _local.conn
 
@@ -153,13 +154,12 @@ def handle_client(client_socket, address):
                     log.log(f"New message receive by {address[0]}:{address[1]}")
                     if data["type"] == "init" :
                             compatible_version = ['1']
-                            if message['version'] in compatible_version :
-                                
+                            if data['version'] in compatible_version :
 
                                 message = {
                                     "type": "init",
                                     "accept" : True,
-                                    "public_key": public_key
+                                    "public_key": base64.b64encode(public_key).decode()
                                 }
 
                                 json_message = json.dumps(message) + "\n"
