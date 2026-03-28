@@ -14,8 +14,17 @@ import sys
 import socket
 import queue
 import threading
+from cryptography.hazmat.primitives import serialization, hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 pygame.init()
+
+OAEP = padding.OAEP(
+    mgf=padding.MGF1(algorithm=hashes.SHA256()),
+    algorithm=hashes.SHA256(),
+    label=None
+)
 
 class Game() :
     def __init__(self, WIDTH:int, HEIGHT:int):
@@ -28,6 +37,7 @@ class Game() :
                                                     ])) # Obligatoire pour gérer correctement l'execution depuis n'importe quel répertoire
 
         self.jsonPath = os.sep.join([self.asset_doc, 'json'])
+        self.game_version = "1" # Version du jeu
 
         # Crée un écran pygame 
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
@@ -154,27 +164,64 @@ class Game() :
         with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
             json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 
+    def aes_encrypt(self, clé_aes, message: bytes) -> bytes:
+        iv = os.urandom(16)
+        # Padding PKCS7
+        pad = 16 - len(message) % 16
+        pad_message = message + bytes([pad] * pad)
+        cipher = Cipher(algorithms.AES(clé_aes), modes.CBC(iv))
+        encrypter = cipher.encryptor()
+        encrypt_data = encrypter.update(pad_message) + encrypter.finalize()
+        return iv + encrypt_data
+
     def network_thread(self, port, hostname):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
         client.connect((hostname, port))  
         self.connect = True
 
+        
+        message = {
+            "type" : 'init',
+            'version' : self.game_version
+        }
+        
+        message = json.dumps(message) + "\n"
+        client.sendall(message.encode('utf-8'))
+
+        data = json.loads(client.recv(700))
+
+        if not data['accept'] :
+            print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
+            pygame.quit()
+            sys.exit()
+
+        public_key = client.recv(4096)
+        public_key = serialization.load_pem_public_key(public_key)
+
+        aes_key = os.urandom(32)  # AES-256
+        aes_key_crypted = public_key.encrypt(aes_key, OAEP)
+        client.sendall(aes_key_crypted)        
+
         # Thread d'envoi
         def send_loop():
             while True:
                 data = self.outbox.get()  # attend qu'un message soit à envoyer
                 message = json.dumps(data) + "\n"
-                client.sendall(message.encode('utf-8'))
+                paquet = self.aes_encrypt(aes_key, message.encode())
+                client.sendall(len(paquet).to_bytes(4, "big") + paquet)
 
         threading.Thread(target=send_loop, daemon=True).start()
 
         # Réception dans ce thread
         buffer = ""
         while True:
-            chunk = client.recv(4096).decode('utf-8')
-            if not chunk:
+            entête = client.recv(4)
+            if not entête:
                 break
+            taille = int.from_bytes(entête, "big")
+            paquet = client.recv(taille)
+            chunk = self.aes_decrypt(aes_key, paquet).decode("utf-8")
             buffer += chunk
             while "\n" in buffer:
                 line, buffer = buffer.split("\n", 1)
@@ -232,7 +279,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
+    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color, replace):
         """
         A entry text
         

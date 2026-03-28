@@ -88,8 +88,8 @@ def get_conn(): # By claude.ai
 def get_cursor(): # By claude.ai
     return get_conn().cursor()
 
-clé_privée = rsa.generate_private_key(public_exponent=65537, key_size=2048)
-clé_publique_pem = clé_privée.public_key().public_bytes(
+private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+public_key = private_key.public_key().public_bytes(
     serialization.Encoding.PEM,
     serialization.PublicFormat.SubjectPublicKeyInfo
 )
@@ -100,11 +100,10 @@ OAEP = padding.OAEP(
     label=None
 )
 
-def déchiffrer_aes(clé_aes, iv, données_chiffrées):
-    cipher = Cipher(algorithms.AES(clé_aes), modes.CBC(iv))
-    déchiffreur = cipher.decryptor()
-    données = déchiffreur.update(données_chiffrées) + déchiffreur.finalize()
-    # Retirer le padding PKCS7
+def aes_decrypt(aes_key, iv, data):
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
+    decrypteur = cipher.decryptor()
+    données = decrypteur.update(data) + decrypteur.finalize()
     pad = données[-1]
     return données[:-pad]
 
@@ -130,40 +129,6 @@ server.listen(5)
 
 log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 
-@s.on("init")
-def init_conn(message, client_socket) :
-    compatible_version = ['1']
-    if message['version'] in compatible_version :
-        
-        try :
-            sauv_file = open(os.sep.join([dataFolder, "json", "sauv_game.json"]))
-            sauv = json.load(sauv_file)
-        except FileNotFoundError :
-            log.error("Sauv file doesn't exsist. Use empty sauv")
-            sauv = {}
-
-        data_game_message = {
-            "type": "data_game",
-            "data" : sauv
-        }
-        data_game_message = json.dumps(data_game_message) + "\n"
-
-        message = {
-            "type": "init",
-            "accept" : True,
-            "data_game_lenght": len(data_game_message)
-        }
-    else :
-        message = {
-            "type": "init",
-            "accept" : False
-        }
-
-    json_connexion_message = json.dumps(message) + "\n"
-    client_socket.sendall(json_connexion_message.encode('utf-8'))
-
-    client_socket.sendall(data_game_message.encode('utf-8'))
-
 @s.on("login")
 def login(message, client_socket) :
     
@@ -174,17 +139,59 @@ def login(message, client_socket) :
 
 def handle_client(client_socket, address):
     buffer = ""
+    aes_key = None
     try :
         while True:
-            chunk = client_socket.recv(4096).decode('utf-8')
-            if not chunk:
-                break
-            buffer += chunk
-            while "\n" in buffer:
-                line, buffer = buffer.split("\n", 1)
-                data = json.loads(line)
-                log.log(f"New message receive by {address[0]}:{address[1]} : {data}")
-                s.dispatch(data, client_socket)
+            if aes_key is None :
+                chunk = client_socket.recv(4096).decode('utf-8')
+                if not chunk:
+                    break
+                buffer += chunk
+                while "\n" in buffer:
+                    line, buffer = buffer.split("\n", 1)
+                    data = json.loads(line)
+                    log.log(f"New message receive by {address[0]}:{address[1]}")
+                    if data["type"] == "init" :
+                            compatible_version = ['1']
+                            if message['version'] in compatible_version :
+                                
+
+                                message = {
+                                    "type": "init",
+                                    "accept" : True,
+                                    "public_key": public_key
+                                }
+
+                                json_message = json.dumps(message) + "\n"
+                                client_socket.sendall(json_message.encode('utf-8'))
+
+                                aes_key = client_socket.recv(256)
+                                aes_key = private_key.decrypt(aes_key, OAEP)
+
+                            else :
+                                message = {
+                                    "type": "init",
+                                    "accept" : False
+                                }
+
+                                json_connexion_message = json.dumps(message) + "\n"
+                                client_socket.sendall(json_connexion_message.encode('utf-8'))
+            else :
+                entête = client_socket.recv(4)
+                if not entête:
+                    break
+                taille = int.from_bytes(entête, "big")
+                paquet = client_socket.recv(taille)
+                iv = paquet[:16]
+                données_chiffrées = paquet[16:]
+                chunk = aes_decrypt(aes_key, iv, données_chiffrées).decode("utf-8")
+
+                buffer += chunk
+                while "\n" in buffer:
+                    line, buffer = buffer.split("\n", 1)
+                    data = json.loads(line)
+                    log.log(f"New message receive by {address[0]}:{address[1]} : {data}")
+                    s.dispatch(data, client_socket)
     except ConnectionResetError :
         pass
     try:

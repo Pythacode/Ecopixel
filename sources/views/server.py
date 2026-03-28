@@ -52,7 +52,7 @@ class serverView():
                 "PORT" : port
             }
 
-        with open(os.sep.join([main_game.asset_doc, 'json' 'server_config.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de config
+        with open(os.sep.join([main_game.asset_doc, 'json', 'server_config.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de config
             json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 
         threading.Thread(target=main_game.network_thread, args=(port, hostname), daemon=True).start()
@@ -60,7 +60,7 @@ class serverView():
         message = {
             "type" : 'login',
             'username' : self.username_entry.text,
-            'password' : self.username_entry.text
+            'password' : self.password_entry.text
         }
         
         main_game.outbox.put(message)
