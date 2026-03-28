@@ -2,8 +2,8 @@
 
 Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web.
 
-[Présentation](presentation.md).
-[Documentation](docs/sommaire.md)
+[Présentation](presentation.md "Présentation du projet")\
+[Documentation](docs/sommaire.md "Sommaire de la documentation")
 
 ## Sommaire
 
@@ -13,11 +13,20 @@ Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédi
 - [Lancement](#lancement)
 - [Le jeu](#le-jeu)
     - [Les controles](#les-controles)
+- [En cas d'érreur](#en-cas-dérreur)
+- [License](#license)
 
 ## Installation
 
 > [!NOTE]
 > Dans ce README, nous utiliserons les commandes `python3` et `pip`. Cepeandant, suivant votre installation, vous devriez peut-être utiliser `python` et `python3 -m pip` à la place.
+
+Version de python sur lequel le pregrammé à été dévelopée / tester :
+
+- Python 3.12.3
+- Python 3.13.3
+- Python 3.13.12
+
 
 ### Avec venv
 
@@ -90,7 +99,18 @@ Les touches par défault sont les usivante :
 - Touche pause : `Échape`
 - Touche sauvegarde : `o`
 
-> Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) pour le texte.<br>
-> Plus d'information : [Fichier LICENSE](LICENSE)<br>
+# En cas d'érreur
+
+Si vous rencontrez une erreur, vous pouvez [poster une issues sur GitHub](https://github.com/Pythacode/Ecopixel/issues "Issues GitHub") après avoir vérifié qu'elle ne fasse pas partis des [bugs connus](bugs.md).
+Si vous pouvez, ajouter une vidéo du bug, la sortie du terminal, comment avez vous réaliser le bug, etc...
+
+# License
+
+> Ce projet est sous licence GNU 3v+ pour le code et Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) pour le texte.\
+> Plus d'information : [Fichier LICENSE](LICENSE)\
 > [Site officiel de la licence GNU v3+](https://www.gnu.org/licenses/gpl-3.0.fr.html)  
 > [Site officiel de la licence CC BY-NC](https://creativecommons.org/licenses/by-nc/4.0/legalcode.fr)
+
+Merci pour tous les joueurs et développeur qui s’intéresserons à notre projet.
+
+Made by ❤ bye Lucas, Titouan, Pierrick

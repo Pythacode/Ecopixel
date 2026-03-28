@@ -25,12 +25,12 @@ class settingView():
         self.min_scroll_y = 0
 
     def update(self, events) :
-
+        # Liste des paramètre
         self.settings = [
             {
-                'id' : 'key_move_right',
-                'name' : 'Touche droite',
-                'value' : pygame.key.name(main_game.key_move_right)
+                'id' : 'key_move_right', # Nom de la variable dans main_game
+                'name' : 'Touche droite', # Nom d'affichage
+                'value' : pygame.key.name(main_game.key_move_right) # affichage de la valru
             },
             {
                 'id' : 'key_move_left',

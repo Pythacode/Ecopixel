@@ -99,7 +99,7 @@ class searchView() :
                                     "snippet" : re.sub(CLEAN_HTML_BALISE_REGEX, '',resultat.get('snippet'))
                                 } for resultat in data["query"]["search"]
                             ]
-                } # Suprime les informations inutiles à notre usage
+                } # Supprime les informations inutiles à notre usage
         
         except requests.exceptions.ReadTimeout :
             self.exploit_result = {
@@ -132,6 +132,9 @@ class searchView() :
             gap = 4
             self.results_rect = []
             if self.exploit_result.get('result') == 'succes' :
+                if len(self.exploit_result.get('data')) == 0 :
+                    search_text = self.font.render("Aucun résultat", True, 'black')
+                    main_game.screen.blit(search_text, (30, 140))
                 for result in self.exploit_result.get('data') :
 
                     start_y = pos_y

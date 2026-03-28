@@ -1,6 +1,6 @@
 # ------------------------- Fichier Principal -------------------------- #
 # Lien du dépot : http://github.com/Pythacode/Ecopixel                   #
-# Fichier contenant tout le code du moteur de jeu.                       #
+# Fichier contenant tout le code de la boucle principal du jeu.          #
 # Crée par Titouan - https://github.com/Pythacode/                       #
 # License : GPL v3+ - https://www.gnu.org/licenses/gpl-3.0.fr.html       #
 # ---------------------------------------------------------------------- #
@@ -32,7 +32,7 @@ while main_game.running:
             if event.type == pygame.QUIT:
                 main_game.running = False
             
-            # Losrque l'utilisateur scrolle
+            # Lorsque l'utilisateur scroll
             elif event.type == pygame.MOUSEWHEEL:
                 if hasattr(main_game.current_view, "min_scroll_y") and event.y > 0 :
                     if main_game.current_view.min_scroll_y < main_game.scroll_y - event.y * 10 :
@@ -78,7 +78,7 @@ while main_game.running:
 
         # Gérer le rendu
         main_game.current_view.update(events)
-        if main_game.current_view.header : # Si la vue nécésite l'affichage du header
+        if main_game.current_view.header : # Si la vue nécessite l'affichage du header
             draw_header()
 
         # Actualiser l'écran

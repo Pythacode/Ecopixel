@@ -33,11 +33,11 @@ class Game() :
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
         self.current_view = None # Défini la vue actuelle à aucune (Les vues on besoin de main_game, impossible donc de les appelé sans avoir créé l'élément)
         
-        self.running = True # Variable qui définie si la boucle principal (dans `main.py` s'arrete ou non)
+        self.running = True # Variable qui définie si la boucle principale (dans `main.py`) s'arrete ou non
         self.main_font_name = os.sep.join([self.asset_doc, "fonts", "return-of-the-boss.ttf"]) # Chemin de la police de base
         self.scroll_y = 0 # Valeur du scroll vertical
         self.scroll_x = 0 # Valeur du scroll horizontal
-        self.touch_pressed = {} # Dictionnaire avec toute les touche appuyé
+        self.touch_pressed = {} # Dictionnaire avec toutes les touches appuyées
         self.logo = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "logo.png"])) # Chemin du logo
         self.back = pygame.image.load(os.sep.join([self.asset_doc, "image", "icon", "back.png"])) # Chemin de la flèche retour
         self.player = None # Variable joueur, idem que pour `current_view`
@@ -89,7 +89,7 @@ class Game() :
         Un texte "sauvegarde en cours" s'afficheras en bas à droite et l'écran vas freeze le temps de la sauvegarde
         """
         font = pygame.font.Font(self.main_font_name, 24) # Charge la police
-        w, h = font.size('Sauvegarde en cours...') # Optien la taille du texte
+        w, h = font.size('Sauvegarde en cours...') # Obtient la taille du texte
         word_surface = font.render('Sauvegarde en cours...', 0, 'black') # Crée un élément affichable a partir du texte
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
@@ -232,7 +232,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color:pygame.Color | tuple, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color=(0, 0, 0, 0), replace=None):
+    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font):
         """
         A entry text
         
@@ -421,7 +421,7 @@ def size_text(text:str, font:pygame.font, max_width:int) -> int:
             count_line += 1
         return y, m_width
 
-def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color:pygame.Color | tuple, screen:pygame.surface) -> int:
+def blit_text(text:str, pos:tuple, font:pygame.font, max_width:int, color, screen:pygame.surface) -> int:
         """
         Draw `text` on `screen` with lines-split for not exceed `max_width`
         Original code : https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame
@@ -483,7 +483,7 @@ def img(width,height,position,dossier,png):
 main_game = Game(
     WIDTH=1280,
     HEIGHT=720
-) # Garder ici avant l'import, sinon main_game ne seras pas defini
+) # Garder ici avant l'import, sinon main_game ne sera pas defini
 # Permet de créer main_game, dont menuView à besoin
 
 from views.menu import menuView
