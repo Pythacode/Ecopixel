@@ -46,7 +46,7 @@ class serverView():
 
     def connect(self) :
         port = int(self.port_entry.get_text())
-        hostname = self.hostname_entry.get_text
+        hostname = self.hostname_entry.get_text()
         data = {
                 "HOST" : hostname,
                 "PORT" : port
