@@ -89,7 +89,7 @@
    },
    "Plant 11": {
     "frame": { "x": 10, "y": 76, "w": 10, "h": 19 },
-    "duration": 300
+    "duration": 350
    },
    "Plant 12": {
     "frame": { "x": 20, "y": 76, "w": 10, "h": 19 },
@@ -102,5 +102,106 @@
    "Plant 14": {
     "frame": { "x": 0, "y": 95, "w": 10, "h": 19 },
     "duration": 100
+   },
+   "Washeddown 0": {
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 1": {
+    "frame": { "x": 10, "y": 95, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 2": {
+    "frame": { "x": 20, "y": 95, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 3": {
+    "frame": { "x": 0, "y": 114, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 4": {
+    "frame": { "x": 10, "y": 114, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Washeddown 5": {
+    "frame": { "x": 0, "y": 114, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Washeddown 6": {
+    "frame": { "x": 10, "y": 114, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Washeddown 7": {
+    "frame": { "x": 20, "y": 114, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 8": {
+    "frame": { "x": 0, "y": 133, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 9": {
+    "frame": { "x": 10, "y": 133, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 10": {
+    "frame": { "x": 20, "y": 133, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 11": {
+    "frame": { "x": 0, "y": 152, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 12": {
+    "frame": { "x": 10, "y": 152, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 13": {
+    "frame": { "x": 20, "y": 152, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 14": {
+    "frame": { "x": 0, "y": 171, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 15": {
+    "frame": { "x": 10, "y": 171, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 16": {
+    "frame": { "x": 20, "y": 171, "w": 10, "h": 19 },
+    "duration": 300
+   },
+   "Washeddown 17": {
+    "frame": { "x": 0, "y": 190, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 18": {
+    "frame": { "x": 10, "y": 190, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 19": {
+    "frame": { "x": 20, "y": 190, "w": 10, "h": 19 },
+    "duration": 300
+   },
+   "Washeddown 20": {
+    "frame": { "x": 0, "y": 133, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 21": {
+    "frame": { "x": 0, "y": 114, "w": 10, "h": 19 },
+    "duration": 200
+   },
+   "Washeddown 22": {
+    "frame": { "x": 0, "y": 209, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 23": {
+    "frame": { "x": 10, "y": 209, "w": 10, "h": 19 },
+    "duration": 100
+   },
+   "Washeddown 24": {
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 19 },
+    "duration": 100
    }
  }
+

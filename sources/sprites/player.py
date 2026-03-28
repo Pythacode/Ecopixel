@@ -262,10 +262,237 @@ class Player() :
                     "duration": self.tilesetjson["Plant 14"]["duration"]
         }
         self.plant14["subsurface"] = pygame.transform.scale(self.plant14["subsurface"], self.size)
+        self.washeddown0 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 0"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 0"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 0"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 0"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 0"]["duration"]
+        }
+        self.washeddown0["subsurface"] = pygame.transform.scale(self.washeddown0["subsurface"], self.size)
+        self.washeddown1 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 1"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 1"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 1"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 1"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 1"]["duration"]
+        }
+        self.washeddown1["subsurface"] = pygame.transform.scale(self.washeddown1["subsurface"], self.size)
+        self.washeddown2 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 2"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 2"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 2"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 2"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 2"]["duration"]
+        }
+        self.washeddown2["subsurface"] = pygame.transform.scale(self.washeddown2["subsurface"], self.size)
+        self.washeddown3 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 3"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 3"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 3"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 3"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 3"]["duration"]
+        }
+        self.washeddown3["subsurface"] = pygame.transform.scale(self.washeddown3["subsurface"], self.size)
+        self.washeddown4 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 4"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 4"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 4"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 4"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 4"]["duration"]
+        }
+        self.washeddown4["subsurface"] = pygame.transform.scale(self.washeddown4["subsurface"], self.size)
+        self.washeddown5 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 5"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 5"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 5"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 5"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 5"]["duration"]
+        }
+        self.washeddown5["subsurface"] = pygame.transform.scale(self.washeddown5["subsurface"], self.size)
+        self.washeddown6 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 6"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 6"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 6"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 6"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 6"]["duration"]
+        }
+        self.washeddown6["subsurface"] = pygame.transform.scale(self.washeddown6["subsurface"], self.size)
+        self.washeddown7 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 7"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 7"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 7"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 7"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 7"]["duration"]
+        }
+        self.washeddown7["subsurface"] = pygame.transform.scale(self.washeddown7["subsurface"], self.size)
+        self.washeddown8 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 8"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 8"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 8"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 8"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 8"]["duration"]
+        }
+        self.washeddown8["subsurface"] = pygame.transform.scale(self.washeddown8["subsurface"], self.size)
+        self.washeddown9 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 9"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 9"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 9"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 9"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 9"]["duration"]
+        }
+        self.washeddown9["subsurface"] = pygame.transform.scale(self.washeddown9["subsurface"], self.size)
+        self.washeddown10 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 10"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 10"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 10"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 10"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 10"]["duration"]
+        }
+        self.washeddown10["subsurface"] = pygame.transform.scale(self.washeddown10["subsurface"], self.size)
+        self.washeddown11 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 11"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 11"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 11"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 11"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 11"]["duration"]
+        }
+        self.washeddown11["subsurface"] = pygame.transform.scale(self.washeddown11["subsurface"], self.size)
+        self.washeddown12 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 12"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 12"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 12"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 12"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 12"]["duration"]
+        }
+        self.washeddown12["subsurface"] = pygame.transform.scale(self.washeddown12["subsurface"], self.size)
+        self.washeddown13 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 13"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 13"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 13"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 13"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 13"]["duration"]
+        }
+        self.washeddown13["subsurface"] = pygame.transform.scale(self.washeddown13["subsurface"], self.size)
+        self.washeddown14 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 14"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 14"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 14"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 14"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 14"]["duration"]
+        }
+        self.washeddown14["subsurface"] = pygame.transform.scale(self.washeddown14["subsurface"], self.size)
+        self.washeddown15 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 15"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 15"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 15"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 15"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 15"]["duration"]
+        }
+        self.washeddown15["subsurface"] = pygame.transform.scale(self.washeddown15["subsurface"], self.size)
+        self.washeddown16 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 16"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 16"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 16"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 16"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 16"]["duration"]
+        }
+        self.washeddown16["subsurface"] = pygame.transform.scale(self.washeddown16["subsurface"], self.size)
+        self.washeddown17 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 17"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 17"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 17"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 17"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 17"]["duration"]
+        }
+        self.washeddown17["subsurface"] = pygame.transform.scale(self.washeddown17["subsurface"], self.size)
+        self.washeddown18 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 18"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 18"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 18"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 18"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 18"]["duration"]
+        }
+        self.washeddown18["subsurface"] = pygame.transform.scale(self.washeddown18["subsurface"], self.size)
+        self.washeddown19 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 19"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 19"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 19"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 19"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 19"]["duration"]
+        }
+        self.washeddown19["subsurface"] = pygame.transform.scale(self.washeddown19["subsurface"], self.size)
+        self.washeddown20 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 20"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 20"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 20"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 20"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 20"]["duration"]
+        }
+        self.washeddown20["subsurface"] = pygame.transform.scale(self.washeddown20["subsurface"], self.size)
+        self.washeddown21 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 21"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 21"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 21"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 21"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 21"]["duration"]
+        }
+        self.washeddown21["subsurface"] = pygame.transform.scale(self.washeddown21["subsurface"], self.size)
+        self.washeddown22 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 22"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 22"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 22"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 22"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 22"]["duration"]
+        }
+        self.washeddown22["subsurface"] = pygame.transform.scale(self.washeddown22["subsurface"], self.size)
+        self.washeddown23 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 23"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 23"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 23"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 23"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 23"]["duration"]
+        }
+        self.washeddown23["subsurface"] = pygame.transform.scale(self.washeddown23["subsurface"], self.size)
+        self.washeddown24 = {"subsurface" : self.tileset.subsurface(
+                        self.tilesetjson["Washeddown 24"]["frame"]["x"],
+                        self.tilesetjson["Washeddown 24"]["frame"]["y"],
+                        self.tilesetjson["Washeddown 24"]["frame"]["w"],
+                        self.tilesetjson["Washeddown 24"]["frame"]["h"]
+                    ),
+                    "duration": self.tilesetjson["Washeddown 24"]["duration"]
+        }
+        self.washeddown24["subsurface"] = pygame.transform.scale(self.washeddown24["subsurface"], self.size)
+        
 
         self.static_skin_list = (self.idle0, self.idle1, self.idle2)
         self.move_skin_list = (self.run0, self.run1, self.run2, self.run3, self.run4, self.run5, self.run6, self.run7)
         self.plant_skin_list = (self.plant0, self.plant1, self.plant2, self.plant3, self.plant4, self.plant5, self.plant6, self.plant7, self.plant8, self.plant9, self.plant10, self.plant11, self.plant12, self.plant13, self.plant14)
+        self.washed_skin_list = (self.washeddown0, self.washeddown1, self.washeddown2, self.washeddown3, self.washeddown4, self.washeddown5, self.washeddown6, self.washeddown7, self.washeddown8, self.washeddown9, self.washeddown10, self.washeddown11, self.washeddown12, self.washeddown13, self.washeddown14, self.washeddown15, self.washeddown16, self.washeddown17, self.washeddown18, self.washeddown19, self.washeddown20, self.washeddown21, self.washeddown22, self.washeddown23, self.washeddown24)
 
         playerdata = main_game.data.get('player', {})
 
@@ -280,6 +507,7 @@ class Player() :
         self.last_change = pygame.time.get_ticks()
         self.move = False
         self.plant = playerdata.get('plant', False)
+        self.washing = False
 
         self.money = playerdata.get('money', 0)
         self.sprout = playerdata.get('sprout', 0)
@@ -306,6 +534,11 @@ class Player() :
                 elif self.skin_index == 11 :
                     main_game.game_view.trees.append(Tree(main_game.game_view.wait_tree.get('x'), main_game.game_view.wait_tree.get('y'), main_game.game_view.wait_tree.get('type'), main_game.game_view.wait_tree.get('fertilized')))
                     main_game.game_view.wait_tree = None
+            elif self.washing:
+                skin_list = self.washed_skin_list
+                if self.skin_index > len(self.washed_skin_list)-1:
+                    self.skin_index = 0
+                    self.washing = False
             elif self.move:
                 skin_list = self.move_skin_list
                 if self.skin_index > len(self.move_skin_list)-1:
