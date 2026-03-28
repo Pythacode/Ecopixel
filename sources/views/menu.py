@@ -9,6 +9,8 @@ from game import *
 import pygame
 import os
 
+pygame.init()
+
 class menuView():
 
     def __init__(self) :
@@ -52,6 +54,8 @@ class menuView():
         babysfx.play()
 
     def serverButton_Pressed(self):
+        import time
+        time.sleep(0.5)
         main_game.change_view(main_game.server_view)
 
     def settingsButton_Pressed(self):
