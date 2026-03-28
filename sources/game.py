@@ -17,6 +17,7 @@ import threading
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+import base64
 
 pygame.init()
 
@@ -196,8 +197,8 @@ class Game() :
             pygame.quit()
             sys.exit()
 
-        public_key = client.recv(4096)
-        public_key = serialization.load_pem_public_key(public_key)
+        public_key_pem = base64.b64decode(data["public_key"])
+        public_key = serialization.load_pem_public_key(public_key_pem)
 
         aes_key = os.urandom(32)  # AES-256
         aes_key_crypted = public_key.encrypt(aes_key, OAEP)
@@ -279,7 +280,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color, replace):
+    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color=(0, 0, 0, 0), replace=None):
         """
         A entry text
         
@@ -312,6 +313,13 @@ class entry_text() :
         self.cursor_index = 0
         self.backround_color = backround_color
         self.replace=replace
+
+    def get_text(self) -> str :
+        """
+        Return text in input
+        """
+
+        return ''.join(self.text)
     
     def update(self, events:list, pos=None, size=None) :
         """
@@ -376,8 +384,6 @@ class entry_text() :
         if self.cursor and self.active :
             cursor = self.font.render("|", True, 'black')
             self.surface.blit(cursor, (x + 10 + self.font.size(text[:self.cursor_index])[0] - (self.font.size("|")[0]/4), y+5))
-
-        return return_value
 
 def draw_header() :
     width = main_game.screen.get_size()[0]

@@ -204,7 +204,9 @@ class searchView() :
         back_rect[0], back_rect[1] = 20, 70
         main_game.screen.blit(main_game.back, back_rect)
 
-        text = self.search_zone.update(events)
+        self.search_zone.update(events)
+
+        text = self.search_zone.get_text()
 
         if isinstance(text, str) :
             if text != "" :
