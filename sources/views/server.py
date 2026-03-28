@@ -70,6 +70,19 @@ class serverView():
             pygame.quit()
             sys.exit()
 
+        message = {
+            "type" : 'init',
+            'version' : '1'
+        }
+        
+        main_game.outbox.put(message)
+        data = main_game.inbox.get()
+
+        if not data['accept'] :
+            print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
+            pygame.quit()
+            sys.exit()
+
         main_game.change_view(main_game.game_view)
 
     def serverButton_Pressed(self):

@@ -9,3 +9,4 @@ logs
 *config.json
 *settings*
 data_game.json
+*.db

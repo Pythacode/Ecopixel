@@ -4,6 +4,7 @@ import os
 from datetime import datetime
 import json
 import threading
+import sqlite3
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -73,6 +74,17 @@ class Serveur:
         if handler:
             handler(message, client_socket)
 
+_local = threading.local()
+
+def get_conn(): # By claude.ai
+    if not hasattr(_local, "conn"):
+        _local.conn = sqlite3.connect("ecopixel.db")
+        _local.conn.row_factory = sqlite3.Row  # accès par nom de colonne
+    return _local.conn
+
+def get_cursor(): # By claude.ai
+    return get_conn().cursor()
+
 log = loggeur()
 s = Serveur()
 
@@ -127,6 +139,14 @@ def init_conn(message, client_socket) :
     client_socket.sendall(json_connexion_message.encode('utf-8'))
 
     client_socket.sendall(data_game_message.encode('utf-8'))
+
+@s.on("login")
+def login(message, client_socket) :
+    
+    cursor = get_cursor()
+    cursor.execute("INSERT INTO players (username) VALUES (?)", (message['username'],))
+    joueurs = cursor.fetchall()
+    get_conn().commit()
 
 def handle_client(client_socket, address):
     buffer = ""
