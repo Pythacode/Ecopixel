@@ -37,17 +37,23 @@ class loggeur() :
             chemin_fichier_log = os.path.join(folder_path, file_name)
             self.file = open(chemin_fichier_log, 'a')
 
-    def error(self, message) :
+    def format(self, type, string) :
         now = datetime.now()
         time = now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        message = f"[{time}] [ERROR] : {message}\n"
+        return f"[{time}] [{type}] : {string}\n"
+
+    def error(self, message) :
+        message = self.format("ERROR", message)
         self.file.write(message)
         print(Fore.RED, message, Fore.RESET, sep="", end="")
 
+    def warn(self, message) :
+        message = self.format("WARN", message)
+        self.file.write(message)
+        print(Fore.YELLOW, message, Fore.RESET, sep="", end="")
+
     def log(self, message) :
-        now = datetime.now()
-        time = now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
-        message = f"[{time}] [INFO] : {message}\n"
+        message = self.format("INFO", message)
         self.file.write(message)
         print(message, end="")
 
