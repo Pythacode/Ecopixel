@@ -51,9 +51,7 @@ class serverView():
                 "HOST" : hostname,
                 "PORT" : port
             }
-
-        print("#20")
-
+        
         with open(os.sep.join([main_game.asset_doc, 'json', 'server_config.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de config
             json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 

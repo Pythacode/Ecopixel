@@ -190,7 +190,7 @@ def handle_client(client_socket, address):
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
                     data = json.loads(line)
-                    log.log(f"New message receive by {address[0]}:{address[1]} : {data}")
+                    log.log(f"New message receive by {address[0]}:{address[1]}")
                     s.dispatch(data, client_socket)
     except ConnectionResetError :
         pass
