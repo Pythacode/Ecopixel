@@ -14,4 +14,4 @@ with open(filePath, "r", encoding="utf-8") as f:
 
 with sqlite3.connect(dbPath) as conn:
     conn.executescript(sql)
-    print(f"✅ '{filePath}' exécuté avec succès sur '{dbPath}'")
+    print(f"✅ '{os.path.split(filePath)[1]}' exécuté avec succès sur '{os.path.split(dbPath)[1]}'")
