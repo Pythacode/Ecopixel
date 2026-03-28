@@ -279,7 +279,7 @@ class button():
         screen.blit(self.rendertext, buttonpos)
 
 class entry_text() :
-    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color, replace):
+    def __init__(self, surface:pygame.surface, color, pos:tuple, size:tuple, width:int, border_radius:int, font:pygame.font, backround_color=(0, 0, 0, 0), replace=None):
         """
         A entry text
         
