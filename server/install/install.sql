@@ -1,0 +1,12 @@
+CREATE TABLE IF NOT EXISTS joueurs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    x INTEGER DEFAULT 0,
+    y INTEGER DEFAULT 0,
+    money INTEGER DEFAULT 0,
+    sprout INTEGER DEFAULT 0,
+    fertilizer INTEGER DEFAULT 0,
+    fruits INTEGER DEFAULT 0,
+    arrosoir BOOL DEFAULT 0
+)
