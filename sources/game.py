@@ -165,12 +165,12 @@ class Game() :
         with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
             json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 
-    def aes_encrypt(self, clé_aes, message: bytes) -> bytes:
+    def aes_encrypt(self, aes_key, message: bytes) -> bytes:
         iv = os.urandom(16)
         # Padding PKCS7
         pad = 16 - len(message) % 16
         pad_message = message + bytes([pad] * pad)
-        cipher = Cipher(algorithms.AES(clé_aes), modes.CBC(iv))
+        cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
         encrypter = cipher.encryptor()
         encrypt_data = encrypter.update(pad_message) + encrypter.finalize()
         return iv + encrypt_data
