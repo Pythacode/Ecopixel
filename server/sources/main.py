@@ -156,8 +156,8 @@ def login(message, client_socket, aes_key) :
         if player is not None :
             id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
             if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
-                if os.path.exists(os.sep.join([dataFolder, "data_game.json"])) :
-                    gamedata = open(os.sep.join([dataFolder, "data_game.json"]), 'r')
+                if os.path.exists(os.sep.join([dataFolder, "json", "data_game.json"])) :
+                    gamedata = open(os.sep.join([dataFolder, "json", "data_game.json"]), 'r')
                     gamedata = json.load(gamedata)
                 else :
                     gamedata = {}
