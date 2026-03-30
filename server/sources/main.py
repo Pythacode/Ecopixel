@@ -137,58 +137,59 @@ def login(message, client_socket, aes_key) :
     if message["username"].strip() == "" or message["password"].strip() == "":
         message = {
             "type": "login",
-            "result": "error",
+            "response_type": "error",
             "message": "Username or password empty"
         }
         send(client_socket, aes_key, message)
 
-    username = message['username']
-    password = message['password']
+    else :
 
-    cursor = get_cursor()
-    cursor.execute("SELECT * FROM players WHERE username = ?", (username,))
-    player = cursor.fetchall()
-    if player is not None :
-        id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
-        if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
+        username = message['username']
+        password = message['password']
+
+        cursor = get_cursor()
+        cursor.execute("SELECT * FROM players WHERE username = ?", (username,))
+        player = cursor.fetchone()
+        if player is not None :
+            id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
+            if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
+                send(client_socket, aes_key, {
+                    "type": "login",
+                    "response_type" : "succes",
+                    "player_data" : {
+                        "username" : username,
+                        "x" : x,
+                        "y" : y,
+                        "money": money,
+                        "sprout": sprout,
+                        "fertilizer": fertilizer,
+                        "fruits": fruits,
+                        "arrosoir": arrosoir
+                    },
+                })
+            else :
+                send(client_socket, aes_key, {
+                    "type": "login",
+                    "response_type" : "error",
+                    "message" : "Mauvais mot de passe"
+                })
+
+        else :
+
+            salt = bcrypt.gensalt()
+
+            # Hacher le mot de passe
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+            cursor.execute("insert into players ('username', 'password') values (?, ?)", (username,hashed_password))
             send(client_socket, aes_key, {
                 "type": "login",
                 "response_type" : "succes",
                 "player_data" : {
-                    "username" : username,
-                    "x" : x,
-                    "y" : y,
-                    "money": money,
-                    "sprout": sprout,
-                    "fertilizer": fertilizer,
-                    "fruits": fruits,
-                    "arrosoir": arrosoir
-                },
-            })
-        else :
-            send(client_socket, aes_key, {
-                "type": "login",
-                "response_type" : "error",
-                "message" : "Mauvais mot de passe"
+                    "username" : username
+                }
             })
 
-    else :
-        
-        salt = bcrypt.gensalt()
-
-        # Hacher le mot de passe
-        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-        cursor.execute("insert into players ('username', 'password') values (?, ?)", (username,hashed_password))
-        send(client_socket, aes_key, {
-            "type": "login",
-            "response_type" : "succes",
-            "player_data" : {
-                "username" : username
-            }
-        })
-        
-    get_conn().commit()
-    get_conn().close()
+        get_conn().commit()
 
 def handle_client(client_socket, address):
     buffer = ""
