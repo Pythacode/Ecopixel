@@ -137,7 +137,7 @@ def login(message, client_socket, aes_key) :
     if message["username"].strip() == "" or message["password"].strip() == "":
         message = {
             "type": "login",
-            "result": "error",
+            "response_type": "error",
             "message": "Username or password empty"
         }
         send(client_socket, aes_key, message)
@@ -190,7 +190,6 @@ def login(message, client_socket, aes_key) :
             })
 
         get_conn().commit()
-        get_conn().close()
 
 def handle_client(client_socket, address):
     buffer = ""
