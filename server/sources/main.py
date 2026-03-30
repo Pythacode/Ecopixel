@@ -90,6 +90,9 @@ def get_conn(): # By claude.ai
 def get_cursor(): # By claude.ai
     return get_conn().cursor()
 
+def save_game() :
+    pass
+
 private_key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 public_key = private_key.public_key().public_bytes(
     serialization.Encoding.PEM,
@@ -153,6 +156,11 @@ def login(message, client_socket, aes_key) :
         if player is not None :
             id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
             if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
+                if os.path.exists(os.sep.join([dataFolder, "data_game.json"])) :
+                    gamedata = open(os.sep.join([dataFolder, "data_game.json"]), 'r')
+                    gamedata = json.load(gamedata)
+                else :
+                    gamedata = {}
                 send(client_socket, aes_key, {
                     "type": "login",
                     "response_type" : "succes",
@@ -166,6 +174,7 @@ def login(message, client_socket, aes_key) :
                         "fruits": fruits,
                         "arrosoir": arrosoir
                     },
+                    "gamedata" : gamedata
                 })
             else :
                 send(client_socket, aes_key, {

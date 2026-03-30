@@ -81,7 +81,7 @@ class serverView():
             self.error = data['message']
             return
         else :
-            main_game.change_view(main_game.game_view, (data['player_data'],))
+            main_game.change_view(main_game.game_view, (data['gamedata'], data['player_data']))
 
     def update(self, events) :
 

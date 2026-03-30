@@ -30,7 +30,7 @@ class gameView() :
         self.pause = False
 
 
-    def __init__(self, playerdata=None):
+    def __init__(self, gamedata=None, playerdata=None):
         """
         init function
         """
@@ -42,11 +42,12 @@ class gameView() :
         self.header = True
         self.pause = False
 
-        if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) :
-            gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"]), 'r')
-            gamedata = json.load(gamedata).get('game', {})
-        else :
-            gamedata = {}
+        if gamedata is None :
+            if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) :
+                gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"]), 'r')
+                gamedata = json.load(gamedata).get('game', {})
+            else :
+                gamedata = {}
         
         main_game.tuto = Tuto(gamedata.get('tuto_advancement', 0))
 
