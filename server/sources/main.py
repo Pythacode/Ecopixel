@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import serialization, hashes
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 import base64
+import bcrypt
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -73,10 +74,10 @@ class Serveur:
             return func
         return decorator
 
-    def dispatch(self, message, client_socket):
+    def dispatch(self, message, client_socket, aes_key):
         handler = self.handlers.get(message["type"])
         if handler:
-            handler(message, client_socket)
+            handler(message, client_socket, aes_key)
 
 _local = threading.local()
 
@@ -131,11 +132,32 @@ server.listen(5)
 log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 
 @s.on("login")
-def login(message, client_socket) :
-    
+def login(message, client_socket, aes_key) :
+
+    if message["username"].strip() == "" or message["password"].strip() == "":
+        message = {
+            "type": "login",
+            "result": "error",
+            "error": "Username or password empty"
+        }
+        send(client_socket, aes_key, message)
+
     cursor = get_cursor()
-    cursor.execute("INSERT INTO players (username) VALUES (?)", (message['username'],))
-    joueurs = cursor.fetchall()
+    cursor.execute("SELECT * FROM players WHERE username = ?", (message['username'],))
+    player = cursor.fetchall()
+    if player is None :
+        pass
+    else :
+        
+        salt = bcrypt.gensalt()
+
+        # Hacher le mot de passe
+        hashed_password = bcrypt.hashpw(message['password'].encode('utf-8'), salt).decode('utf-8')
+        cursor.execute("insert into players ('username', 'password') values (?, ?)", (message['username'],hashed_password))
+        send(client_socket, aes_key, {
+            "type": "login"
+        })
+        
     get_conn().commit()
 
 def handle_client(client_socket, address):
@@ -191,7 +213,7 @@ def handle_client(client_socket, address):
                     line, buffer = buffer.split("\n", 1)
                     data = json.loads(line)
                     log.log(f"New message receive by {address[0]}:{address[1]}")
-                    s.dispatch(data, client_socket)
+                    s.dispatch(data, client_socket, aes_key)
     except ConnectionResetError :
         pass
     try:
@@ -202,6 +224,21 @@ def handle_client(client_socket, address):
 
 players = []
 server.settimeout(1.0)
+
+def aes_encrypt(aes_key, message: bytes) -> bytes:
+    iv = os.urandom(16)
+    # Padding PKCS7
+    pad = 16 - len(message) % 16
+    pad_message = message + bytes([pad] * pad)
+    cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
+    encrypter = cipher.encryptor()
+    encrypt_data = encrypter.update(pad_message) + encrypter.finalize()
+    return iv + encrypt_data
+
+def send(client_socket, aes_key, data: dict):
+    message = (json.dumps(data) + "\n").encode("utf-8")
+    paquet = aes_encrypt(aes_key, message)
+    client_socket.sendall(len(paquet).to_bytes(4, "big") + paquet)
 
 try :
     while True:
