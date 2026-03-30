@@ -8,6 +8,7 @@
 from game import *
 import pygame
 import os
+import _queue
 
 class serverView():
 
@@ -43,6 +44,7 @@ class serverView():
 
         self.header = False
         self.previous_view = None
+        self.error = None
 
     def connect(self) :
         port = int(self.port_entry.get_text())
@@ -55,7 +57,9 @@ class serverView():
         with open(os.sep.join([main_game.asset_doc, 'json', 'server_config.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de config
             json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 
+        
         threading.Thread(target=main_game.network_thread, args=(port, hostname), daemon=True).start()
+        
 
         message = {
             "type" : 'login',
@@ -64,15 +68,24 @@ class serverView():
         }
         
         main_game.outbox.put(message)
-        data = main_game.inbox.get()
-        main_game.change_view(main_game.game_view)
-
-    def serverButton_Pressed(self):
-        main_game.change_view(main_game.server_view)
+        try :
+            data = main_game.inbox.get(timeout=5)
+        except _queue.Empty :
+            if main_game.network_error is not None :
+                self.error = main_game.network_error
+            else :
+                self.error = "Le délai d'attente à été dépassé."
+            return
+        print(data)
+        if data['response_type'] == 'error' :
+            self.error = data['message']
+            return
+        else :
+            main_game.change_view(main_game.game_view, (data['player_data'],))
 
     def update(self, events) :
 
-        width, height = main_game.screen.get_size() 
+        width = main_game.screen.get_size()[0]
 
         # Header
         main_game.screen.fill((255, 201, 157))
@@ -101,8 +114,12 @@ class serverView():
         self.username_entry.update(events, (width/2-self.width_cont/2, 380), (self.width_cont, 40))
         self.password_entry.update(events, (width/2-self.width_cont/2, 480), (self.width_cont, 40))
 
-        port_text = self.little_font.render("Si aucun compte n'est associé à ce nom d'utilisateur, il seras créer.", True, 'black')
-        main_game.screen.blit(port_text, (width/2-self.width_cont/2+5, 530))
+        help_text = self.little_font.render("Si aucun compte n'est associé à ce nom d'utilisateur, il seras créer.", True, 'black')
+        main_game.screen.blit(help_text, (width/2-self.width_cont/2+5, 530))
 
-        self.serverbutton.update(main_game.screen, ((width/2), 600))
+        if self.error is not None :
+            error_text = self.little_font.render(self.error, True, 'red')
+            main_game.screen.blit(error_text, (width/2-self.width_cont/2+5, 550))
+
+        self.serverbutton.update(main_game.screen, ((width/2), 650))
         

@@ -74,19 +74,21 @@ class Game() :
         self.inbox = queue.Queue()   # messages reçus du serveur
         self.outbox = queue.Queue()  # messages à envoyer au serveur
         self.connect = False
+        self.network_error = None
 
     def send_message(self, msg:dict) :
         message = json.dumps(msg) + "\n"
         self.client.send(message.encode('utf-8'))
 
-    def change_view(self, new_view) :
+    def change_view(self, new_view, args=tuple()) :
         """
         Docstring for change_view
         
         :param new_view: new view
+        :param args: Arguments for view. Only first call of view.
         """
         if isinstance(new_view, type) :
-            new_view = new_view()
+            new_view = new_view(*args)
             
         self.screen.fill('black')
         new_view.previous_view = self.current_view
@@ -175,11 +177,22 @@ class Game() :
         encrypt_data = encrypter.update(pad_message) + encrypter.finalize()
         return iv + encrypt_data
 
+    def aes_decrypt(self, aes_key, iv, data):
+        cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv))
+        decrypteur = cipher.decryptor()
+        données = decrypteur.update(data) + decrypteur.finalize()
+        pad = données[-1]
+        return données[:-pad]
+
     def network_thread(self, port, hostname):
         client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-        client.connect((hostname, port))  
-        self.connect = True
+        try :
+            client.connect((hostname, port))  
+            self.connect = True
+        except ConnectionRefusedError :
+            self.network_error = "Aucune connexion n'a pu être établie car l'ordinateur cible l'a expressément refusée"
+            return
 
         
         message = {
@@ -222,7 +235,9 @@ class Game() :
                 break
             taille = int.from_bytes(entête, "big")
             paquet = client.recv(taille)
-            chunk = self.aes_decrypt(aes_key, paquet).decode("utf-8")
+            iv = paquet[:16]
+            données_chiffrées = paquet[16:]
+            chunk = self.aes_decrypt(aes_key, iv, données_chiffrées).decode("utf-8")
             buffer += chunk
             while "\n" in buffer:
                 line, buffer = buffer.split("\n", 1)

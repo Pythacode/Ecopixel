@@ -30,12 +30,12 @@ class gameView() :
         self.pause = False
 
 
-    def __init__(self):
+    def __init__(self, playerdata=None):
         """
         init function
         """
 
-        main_game.player = Player(main_game.screen.get_size()[0] / 2)
+        main_game.player = Player(main_game.screen.get_size()[0] / 2, playerdata)
 
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
@@ -43,8 +43,8 @@ class gameView() :
         self.pause = False
 
         if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) :
-            gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"], 'r'))
-            gamedata = json.load(self.data).get('game', {})
+            gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"]), 'r')
+            gamedata = json.load(gamedata).get('game', {})
         else :
             gamedata = {}
         
