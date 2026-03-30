@@ -147,7 +147,7 @@ def login(message, client_socket, aes_key) :
 
     cursor = get_cursor()
     cursor.execute("SELECT * FROM players WHERE username = ?", (username,))
-    player = cursor.fetchall()
+    player = cursor.fetchone()
     if player is not None :
         id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
         if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
