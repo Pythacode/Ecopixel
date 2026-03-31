@@ -71,6 +71,8 @@ class gameView() :
         self.offset_x = main_game.game_view.offset_x = main_game.player.x - center
         main_game.player.x = center
 
+        self.last_actualisation = pygame.time.get_ticks()
+
     def update(self, events) :
         """
         Update function
@@ -210,18 +212,38 @@ class gameView() :
                 else :
                     main_game.player.say("Pas de pousse :/", 2_000)
 
+        if main_game.player.move and pygame.time.get_ticks() - self.last_actualisation > 500 :
+            main_game.send_message({
+                "type" : "pos",
+                "pos" : main_game.player.x
+            })
 
         for event in events :
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:
                     main_game.player.orientation = "LEFT"
                     main_game.player.move = True
+                    if main_game.connect :
+                        main_game.send_message({
+                            "type" : "start_move",
+                            "direction" : "left"
+                        })
                 if event.key == main_game.key_move_right:
                     main_game.player.orientation = "RIGHT"
                     main_game.player.move = True
+                    if main_game.connect :
+                        main_game.send_message({
+                            "type" : "start_move",
+                            "direction" : "right"
+                        })
                 if event.key == main_game.key_help:
                     main_game.tuto.help()
             if event.type == pygame.KEYUP:
                 if event.key == main_game.key_move_left or event.key == main_game.key_move_right:
                     main_game.player.move = False
                     main_game.player.change_skin()
+                    if main_game.connect :
+                        main_game.send_message({
+                            "type" : "stop_move",
+                            "pos" : main_game.plyaer.x + self.game_view.offset_x
+                        })
