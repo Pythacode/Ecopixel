@@ -16,8 +16,6 @@ from sprites.cloud import Cloud
 from sprites.moutain import Mountain
 from sprites.player import Player
 
-from tuto import Tuto
-
 class gameView() :
 
     def QuitButton_Pressed(self):
@@ -35,23 +33,18 @@ class gameView() :
         init function
         """
 
-        main_game.player = Player(main_game.screen.get_size()[0] / 2, playerdata)
-
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
         self.header = True
         self.pause = False
 
         if gamedata is None :
-            if os.path.exists(os.sep.join([main_game.jsonPath, "data_game.json"])) and not main_game.connect :
-                gamedata = open(os.sep.join([main_game.jsonPath, "data_game.json"]), 'r')
+            if os.path.exists(os.sep.join([main_game.jsonPath, "sauv_game.json"])) and not main_game.connect :
+                gamedata = open(os.sep.join([main_game.jsonPath, "sauv_game.json"]), 'r')
                 gamedata = json.load(gamedata).get('game', {})
             else :
                 gamedata = {}
-        
-        main_game.tuto = Tuto(gamedata.get('tuto_advancement', 0))
 
-        self.offset_x = gamedata.get('offset_x', 0)
         self.trees = []
         for tree in gamedata.get('trees', []) :
             self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('fertilized'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
@@ -72,6 +65,11 @@ class gameView() :
         self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, lambda : main_game.tuto.next("present"), text="Jouer")
 
         self.cloud1 = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "background", "cloud1.png"]))
+
+        center = main_game.screen.get_size()[0] / 2
+        main_game.player = Player(center, playerdata)
+        self.offset_x = main_game.game_view.offset_x = main_game.player.x - center
+        main_game.player.x = center
 
     def update(self, events) :
         """

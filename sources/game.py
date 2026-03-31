@@ -76,6 +76,8 @@ class Game() :
         self.connect = False
         self.network_error = None
 
+        self.views = {}
+
     def send_message(self, msg:dict) :
         message = json.dumps(msg) + "\n"
         self.client.send(message.encode('utf-8'))
@@ -87,9 +89,14 @@ class Game() :
         :param new_view: new view
         :param args: Arguments for view. Only first call of view.
         """
+        
         if isinstance(new_view, type) :
-            new_view = new_view(*args)
-            
+            for attr, val in self.__dict__.items():
+                if val is new_view:
+                    new_view = new_view(*args)
+                    setattr(self, attr, new_view)
+                    break
+
         self.screen.fill('black')
         new_view.previous_view = self.current_view
         self.current_view = new_view
@@ -107,9 +114,8 @@ class Game() :
         ws, hs = self.screen.get_size() # Obtient la taille de l'écran
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
         pygame.display.flip() # Actualise l'affichage
-
         
-        if not isinstance(self.game_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
+        if not isinstance(main_game.game_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
 
             # Crée un dictionnaire avec les données à sauvegarder
             sauv = {
@@ -149,12 +155,12 @@ class Game() :
                                     } for t in self.game_view.trees
                                 ],
                             'house':{
-                                'lvl': self.house.lvl
+                                'lvl': self.game_view.h.lvl
                                 }
                         }
                 }
 
-            with open(os.sep.join([self.asset_doc, 'sauv_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+            with open(os.sep.join([self.jsonPath, 'sauv_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
                 json.dump(sauv, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
         
 
@@ -169,7 +175,7 @@ class Game() :
                         'key_back' : self.key_back,
                     }
             
-            with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+            with open(os.sep.join([self.jsonPath, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
                 json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
      
 

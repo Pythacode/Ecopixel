@@ -12,6 +12,7 @@ import json
 import pygame
 from sprites.tree import Tree
 from game import *
+from tuto import Tuto
 
 class Player() :
     def __init__(self, center, playerdata=None):
@@ -268,8 +269,8 @@ class Player() :
         self.plant_skin_list = (self.plant0, self.plant1, self.plant2, self.plant3, self.plant4, self.plant5, self.plant6, self.plant7, self.plant8, self.plant9, self.plant10, self.plant11, self.plant12, self.plant13, self.plant14)
 
         if playerdata is None :
-            if os.path.exists(os.sep.join([main_game.jsonPath, "data_game.json"])) :
-                playerdata = open(os.sep.join([main_game.jsonPath, "data_game.json"]), 'r')
+            if os.path.exists(os.sep.join([main_game.jsonPath, "sauv_game.json"])) :
+                playerdata = open(os.sep.join([main_game.jsonPath, "sauv_game.json"]), 'r')
                 playerdata = json.load(playerdata).get('player')
             else :
                 playerdata = {}
@@ -277,7 +278,6 @@ class Player() :
         self.actual_skin = self.idle0
         self.skin_index = playerdata.get('skin_index', 0)
 
-        print(playerdata, playerdata.get('x'))
         self.x = playerdata.get('x', center)
         self.y = playerdata.get('y', 0)
         self.orientation = playerdata.get('orientation', 'RIGHT')
@@ -294,6 +294,7 @@ class Player() :
         self.arrosoir = playerdata.get('arrosoir', False)
 
         self.msg = []
+        main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
 
     def say(self, msg, duration):
         self.msg.append({
