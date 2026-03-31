@@ -108,64 +108,70 @@ class Game() :
         self.screen.blit(word_surface, (ws - w - 5, hs - h - 5)) # Affiche le texte en bas à droite
         pygame.display.flip() # Actualise l'affichage
 
-        # Crée un dictionnaire avec les données à sauvegarder
-        sauv = {
-                'player' : 
-                    {
-                        'x' : self.player.x,
-                        'y' : self.player.y,
-                        'money' : self.player.money,
-                        'sprout' : self.player.sprout,
-                        'fertilizer' : self.player.fertilizer,
-                        'orientation' : self.player.orientation,
-                        'skin_index' : self.player.skin_index,
-                        'plant' : self.player.plant,
-                        'fruits': self.player.fruits,
-                        'arrosoir': self.player.arrosoir
-                    },
-                'game' :
-                    {
-                        'offset_x' : self.game_view.offset_x,
-                        'wait_tree' : None if self.game_view.wait_tree == None else {
-                            'x' : self.game_view.wait_tree.get('x'),
-                            'y' : self.game_view.wait_tree.get('y'),
-                            'type': self.game_view.wait_tree.get('type'),
-                            'fertilized': self.game_view.wait_tree.get('fertilized')
-                            },
-                        'trees' : [
-                                {
-                                    'x' : t.x,
-                                    'y' : t.y,
-                                    'time_alive' : t.time_alive,
-                                    'type' : t.type,
-                                    'seedling': t.seedling,
-                                    'growned_up': t.growned_up,
-                                    'skin_index': t.skin_index,
-                                    'max_alive': t.max_alive,
-                                    'fertilized': t.fertilized
-                                } for t in self.game_view.trees
-                            ],
-                        'house':{
-                            'lvl': self.house.lvl
-                            },
-                        'tuto_advancement' : self.tuto.advencement
-                    }
-            }
         
-        settings = {
-                    'key_move_right' : self.key_move_right,
-                    'key_move_left' : self.key_move_left,
-                    'key_action' : self.key_action,
-                    'key_pause' : self.key_pause,
-                    'key_sauv' : self.key_save,
-                    'key_back' : self.key_back,
+        if not isinstance(self.game_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
+
+            # Crée un dictionnaire avec les données à sauvegarder
+            sauv = {
+                    'player' : 
+                        {
+                            'x' : self.player.x + self.game_view.offset_x,
+                            'y' : self.player.y,
+                            'money' : self.player.money,
+                            'sprout' : self.player.sprout,
+                            'fertilizer' : self.player.fertilizer,
+                            'orientation' : self.player.orientation,
+                            'skin_index' : self.player.skin_index,
+                            'plant' : self.player.plant,
+                            'fruits': self.player.fruits,
+                            'arrosoir': self.player.arrosoir,
+                            'tuto_advancement' : self.tuto.advencement
+                        },
+                    'game' :
+                        {
+                            'wait_tree' : None if self.game_view.wait_tree == None else {
+                                'x' : self.game_view.wait_tree.get('x'),
+                                'y' : self.game_view.wait_tree.get('y'),
+                                'type': self.game_view.wait_tree.get('type'),
+                                'fertilized': self.game_view.wait_tree.get('fertilized')
+                                },
+                            'trees' : [
+                                    {
+                                        'x' : t.x,
+                                        'y' : t.y,
+                                        'time_alive' : t.time_alive,
+                                        'type' : t.type,
+                                        'seedling': t.seedling,
+                                        'growned_up': t.growned_up,
+                                        'skin_index': t.skin_index,
+                                        'max_alive': t.max_alive,
+                                        'fertilized': t.fertilized
+                                    } for t in self.game_view.trees
+                                ],
+                            'house':{
+                                'lvl': self.house.lvl
+                                }
+                        }
                 }
 
-        with open(os.sep.join([self.asset_doc, 'sauv_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
-            json.dump(sauv, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+            with open(os.sep.join([self.asset_doc, 'sauv_game.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+                json.dump(sauv, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+        
 
-        with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
-            json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+        if not isinstance(main_game.settings_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
+
+            settings = {
+                        'key_move_right' : self.key_move_right,
+                        'key_move_left' : self.key_move_left,
+                        'key_action' : self.key_action,
+                        'key_pause' : self.key_pause,
+                        'key_sauv' : self.key_save,
+                        'key_back' : self.key_back,
+                    }
+            
+            with open(os.sep.join([self.asset_doc, 'settings.json']), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+                json.dump(settings, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+     
 
     def aes_encrypt(self, aes_key, message: bytes) -> bytes:
         iv = os.urandom(16)

@@ -64,7 +64,7 @@ while main_game.running:
             elif event.type == pygame.KEYDOWN :
                 main_game.touch_pressed[event.key] = True # Met `TRUE` à la clé `event.key`
                 # Si la touche est la touche de sauvegarde
-                if event.key == main_game.key_save : # On lance la sauvegarde
+                if event.key == main_game.key_save :
                     main_game.save()
 
             # Lorsqu'il relache la touche
