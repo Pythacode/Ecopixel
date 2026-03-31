@@ -195,7 +195,8 @@ def login(message, client_socket, aes_key) :
                 "response_type" : "succes",
                 "player_data" : {
                     "username" : username
-                }
+                },
+                "gamedata" : gamedata
             })
 
         get_conn().commit()
