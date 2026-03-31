@@ -269,14 +269,15 @@ class Player() :
 
         if playerdata is None :
             if os.path.exists(os.sep.join([main_game.jsonPath, "data_game.json"])) :
-                playerdata = open(os.sep.join([main_game.jsonPath, "data_game.json"], 'r'))
-                playerdata = json.load(self.data)
+                playerdata = open(os.sep.join([main_game.jsonPath, "data_game.json"]), 'r')
+                playerdata = json.load(playerdata).get('player')
             else :
                 playerdata = {}
 
         self.actual_skin = self.idle0
         self.skin_index = playerdata.get('skin_index', 0)
 
+        print(playerdata, playerdata.get('x'))
         self.x = playerdata.get('x', center)
         self.y = playerdata.get('y', 0)
         self.orientation = playerdata.get('orientation', 'RIGHT')

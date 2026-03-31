@@ -43,8 +43,8 @@ class gameView() :
         self.pause = False
 
         if gamedata is None :
-            if os.path.exists(os.sep.join([main_game.asset_doc, "data_game.json"])) and not main_game.connect :
-                gamedata = open(os.sep.join([main_game.asset_doc, "data_game.json"]), 'r')
+            if os.path.exists(os.sep.join([main_game.jsonPath, "data_game.json"])) and not main_game.connect :
+                gamedata = open(os.sep.join([main_game.jsonPath, "data_game.json"]), 'r')
                 gamedata = json.load(gamedata).get('game', {})
             else :
                 gamedata = {}
