@@ -1,23 +1,139 @@
 {
-    "player": {
-        "x": 640.0,
-        "y": 0,
-        "money": 0,
-        "sprout": 0,
-        "fertilizer": 0,
-        "orientation": "RIGHT",
-        "skin_index": 0,
-        "plant": false,
-        "fruits": 0,
-        "arrosoir": false
-    },
-    "game": {
-        "offset_x": 0,
-        "wait_tree": null,
-        "trees": [],
+"trees": [
+            {
+                "x": 929.0,
+                "y": 0,
+                "time_alive": 962,
+                "type": "oak",
+                "seedling": false,
+                "growned_up": true,
+                "skin_index": 2,
+                "max_alive": 962,
+                "fertilized": false
+            },
+            {
+                "x": 1242.0,
+                "y": 0,
+                "time_alive": 609,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 847,
+                "fertilized": true
+            },
+            {
+                "x": 1526.0,
+                "y": 0,
+                "time_alive": 597,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 830,
+                "fertilized": true
+            },
+            {
+                "x": 1780.0,
+                "y": 0,
+                "time_alive": 579,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 869,
+                "fertilized": true
+            },
+            {
+                "x": 2007.0,
+                "y": 0,
+                "time_alive": 453,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 751,
+                "fertilized": true
+            },
+            {
+                "x": 2239.0,
+                "y": 0,
+                "time_alive": 295,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 759,
+                "fertilized": true
+            },
+            {
+                "x": 2490.0,
+                "y": 0,
+                "time_alive": 275,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 641,
+                "fertilized": true
+            },
+            {
+                "x": 2764.0,
+                "y": 0,
+                "time_alive": 251,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 878,
+                "fertilized": true
+            },
+            {
+                "x": 2950.0,
+                "y": 0,
+                "time_alive": 223,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 604,
+                "fertilized": true
+            },
+            {
+                "x": 3050.0,
+                "y": 0,
+                "time_alive": 178,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 824,
+                "fertilized": true
+            },
+            {
+                "x": 3289.0,
+                "y": 0,
+                "time_alive": 153,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 815,
+                "fertilized": true
+            },
+            {
+                "x": 3538.0,
+                "y": 0,
+                "time_alive": 122,
+                "type": "oak",
+                "seedling": true,
+                "growned_up": false,
+                "skin_index": 0,
+                "max_alive": 661,
+                "fertilized": true
+            }
+        ],
         "house": {
-            "lvl": 1
-        },
-        "tuto_advancement": 0
-    }
+            "lvl": 4
+        }
 }

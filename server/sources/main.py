@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 import json
 import threading
-#import sqlite3
 import base64
 import bcrypt
 from sqlalchemy import create_engine, text, bindparam
@@ -77,11 +76,16 @@ log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 def send(client_socket, aes_key, data: dict):
     message = (json.dumps(data) + "\n").encode("utf-8")
     paquet = encr.aes_encrypt(aes_key, message)
+    print(f"[SEND] taille={len(paquet)}, iv={paquet[:16].hex()}")
     client_socket.sendall(len(paquet).to_bytes(4, "big") + paquet)
 
 def send_all_player(message:dict, ignore=None) :
-    for socket, player in connected.items() :
-        if socket != ignore : send(socket, player["aes_key"], message)
+    for socket, player in list(connected.items()) :
+        if socket != ignore:
+            try:
+                send(socket, player["aes_key"], message)
+            except OSError:
+                pass
 
 @s.on("start_move")
 @s.on("stop_move")
@@ -89,7 +93,7 @@ def send_all_player(message:dict, ignore=None) :
 def player_move(message, client_socket, aes_key) :
     message['username'] = connected[client_socket]["username"]
     send_all_player(message, client_socket)
-    
+
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
