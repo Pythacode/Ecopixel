@@ -28,7 +28,7 @@ class gameView() :
         self.pause = False
 
 
-    def __init__(self, gamedata=None, playerdata=None):
+    def __init__(self, gamedata=None, playerdata=None, players=None):
         """
         init function
         """
@@ -68,10 +68,18 @@ class gameView() :
 
         center = main_game.screen.get_size()[0] / 2
         main_game.player = Player(center, playerdata)
-        self.offset_x = main_game.game_view.offset_x = main_game.player.x - center
+        self.offset_x = main_game.game_view.offset_x = main_game.player.x + center
         main_game.player.x = center
 
+        if main_game.connect :
+            self.players = {}
+            for p in players :
+                self.add_player(p)
+
         self.last_actualisation = pygame.time.get_ticks()
+
+    def add_player(self, p) :
+        self.players[p['username']] = Player(main_game.screen.get_size()[0] / 2, playerdata=p, pnj=True)
 
     def update(self, events) :
         """
@@ -103,6 +111,11 @@ class gameView() :
         for fruit in self.fruits :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         main_game.player.draw(main_game.screen, height - ground_rect[3])
+
+        if main_game.connect :
+            for p in self.players.values() :
+                p.draw(main_game.screen, height-ground_rect[3])
+                print(p.x)
 
         # Open Pause Menu
         if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
@@ -213,10 +226,21 @@ class gameView() :
                     main_game.player.say("Pas de pousse :/", 2_000)
 
         if main_game.player.move and pygame.time.get_ticks() - self.last_actualisation > 500 :
-            main_game.send_message({
+            self.last_actualisation = pygame.time.get_ticks()
+            main_game.outbox.put({
                 "type" : "pos",
-                "pos" : main_game.player.x
+                "pos" : main_game.player.x + self.offset_x
             })
+
+        while main_game.inbox.not_empty :
+            data = main_game.inbox.get()
+            if data['type'] == 'new_players' :
+                self.game_view.add_player(data['player'])
+            elif data['type'] == 'start_move' :
+                self.players[data['username']].move = True
+                self.players[data['username']].orientation = data['direction']
+            elif data['type'] == 'stop_move' :
+                self.players[data['username']].move = False
 
         for event in events :
             if event.type == pygame.KEYDOWN:
@@ -224,17 +248,17 @@ class gameView() :
                     main_game.player.orientation = "LEFT"
                     main_game.player.move = True
                     if main_game.connect :
-                        main_game.send_message({
+                        main_game.outbox.put({
                             "type" : "start_move",
-                            "direction" : "left"
+                            "direction" : "LEFT"
                         })
                 if event.key == main_game.key_move_right:
                     main_game.player.orientation = "RIGHT"
                     main_game.player.move = True
                     if main_game.connect :
-                        main_game.send_message({
+                        main_game.outbox.put({
                             "type" : "start_move",
-                            "direction" : "right"
+                            "direction" : "RIGHT"
                         })
                 if event.key == main_game.key_help:
                     main_game.tuto.help()
@@ -243,7 +267,7 @@ class gameView() :
                     main_game.player.move = False
                     main_game.player.change_skin()
                     if main_game.connect :
-                        main_game.send_message({
+                        main_game.outbox.put({
                             "type" : "stop_move",
-                            "pos" : main_game.plyaer.x + self.game_view.offset_x
+                            "pos" : main_game.player.x + self.offset_x
                         })

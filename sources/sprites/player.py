@@ -15,7 +15,7 @@ from game import *
 from tuto import Tuto
 
 class Player() :
-    def __init__(self, center, playerdata=None):
+    def __init__(self, center, playerdata=None, pnj=False):
         self.tileset = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "player", "player.png"]))
 
         tilsetJsonFile = open(os.sep.join([main_game.asset_doc, "image", "player", "player_frame.json"]), 'r')
@@ -296,6 +296,8 @@ class Player() :
         self.msg = []
         main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
 
+        self.pnj = pnj
+
     def say(self, msg, duration):
         self.msg.append({
             'msg' : msg,
@@ -331,7 +333,11 @@ class Player() :
 
         rect = self.actual_skin["subsurface"].get_rect()
         y = ground_altitude + self.y - rect[3]
-        rect[0], rect[1] = self.x, y
+        if self.pnj :
+            x = self.x + main_game.game_view.offset_x #+ main_game.screen.get_size()[0] / 2
+        else :
+            x = self.x
+        rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
     
         if len(self.msg) != 0 :

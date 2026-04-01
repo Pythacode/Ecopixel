@@ -78,10 +78,6 @@ class Game() :
 
         self.views = {}
 
-    def send_message(self, msg:dict) :
-        message = json.dumps(msg) + "\n"
-        self.client.send(message.encode('utf-8'))
-
     def change_view(self, new_view, args=tuple()) :
         """
         Docstring for change_view
@@ -118,10 +114,11 @@ class Game() :
         if not isinstance(main_game.game_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
 
             # Crée un dictionnaire avec les données à sauvegarder
+            print(self.player.x, self.game_view.offset_x, ws/2)
             sauv = {
                     'player' : 
                         {
-                            'x' : self.player.x + self.game_view.offset_x,
+                            'x' : self.player.x + self.game_view.offset_x - ws,
                             'y' : self.player.y,
                             'money' : self.player.money,
                             'sprout' : self.player.sprout,
@@ -252,8 +249,9 @@ class Game() :
             chunk = self.aes_decrypt(aes_key, iv, données_chiffrées).decode("utf-8")
             buffer += chunk
             while "\n" in buffer:
-                line, buffer = buffer.split("\n", 1)
-                self.inbox.put(json.loads(line))
+                data, buffer = buffer.split("\n", 1)
+                data = json.loads(data)
+                self.inbox.put(data)
             
 class button():
 

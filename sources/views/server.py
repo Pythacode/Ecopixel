@@ -76,12 +76,12 @@ class serverView():
             else :
                 self.error = "Le délai d'attente à été dépassé."
             return
-        print(data)
+        
         if data['response_type'] == 'error' :
             self.error = data['message']
             return
         else :
-            main_game.change_view(main_game.game_view, (data['gamedata'], data['player_data']))
+            main_game.change_view(main_game.game_view, (data['gamedata'], data['player_data'], data['players']))
 
     def update(self, events) :
 
