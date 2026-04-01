@@ -232,15 +232,17 @@ class gameView() :
                 "pos" : main_game.player.x + self.offset_x
             })
 
-        while main_game.inbox.not_empty :
-            data = main_game.inbox.get()
-            if data['type'] == 'new_players' :
-                self.game_view.add_player(data['player'])
-            elif data['type'] == 'start_move' :
-                self.players[data['username']].move = True
-                self.players[data['username']].orientation = data['direction']
-            elif data['type'] == 'stop_move' :
-                self.players[data['username']].move = False
+        if main_game.connect :
+            while not main_game.inbox.empty():
+                print(bool(main_game.inbox.not_empty), bool(main_game.inbox.empty))
+                data = main_game.inbox.get()
+                if data['type'] == 'new_players' :
+                    self.add_player(data['player'])
+                elif data['type'] == 'start_move' :
+                    self.players[data['username']].move = True
+                    self.players[data['username']].orientation = data['direction']
+                elif data['type'] == 'stop_move' :
+                    self.players[data['username']].move = False
 
         for event in events :
             if event.type == pygame.KEYDOWN:

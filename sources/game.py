@@ -114,7 +114,6 @@ class Game() :
         if not isinstance(main_game.game_view, type) : # On lance la sauvegarde si la vue du jeux à été ouverte
 
             # Crée un dictionnaire avec les données à sauvegarder
-            print(self.player.x, self.game_view.offset_x, ws/2)
             sauv = {
                     'player' : 
                         {
@@ -242,8 +241,11 @@ class Game() :
             entête = client.recv(4)
             if not entête:
                 break
-            taille = int.from_bytes(entête, "big")
-            paquet = client.recv(taille)
+            size = int.from_bytes(entête, "big")
+            paquet = b""
+            while len(paquet) < size:
+                paquet += client.recv(size - len(paquet))
+            # Côté client (network_thread)
             iv = paquet[:16]
             données_chiffrées = paquet[16:]
             chunk = self.aes_decrypt(aes_key, iv, données_chiffrées).decode("utf-8")

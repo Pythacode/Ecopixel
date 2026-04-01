@@ -76,7 +76,6 @@ log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 def send(client_socket, aes_key, data: dict):
     message = (json.dumps(data) + "\n").encode("utf-8")
     paquet = encr.aes_encrypt(aes_key, message)
-    print(f"[SEND] taille={len(paquet)}, iv={paquet[:16].hex()}")
     client_socket.sendall(len(paquet).to_bytes(4, "big") + paquet)
 
 def send_all_player(message:dict, ignore=None) :
