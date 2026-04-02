@@ -69,7 +69,6 @@ class gameView() :
         center = main_game.screen.get_size()[0] / 2
         main_game.player = Player(center, playerdata)
         self.offset_x = main_game.game_view.offset_x = main_game.player.x + center
-        main_game.player.x = center
 
         if main_game.connect :
             self.players = {}
@@ -112,10 +111,19 @@ class gameView() :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         main_game.player.draw(main_game.screen, height - ground_rect[3])
 
+        if main_game.player.username == "Nath" or main_game.player.username == None: print(main_game.player.x + self.offset_x - width)
+
         if main_game.connect :
             for p in self.players.values() :
+                assert p.username != main_game.player.username, "Heu... Bro ?"
+                if p.username == "Nath" :
+                    print(p.x, p.move)
                 p.draw(main_game.screen, height-ground_rect[3])
-                print(p.x)
+                if p.move :
+                    if p.orientation == "LEFT" :
+                        p.move_left()
+                    elif p.orientation == "RIGHT" :
+                        p.move_right()
 
         # Open Pause Menu
         if (main_game.touch_pressed.get(main_game.key_pause, False) or main_game.touch_pressed.get(main_game.key_back, False)) and not self.pause:
@@ -229,12 +237,11 @@ class gameView() :
             self.last_actualisation = pygame.time.get_ticks()
             main_game.outbox.put({
                 "type" : "pos",
-                "pos" : main_game.player.x + self.offset_x
+                "pos" : main_game.player.x + self.offset_x - width
             })
 
         if main_game.connect :
             while not main_game.inbox.empty():
-                print(bool(main_game.inbox.not_empty), bool(main_game.inbox.empty))
                 data = main_game.inbox.get()
                 if data['type'] == 'new_players' :
                     self.add_player(data['player'])
@@ -243,6 +250,9 @@ class gameView() :
                     self.players[data['username']].orientation = data['direction']
                 elif data['type'] == 'stop_move' :
                     self.players[data['username']].move = False
+                    self.players[data['username']].x = data['pos']
+                elif data['type'] == 'pos' :
+                    self.players[data['username']].x = data['pos']
 
         for event in events :
             if event.type == pygame.KEYDOWN:
@@ -271,5 +281,5 @@ class gameView() :
                     if main_game.connect :
                         main_game.outbox.put({
                             "type" : "stop_move",
-                            "pos" : main_game.player.x + self.offset_x
+                            "pos" : main_game.player.x + self.offset_x - width
                         })

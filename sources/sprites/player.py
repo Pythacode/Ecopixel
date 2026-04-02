@@ -297,6 +297,7 @@ class Player() :
         main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
 
         self.pnj = pnj
+        self.username = playerdata.get('username', None)
 
     def say(self, msg, duration):
         self.msg.append({
@@ -359,9 +360,9 @@ class Player() :
         self.plant = True
 
     def move_left(self) :
-        self.move = True
+        #self.move = True
         self.x -= self.velocity * main_game.dt
 
     def move_right(self) :
-        self.move = True
+        #self.move = True
         self.x += self.velocity * main_game.dt
