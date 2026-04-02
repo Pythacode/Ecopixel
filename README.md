@@ -1,6 +1,6 @@
 <div align="center">
     
-![logo](/data/image/icon/logo.png)
+![logo](logo.svg)
 
 
 Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web.
