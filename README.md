@@ -1,6 +1,15 @@
-![Écopixel](/data/image/icon/long_logo.png)
+<div align="center">
+    
+![logo](/data/image/icon/logo.png)
+
 
 Un jeu où l'on peut planter des arbres en achetant des pousses grâce au crédits que l'on gagne en faisant des recherches sur le web.
+
+![Python](https://img.shields.io/badge/Python-3.13.12-blue?logo=python&logoColor=white)
+![Licence](https://img.shields.io/badge/Licence-GPL_V3+-blue?logo=bookstack&logoColor=white)
+![Status](https://img.shields.io/badge/Status-In%20Development-orange)
+
+</div>
 
 [Présentation](presentation.md "Présentation du projet")\
 [Documentation](docs/sommaire.md "Sommaire de la documentation")
