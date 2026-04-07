@@ -68,7 +68,7 @@ class gameView() :
 
         center = main_game.screen.get_size()[0] / 2
         main_game.player = Player(center, playerdata)
-        self.offset_x = center
+        self.offset_x = center - main_game.player.x
 
         if main_game.connect :
             self.players = {}
@@ -117,7 +117,7 @@ class gameView() :
                 assert p.username != main_game.player.username, "Heu... Bro ?"
                 if p.username == "Nath" :
                     print(p.x, p.move)
-                p.draw(main_game.screen, height-ground_rect[3])
+                p.draw(main_game.screen, height-ground_rect[3], self.offset_x)
                 if p.move :
                     if p.orientation == "LEFT" :
                         p.move_left()
@@ -233,12 +233,13 @@ class gameView() :
             self.last_actualisation = pygame.time.get_ticks()
             main_game.outbox.put({
                 "type" : "pos",
-                "pos" : main_game.player.get_relativ_x(self.offset_x) + self.offset_x - width
+                "pos" : main_game.player.x
             })
 
         if main_game.connect :
             while not main_game.inbox.empty():
                 data = main_game.inbox.get()
+                print(data)
                 if data['type'] == 'new_players' :
                     self.add_player(data['player'])
                 elif data['type'] == 'start_move' :
