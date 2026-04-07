@@ -117,7 +117,7 @@ class Game() :
             sauv = {
                     'player' : 
                         {
-                            'x' : self.player.x + self.game_view.offset_x - ws,
+                            'x' : self.player.x,
                             'y' : self.player.y,
                             'money' : self.player.money,
                             'sprout' : self.player.sprout,

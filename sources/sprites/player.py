@@ -271,7 +271,7 @@ class Player() :
         if playerdata is None :
             if os.path.exists(os.sep.join([main_game.jsonPath, "sauv_game.json"])) :
                 playerdata = open(os.sep.join([main_game.jsonPath, "sauv_game.json"]), 'r')
-                playerdata = json.load(playerdata).get('player')
+                playerdata = json.load(playerdata).get('player', {})
             else :
                 playerdata = {}
 
@@ -325,8 +325,11 @@ class Player() :
                 if self.skin_index > len(self.static_skin_list)-1:
                     self.skin_index = 0
             self.actual_skin = skin_list[self.skin_index]
+
+    def get_relativ_x(self, offset_x) -> int :
+        return self.x + offset_x
             
-    def draw(self, surface, ground_altitude) :
+    def draw(self, surface, ground_altitude, offset_x) :
         now = pygame.time.get_ticks()
         if now - self.last_change > (self.actual_skin["duration"]) :
             self.last_change = now
@@ -334,12 +337,11 @@ class Player() :
 
         rect = self.actual_skin["subsurface"].get_rect()
         y = ground_altitude + self.y - rect[3]
-        if self.pnj :
-            x = self.x + main_game.game_view.offset_x #+ main_game.screen.get_size()[0] / 2
-        else :
-            x = self.x
+        x = self.get_relativ_x(offset_x)
         rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
+        pygame.draw.line(main_game.screen, "red", (rect[0],ground_altitude), (rect[0]+rect[2], ground_altitude), 5)
+        
     
         if len(self.msg) != 0 :
             msg = self.msg[0]
@@ -347,7 +349,7 @@ class Player() :
             h, w = size_text(msg.get('msg'), font, 300)
             padding = 10
             rect_w = w + 2*padding
-            start_pos = self.x + rect[2]/2-rect_w/2
+            start_pos = x + rect[2]/2-rect_w/2
             pygame.draw.rect(main_game.screen, 'white', (start_pos, y-h+10, rect_w, h+10), 0, 20)
             pygame.draw.rect(main_game.screen, 'black', (start_pos, y-h+10, rect_w, h+10), 3, 20)
             blit_text(msg.get('msg'), (start_pos + padding, y-h+10), font, 300, 'black', main_game.screen)
@@ -361,8 +363,13 @@ class Player() :
 
     def move_left(self) :
         #self.move = True
+        if self.get_relativ_x(main_game.game_view.offset_x) < 200 :
+            main_game.game_view.offset_x += self.velocity * main_game.dt
         self.x -= self.velocity * main_game.dt
 
     def move_right(self) :
         #self.move = True
+        width = main_game.screen.get_size()[0]
+        if self.get_relativ_x(main_game.game_view.offset_x) > width - self.size[0] - 200  :
+            main_game.game_view.offset_x -= self.velocity * main_game.dt
         self.x += self.velocity * main_game.dt

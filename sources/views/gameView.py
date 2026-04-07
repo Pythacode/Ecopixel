@@ -68,7 +68,7 @@ class gameView() :
 
         center = main_game.screen.get_size()[0] / 2
         main_game.player = Player(center, playerdata)
-        self.offset_x = main_game.game_view.offset_x = main_game.player.x + center
+        self.offset_x = center
 
         if main_game.connect :
             self.players = {}
@@ -109,9 +109,8 @@ class gameView() :
             tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         for fruit in self.fruits :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-        main_game.player.draw(main_game.screen, height - ground_rect[3])
+        main_game.player.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
-        if main_game.player.username == "Nath" or main_game.player.username == None: print(main_game.player.x + self.offset_x - width)
 
         if main_game.connect :
             for p in self.players.values() :
@@ -170,26 +169,25 @@ class gameView() :
 
         # Move player
         if main_game.touch_pressed.get(main_game.key_move_left, False) and not main_game.player.plant:
-            if main_game.player.x > 200 :
-                main_game.player.move_left()
-            else :
-                self.offset_x += main_game.player.velocity * main_game.dt
+            main_game.player.move_left()
         if main_game.touch_pressed.get(main_game.key_move_right, False) and not main_game.player.plant:
-            if main_game.player.x < width - main_game.player.size[1] - 200 :
-                main_game.player.move_right()
-            else :
-                self.offset_x -= main_game.player.velocity * main_game.dt
+            main_game.player.move_right()
 
-        x = main_game.player.x - self.offset_x
+        x = main_game.player.get_relativ_x(self.offset_x)
 
         # Display action touche
         # If distance between center of house & shop < half of his size :
         #     display_action_touch
-        if (abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2) or (abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2):
+        if (
+            (abs((self.h.x + self.h.size[0]/2 + self.offset_x) - x) < self.h.size[0]/2)
+            or
+            (abs((self.s.x + self.s.size[0]/2 + self.offset_x) - x) < self.s.size[0]/2)
+            ) :
+
             img = pygame.transform.scale(self.eimg, (72, 72))
             rect = img.get_rect()
-            rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
-            pos = (main_game.player.x + 48, height - ground_rect[3] - 290)
+            rect.center = (x + 60, height - ground_rect[3] - 250)
+            pos = (x + 48, height - ground_rect[3] - 290)
             main_game.screen.blit(img, rect)
             font = pygame.font.Font(main_game.main_font_name, 48) # Charge la police
             text = font.render(pygame.key.name(main_game.key_action), True, 'black')
@@ -198,36 +196,34 @@ class gameView() :
         if main_game.touch_pressed.get(main_game.key_action, False) :
             
             # Search
-            if abs((self.h.x + self.h.size[0]/2) - x) < self.h.size[0]/2:
+            if abs((self.h.x + self.h.size[0]/2 + self.offset_x) - x) < self.h.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
-                rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, height - ground_rect[3] - 250)
                 main_game.screen.blit(img, rect)
                 main_game.change_view(main_game.search_view)
 
             # Shop
-            elif abs((self.s.x + self.s.size[0]/2) - x) < self.s.size[0]/2:
+            elif abs((self.s.x + self.s.size[0]/2 + self.offset_x) - x) < self.s.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
-                rect.center = (main_game.player.x + 60, height - ground_rect[3] - 250)
+                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, height - ground_rect[3] - 250)
                 main_game.screen.blit(img, rect)
                 main_game.change_view(main_game.shop_view)
 
             # Plant
             elif not main_game.player.plant :
                 if main_game.player.sprout >= 1 :
-                    x = main_game.player.x - (main_game.player.size[0] + 10 if main_game.player.orientation == "LEFT" else 10) - self.offset_x
+                    x = main_game.player.get_relativ_x(self.offset_x)
                     # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
                     t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
                     if len(t) == 0 : # Vérifier si elle est vide
                         main_game.tuto.next("plant")
                         main_game.player.plant_act()
                         main_game.player.sprout -= 1
-                        if main_game.player.fertilizer > 0:
+                        self.wait_tree = {'x' : main_game.player.x + (0 if main_game.player.orientation == "LEFT" else main_game.player.size[0]), 'y' : 0, 'type' : 'oak', 'fertilized': main_game.player.fertilizer > 0}
+                        if main_game.player.fertilizer > 0 :
                             main_game.player.fertilizer -= 1
-                            self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': True}
-                        else:
-                            self.wait_tree = {'x' : x, 'y' : 0, 'type' : 'oak', 'fertilized': False}
                     else :
                         main_game.player.say('Trop proche :/', 2_000)
                 else :
@@ -237,7 +233,7 @@ class gameView() :
             self.last_actualisation = pygame.time.get_ticks()
             main_game.outbox.put({
                 "type" : "pos",
-                "pos" : main_game.player.x + self.offset_x - width
+                "pos" : main_game.player.get_relativ_x(self.offset_x) + self.offset_x - width
             })
 
         if main_game.connect :
@@ -281,5 +277,5 @@ class gameView() :
                     if main_game.connect :
                         main_game.outbox.put({
                             "type" : "stop_move",
-                            "pos" : main_game.player.x + self.offset_x - width
+                            "pos" : main_game.player.x
                         })

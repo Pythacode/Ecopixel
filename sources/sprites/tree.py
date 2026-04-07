@@ -122,7 +122,8 @@ class Tree():
 
     def draw(self, surface, ground_altitude, offset_x) :
         rect = self.actual_skin["subsurface"].get_rect()
-        rect[0], rect[1] = self.x+offset_x, ground_altitude - self.y - self.size[1]
+        rect.center = (self.x+offset_x, 0)
+        rect[1] = ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin["subsurface"], rect)
 
         self.f += main_game.dt
