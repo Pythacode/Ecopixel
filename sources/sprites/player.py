@@ -522,7 +522,8 @@ class Player() :
         self.arrosoir = playerdata.get('arrosoir', False)
 
         self.msg = []
-        main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
+        if not pnj :
+            main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
 
         self.pnj = pnj
         self.username = playerdata.get('username', None)
