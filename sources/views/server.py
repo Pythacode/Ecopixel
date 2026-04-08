@@ -81,7 +81,9 @@ class serverView():
             self.error = data['message']
             return
         else :
+            pygame.display.set_caption(f'Ecopixel - {self.username_entry.get_text()} - {self.hostname_entry.get_text()}:{self.port_entry.get_text()}')
             main_game.change_view(main_game.game_view, (data['gamedata'], data['player_data'], data['players']))
+            main_game.server_view = serverView # Réinitialise la vue
 
     def update(self, events) :
 
@@ -90,7 +92,6 @@ class serverView():
         # Header
         main_game.screen.fill((255, 201, 157))
 
-        #logo = pygame.image.load(main_game.logo)
         scaled_image = pygame.transform.scale(main_game.logo, (192, 192))
         rect = scaled_image.get_rect()
 

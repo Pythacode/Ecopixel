@@ -6,10 +6,7 @@
 # ---------------------------------------------------------------------- #
 
 import pygame
-import json
 from game import *
-import socket
-import sys
 
 last_frame = 0
 
@@ -18,13 +15,6 @@ while main_game.running:
     try :
 
         events = pygame.event.get()
-
-        try:
-            while True:
-                message = main_game.inbox.get_nowait()
-                # traitement
-        except queue.Empty:
-            pass
 
         # Écout des évenement
         for event in events:

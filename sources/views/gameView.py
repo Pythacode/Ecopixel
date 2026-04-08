@@ -115,8 +115,7 @@ class gameView() :
         if main_game.connect :
             for p in self.players.values() :
                 assert p.username != main_game.player.username, "Heu... Bro ?"
-                if p.username == "Nath" :
-                    print(p.x, p.move)
+                if p.username == "Nath" : pass
                 p.draw(main_game.screen, height-ground_rect[3], self.offset_x)
                 if p.move :
                     if p.orientation == "LEFT" :
@@ -239,17 +238,17 @@ class gameView() :
         if main_game.connect :
             while not main_game.inbox.empty():
                 data = main_game.inbox.get()
-                print(data)
-                if data['type'] == 'new_players' :
-                    self.add_player(data['player'])
-                elif data['type'] == 'start_move' :
-                    self.players[data['username']].move = True
-                    self.players[data['username']].orientation = data['direction']
-                elif data['type'] == 'stop_move' :
-                    self.players[data['username']].move = False
-                    self.players[data['username']].x = data['pos']
-                elif data['type'] == 'pos' :
-                    self.players[data['username']].x = data['pos']
+                match data['type']:
+                    case 'new_players' :
+                        self.add_player(data['player'])
+                    case 'start_move' :
+                        self.players[data['username']].move = True
+                        self.players[data['username']].orientation = data['direction']
+                    case 'stop_move' :
+                        self.players[data['username']].move = False
+                        self.players[data['username']].x = data['pos']
+                    case 'pos' :
+                        self.players[data['username']].x = data['pos']
 
         for event in events :
             if event.type == pygame.KEYDOWN:

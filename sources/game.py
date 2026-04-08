@@ -253,7 +253,6 @@ class Game() :
             while "\n" in buffer:
                 data, buffer = buffer.split("\n", 1)
                 data = json.loads(data)
-                print(data)
                 self.inbox.put(data)
             
 class button():

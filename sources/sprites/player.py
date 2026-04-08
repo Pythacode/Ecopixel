@@ -595,13 +595,13 @@ class Player() :
 
     def move_left(self) :
         #self.move = True
-        if self.get_relativ_x(main_game.game_view.offset_x) < 200 :
+        if self.get_relativ_x(main_game.game_view.offset_x) < 200 and not self.pnj :
             main_game.game_view.offset_x += self.velocity * main_game.dt
         self.x -= self.velocity * main_game.dt
 
     def move_right(self) :
         #self.move = True
         width = main_game.screen.get_size()[0]
-        if self.get_relativ_x(main_game.game_view.offset_x) > width - self.size[0] - 200  :
+        if self.get_relativ_x(main_game.game_view.offset_x) > width - self.size[0] - 200 and not self.pnj :
             main_game.game_view.offset_x -= self.velocity * main_game.dt
         self.x += self.velocity * main_game.dt
