@@ -193,7 +193,7 @@ def handle_client(client_socket, address):
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
                     data = json.loads(line)
-                    log.log(f"New message receive by {address[0]}:{address[1]}. Type : {data["type"]}")
+                    log.log(f"New message receive by {address[0]}:{address[1]}.")
                     if data["type"] == "init" :
                             compatible_version = ['1']
                             if data['version'] in compatible_version :
@@ -232,7 +232,7 @@ def handle_client(client_socket, address):
                 while "\n" in buffer:
                     line, buffer = buffer.split("\n", 1)
                     data = json.loads(line)
-                    log.log(f"New message receive by {address[0]}:{address[1]}. Type : {data["type"]}")
+                    log.log(f"New message receive by {address[0]}:{address[1]}. " + ", ".join([f"{cle} : {value}" for cle, value in data.items()]) if data['type'] != 'login' else f"Type : {data["type"]}")
                     s.dispatch(data, client_socket, aes_key)
     except ConnectionResetError :
         pass
