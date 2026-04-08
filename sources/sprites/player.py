@@ -573,7 +573,6 @@ class Player() :
         x = self.get_relativ_x(offset_x)
         rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
-        pygame.draw.line(main_game.screen, "red", (rect[0],ground_altitude), (rect[0]+rect[2], ground_altitude), 5)
         
     
         if len(self.msg) != 0 :
