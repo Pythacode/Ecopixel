@@ -31,21 +31,25 @@ class loggeur :
             self.file = open(chemin_fichier_log, 'a')
 
     def format(self, type, string) :
+        self.update_file()
         now = datetime.now()
         time = now.strftime('%Y-%m-%d %H:%M:%S.%f')[:-3]
         return f"[{time}] [{type}] : {string}\n"
 
     def error(self, message) :
+        self.update_file()
         message = self.format("ERROR", message)
         self.file.write(message)
         print(Fore.RED, message, Fore.RESET, sep="", end="")
 
     def warn(self, message) :
+        self.update_file()
         message = self.format("WARN", message)
         self.file.write(message)
         print(Fore.YELLOW, message, Fore.RESET, sep="", end="")
 
-    def log(self, message) :
-        message = self.format("INFO", message)
+    def log(self, message:str, tag:str="LOG") :
+        self.update_file()
+        message = self.format(tag, message)
         self.file.write(message)
         print(message, end="")
