@@ -526,7 +526,7 @@ class Player() :
             main_game.tuto = Tuto(playerdata.get('tuto_advancement', 0))
 
         self.pnj = pnj
-        self.username = playerdata.get('username', None)
+        self.username = playerdata.get('username', "Singleplayer")
 
     def say(self, msg, duration):
         self.msg.append({
@@ -575,7 +575,24 @@ class Player() :
         rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
         
-    
+        if 1 :
+            font = pygame.font.Font(main_game.main_font_name, 14)
+            h, w = size_text(self.username, font, 300)
+            padding = 10
+            rect_w = w + 2*padding
+            start_pos = x + rect[2]/2-rect_w/2
+            #pygame.draw.rect(main_game.screen, (0, 0, 0, 0.5), (start_pos, y-h+10, rect_w, h+10))
+            
+            pseudo_backround = pygame.Surface((rect_w, h+10))
+            pseudo_backround.set_alpha(128)
+            pseudo_backround.fill((0, 0, 0))
+
+            pseudo_background_rect = pseudo_backround.get_rect()
+            pseudo_background_rect[0], pseudo_background_rect[1] = start_pos, y-h+10
+
+            main_game.screen.blit(pseudo_backround, pseudo_background_rect)
+            blit_text(self.username, (start_pos + padding, y-h+15), font, 300, 'white', main_game.screen)
+
         if len(self.msg) != 0 :
             msg = self.msg[0]
             font = pygame.font.Font(main_game.main_font_name, 24)
