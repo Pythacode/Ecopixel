@@ -31,24 +31,16 @@ class Serveur:
         if handler:
             handler(message, client_socket, aes_key)
 
-"""
-_local = threading.local()
-
-def get_conn(): # By claude.ai
-    if not hasattr(_local, "conn"):
-        _local.conn = sqlite3.connect(os.sep.join([dataFolder, "ecopixel.db"]))
-        _local.conn.row_factory = sqlite3.Row  # accès par nom de colonne
-    return _local.conn
-
-def get_cursor(): # By claude.ai
-    return get_conn().cursor()
-
-"""
-
 engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), pool_size=5, max_overflow=10)
-    
+
 def save_game() :
-    pass
+    global connected
+    log.log('Start sauvegarde')
+    for player in connected.values() :
+        with engine.connect() as conn:
+            conn.execute(text("UPDATE players set x = :x, y = :y, money = :money, sprout = :sprout, fertilizer = :fertilizer, fruits = :fruits, arrosoir = :arrosoir WHERE username = :username"), 
+                            player).fetchone()
+    log.log('End sauvegarde')
 
 connected = {}
 
@@ -92,6 +84,8 @@ def send_all_player(message:dict, ignore=None) :
 def player_move(message, client_socket, aes_key) :
     message['username'] = connected[client_socket]["username"]
     send_all_player(message, client_socket)
+    if message['type'] == "pos" or message['type'] == 'stop_move' :
+        connected[client_socket]['x'] = message['pos']
 
 
 def login_succes(client_socket, aes_key, player, gamedata) :
@@ -114,10 +108,20 @@ def login_succes(client_socket, aes_key, player, gamedata) :
             "username": u["username"],
             "x" : u["x"],
             "y" : u["y"],
-            "move" : u["move"]
+            "move" : u.get("move", False)
             } for u in connected.values()]
     })
-    connected[client_socket] = {"username": username, "aes_key":aes_key, "x" : x, "y" : y, "move" : False}
+    connected[client_socket] = {
+            "username" : username,
+            "aes_key":aes_key,
+            "x" : x,
+            "y" : y,
+            "money": money,
+            "sprout": sprout,
+            "fertilizer": fertilizer,
+            "fruits": fruits,
+            "arrosoir": arrosoir
+        }
     send_all_player({'type':'new_players', 'player':{'username':username, 'x':x, 'y':y}}, client_socket)  
 
 @s.on("login")
@@ -244,6 +248,16 @@ def handle_client(client_socket, address):
 
 players = {}
 server.settimeout(1.0)
+
+def cyclique_task() :
+    now = datetime.now()
+    while True :
+        if datetime.now() - now > 500 :
+            save_game()
+
+#thread = threading.Thread(target=cyclique_task)
+#thread.daemon = True
+#thread.start()
 
 try :
     while True:

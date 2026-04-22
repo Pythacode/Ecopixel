@@ -213,18 +213,21 @@ class gameView() :
             # Plant
             elif not main_game.player.plant :
                 if main_game.player.sprout >= 1 :
-                    x = main_game.player.get_relativ_x(self.offset_x)
-                    # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
-                    t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-                    if len(t) == 0 : # Vérifier si elle est vide
-                        main_game.tuto.next("plant")
-                        main_game.player.plant_act()
-                        main_game.player.sprout -= 1
-                        self.wait_tree = {'x' : main_game.player.x + (0 if main_game.player.orientation == "LEFT" else main_game.player.size[0]), 'y' : 0, 'type' : 'oak', 'fertilized': main_game.player.fertilizer > 0}
-                        if main_game.player.fertilizer > 0 :
-                            main_game.player.fertilizer -= 1
+                    if main_game.connect :
+                        pass
                     else :
-                        main_game.player.say('Trop proche :/', 2_000)
+                        x = main_game.player.get_relativ_x(self.offset_x)
+                        # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
+                        t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
+                        if len(t) == 0 : # Vérifier si elle est vide
+                            main_game.tuto.next("plant")
+                            main_game.player.plant_act()
+                            main_game.player.sprout -= 1
+                            self.wait_tree = {'x' : main_game.player.x + (0 if main_game.player.orientation == "LEFT" else main_game.player.size[0]), 'y' : 0, 'type' : 'oak', 'fertilized': main_game.player.fertilizer > 0}
+                            if main_game.player.fertilizer > 0 :
+                                main_game.player.fertilizer -= 1
+                        else :
+                            main_game.player.say('Trop proche :/', 2_000)
                 else :
                     main_game.player.say("Pas de pousse :/", 2_000)
 
