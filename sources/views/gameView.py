@@ -15,6 +15,7 @@ from buildings.shop_place import Shop_place
 from sprites.cloud import Cloud
 from sprites.moutain import Mountain
 from sprites.player import Player
+from buildings.place_block import Decoration
 
 class gameView() :
 
@@ -58,6 +59,9 @@ class gameView() :
 
         self.clouds = [Cloud() for i in range(1000)]
         self.mountains = [Mountain() for i in range(250)]
+
+        self.decorations = []
+        self.decor_type = ""
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
@@ -110,6 +114,9 @@ class gameView() :
         for fruit in self.fruits :
             fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
         main_game.player.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+
+        for decor in self.decorations:
+            decor.draw(main_game.screen, height - ground_rect[3], self.offset_x)
 
 
         if main_game.connect :
@@ -254,6 +261,9 @@ class gameView() :
                         self.players[data['username']].x = data['pos']
 
         for event in events :
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.decorations.append(Decoration(self.offset_x, "test"))
+
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:
                     main_game.player.orientation = "LEFT"
