@@ -575,7 +575,7 @@ class Player() :
         rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)
         
-        if not self.pnj :
+        if self.pnj :
             font = pygame.font.Font(main_game.main_font_name, 14)
             h, w = size_text(self.username, font, 300)
             padding = 10
