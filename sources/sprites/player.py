@@ -581,7 +581,6 @@ class Player() :
             padding = 10
             rect_w = w + 2*padding
             start_pos = x + rect[2]/2-rect_w/2
-            #pygame.draw.rect(main_game.screen, (0, 0, 0, 0.5), (start_pos, y-h+10, rect_w, h+10))
             
             pseudo_backround = pygame.Surface((rect_w, h+10))
             pseudo_backround.set_alpha(128)

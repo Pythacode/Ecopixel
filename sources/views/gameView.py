@@ -15,7 +15,7 @@ from buildings.shop_place import Shop_place
 from sprites.cloud import Cloud
 from sprites.moutain import Mountain
 from sprites.player import Player
-from buildings.place_block import Decoration
+from buildings.place_block import Decoration, decoration_type
 
 class gameView() :
 
@@ -62,6 +62,7 @@ class gameView() :
 
         self.decorations = []
         self.decor_type = ""
+        self.actual_decoration = None
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
@@ -101,23 +102,47 @@ class gameView() :
             main_game.screen.blit(self.ground, ground_rect)
             x += ground_rect[2]       
 
-        for cloud in self.clouds:
-            cloud.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-        for mountain in self.mountains:
-            mountain.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        ground_altitude = height - ground_rect[3]
 
-        self.h.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-        self.s.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+        for cloud in self.clouds:
+            cloud.draw(main_game.screen, ground_altitude, self.offset_x)
+        for mountain in self.mountains:
+            mountain.draw(main_game.screen, ground_altitude, self.offset_x)
+
+        self.h.draw(main_game.screen, ground_altitude, self.offset_x)
+        self.s.draw(main_game.screen, ground_altitude, self.offset_x)
 
         for tree in self.trees :
-            tree.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+            tree.draw(main_game.screen, ground_altitude, self.offset_x)
         for fruit in self.fruits :
-            fruit.draw(main_game.screen, height - ground_rect[3], self.offset_x)
-        main_game.player.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+            fruit.draw(main_game.screen, ground_altitude, self.offset_x)
+        main_game.player.draw(main_game.screen, ground_altitude, self.offset_x)
 
         for decor in self.decorations:
-            decor.draw(main_game.screen, height - ground_rect[3], self.offset_x)
+            decor.draw(main_game.screen, ground_altitude, self.offset_x)
+        if self.actual_decoration :
+            self.actual_decoration.draw(main_game.screen, ground_altitude, self.offset_x)
+            selector_arrow = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "deco_selector", "arrow.png"]))
+            selector_arrow = pygame.transform.scale(selector_arrow, (62, 62))
 
+            rect = selector_arrow.get_rect()
+            rect.center = width / 2, ground_altitude - 100
+            main_game.screen.blit(selector_arrow, rect)
+
+            selected_case = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "deco_selector", "case.png"]))
+            selected_case = pygame.transform.scale(selected_case, (62, 62))
+
+            rect = selected_case.get_rect()
+            rect.center = width / 2, ground_altitude - 30
+            main_game.screen.blit(selected_case, rect)
+
+            selected_deco = self.actual_decoration.actual_skin
+            selected_deco = pygame.transform.scale(selected_deco, (42, 42))
+            selected_deco.set_alpha(255)
+
+            rect = selected_deco.get_rect()
+            rect.center = width / 2, ground_altitude - 30
+            main_game.screen.blit(selected_deco, rect)
 
         if main_game.connect :
             for p in self.players.values() :
@@ -192,8 +217,8 @@ class gameView() :
 
             img = pygame.transform.scale(self.eimg, (72, 72))
             rect = img.get_rect()
-            rect.center = (x + 60, height - ground_rect[3] - 250)
-            pos = (x + 48, height - ground_rect[3] - 290)
+            rect.center = (x + 60, ground_altitude - 250)
+            pos = (x + 48, ground_altitude - 290)
             main_game.screen.blit(img, rect)
             font = pygame.font.Font(main_game.main_font_name, 48) # Charge la police
             text = font.render(pygame.key.name(main_game.key_action), True, 'black')
@@ -205,7 +230,7 @@ class gameView() :
             if abs((self.h.x + self.h.size[0]/2 + self.offset_x) - x) < self.h.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
-                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, height - ground_rect[3] - 250)
+                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, ground_altitude - 250)
                 main_game.screen.blit(img, rect)
                 main_game.change_view(main_game.search_view)
 
@@ -213,7 +238,7 @@ class gameView() :
             elif abs((self.s.x + self.s.size[0]/2 + self.offset_x) - x) < self.s.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
-                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, height - ground_rect[3] - 250)
+                rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, ground_altitude - 250)
                 main_game.screen.blit(img, rect)
                 main_game.change_view(main_game.shop_view)
 
@@ -261,8 +286,13 @@ class gameView() :
                         self.players[data['username']].x = data['pos']
 
         for event in events :
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.decorations.append(Decoration(self.offset_x, ground_rect[3], "test"))
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if self.actual_decoration :
+                    self.actual_decoration.placing(self.offset_x, ground_rect[3])
+                    self.decorations.append(self.actual_decoration)
+                    self.actual_decoration = None
+                else :
+                    self.actual_decoration = Decoration()
 
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:

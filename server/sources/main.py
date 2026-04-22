@@ -33,15 +33,6 @@ class Serveur:
 
 engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), pool_size=5, max_overflow=10)
 
-@s.on("save")
-def save_game() :
-    global connected
-    log.log('Start sauvegarde')
-    for player in connected.values() :
-        with engine.connect() as conn:
-            conn.execute(text("UPDATE players set x = :x, y = :y, money = :money, sprout = :sprout, fertilizer = :fertilizer, fruits = :fruits, arrosoir = :arrosoir WHERE username = :username"), 
-                            player).fetchone()
-    log.log('End sauvegarde')
 
 connected = {}
 
@@ -88,6 +79,18 @@ def player_move(message, client_socket, aes_key) :
     if message['type'] == "pos" or message['type'] == 'stop_move' :
         connected[client_socket]['x'] = message['pos']
 
+@s.on("save")
+def save_game(*args) :
+    global connected
+    log.log('Start sauvegarde')
+    for player in connected.values() :
+        with engine.begin() as conn:
+            conn.execute(text("UPDATE players set x = :x, y = :y, money = :money, sprout = :sprout, fertilizer = :fertilizer, fruits = :fruits, arrosoir = :arrosoir WHERE username = :username"), 
+                            player)
+            player = conn.execute(text("SELECT * FROM players WHERE username = :username"), 
+                        {"username":"Nath"}).fetchone()
+        print(player)
+    log.log('End sauvegarde')
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
@@ -112,6 +115,16 @@ def login_succes(client_socket, aes_key, player, gamedata) :
             "move" : u.get("move", False)
             } for u in connected.values()]
     })
+    print({
+            "username" : username,
+            "x" : x,
+            "y" : y,
+            "money": money,
+            "sprout": sprout,
+            "fertilizer": fertilizer,
+            "fruits": fruits,
+            "arrosoir": arrosoir
+        })
     connected[client_socket] = {
             "username" : username,
             "aes_key":aes_key,
@@ -149,11 +162,12 @@ def login(message, client_socket, aes_key) :
         else :
             gamedata = {}
 
-        with engine.connect() as conn:
+        with engine.begin() as conn:
             player = conn.execute(text("SELECT * FROM players WHERE username = :username"), 
                          {"username":username}).fetchone()
         if player is not None :
             id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
+            print(player)
             if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
                 login_succes(client_socket, aes_key, player, gamedata)
             else :
@@ -172,7 +186,7 @@ def login(message, client_socket, aes_key) :
             # Hacher le mot de passe
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')                    
 
-            with engine.connect() as conn:
+            with engine.begin() as conn:
                 result = conn.execute(text("insert into players (username, password) values (:username, :password)"), 
                          {"username":username, "password":hashed_password})
                 conn.commit()
