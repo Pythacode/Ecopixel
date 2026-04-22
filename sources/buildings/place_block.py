@@ -32,6 +32,4 @@ class Decoration():
         self.actual_skin = pygame.image.load(os.sep.join(self.blocks[type]["dir"]))
         self.actual_skin = pygame.transform.scale(self.actual_skin, self.blocks[type]["size"])
         self.size = self.blocks[type]["size"]
-        print(self.x, x, offset_x, self.x+offset_x)
-        print(self.y, y)
 
