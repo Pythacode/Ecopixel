@@ -33,6 +33,7 @@ class Serveur:
 
 engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), pool_size=5, max_overflow=10)
 
+@s.on("save")
 def save_game() :
     global connected
     log.log('Start sauvegarde')

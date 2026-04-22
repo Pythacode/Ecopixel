@@ -55,7 +55,12 @@ while main_game.running:
                 main_game.touch_pressed[event.key] = True # Met `TRUE` à la clé `event.key`
                 # Si la touche est la touche de sauvegarde
                 if event.key == main_game.key_save :
-                    main_game.save()
+                    if main_game.connect :
+                        main_game.outbox.put({
+                            "type" : "save"
+                        })
+                    else :
+                        main_game.save()
 
             # Lorsqu'il relache la touche
             elif event.type == pygame.KEYUP :
