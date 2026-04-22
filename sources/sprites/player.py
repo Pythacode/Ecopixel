@@ -570,7 +570,7 @@ class Player() :
             self.change_skin()
 
         rect = self.actual_skin["subsurface"].get_rect()
-        y = ground_altitude + self.y - rect[3]
+        y = ground_altitude - self.y - rect[3]
         x = self.get_relativ_x(offset_x)
         rect[0], rect[1] = x, y
         surface.blit(pygame.transform.flip(self.actual_skin["subsurface"], True, False) if self.orientation == "LEFT" else self.actual_skin["subsurface"], rect)

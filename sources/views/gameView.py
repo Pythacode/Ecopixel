@@ -262,7 +262,7 @@ class gameView() :
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN:
-                self.decorations.append(Decoration(self.offset_x, "test"))
+                self.decorations.append(Decoration(self.offset_x, ground_rect[3], "test"))
 
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:
