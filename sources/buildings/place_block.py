@@ -10,14 +10,14 @@ import json
 from game import*
 
 decoration_type = {
-    "dirt": {"dir":[main_game.asset_doc, "image", "game", "ground.png"], "size":(32,32)},
-    "fruits": {"dir":[main_game.asset_doc, "image", "game", "fruits.png"], "size":(32,32)},
-    "logo": {"dir":[main_game.asset_doc, "image", "game", "logo.png"], "size":(32,32)},
-    "sprout": {"dir":[main_game.asset_doc, "image", "game", "sprout.png"], "size":(32,32)},
-    "arrosoir": {"dir":[main_game.asset_doc, "image", "item", "arrosoir.png"], "size":(32,32)},
-    "table": {"dir":[main_game.asset_doc, "image", "decoration", "table.png"], "size":(32,10)},
-    "fence": {"dir":[main_game.asset_doc, "image", "decoration", "fence.png"], "size":(32,16)},
-    "flowerpot": {"dir":[main_game.asset_doc, "image", "decoration", "flowerpot.png"], "size":(12,24)}
+    "dirt": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"])), "size":(32,32), "price" : 32},
+    "fruits": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"])), "size":(32,32), "price" : 32},
+    "logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(32,32), "price" : 32},
+    "sprout": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"])), "size":(32,32), "price" : 32},
+    "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32), "price" : 32},
+    "table": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "table.png"])), "size":(32,10), "price" : 32},
+    "fence": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "fence.png"])), "size":(32,16), "price" : 32},
+    "flowerpot": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "flowerpot.png"])), "size":(12,24), "price" : 32}
 }
 
 list_decoration_type = list(decoration_type.keys())
@@ -46,8 +46,12 @@ class Decoration():
         self.actual_skin.set_alpha(200)
 
     def placing(self, offset_x, ground_height):
-        self.x = pygame.mouse.get_pos()[0] - offset_x
-        self.y = (main_game.screen.get_size()[1] - pygame.mouse.get_pos()[1] - ground_height) - decoration_type[self.type]["size"][1]
-        self.actual_skin.set_alpha(255)
-        self.placed = True
+        if main_game.player.money >= decoration_type[self.type]["price"] :
+            main_game.player.money -= decoration_type[self.type]["price"]
+            self.x = pygame.mouse.get_pos()[0] - offset_x
+            self.y = (main_game.screen.get_size()[1] - pygame.mouse.get_pos()[1] - ground_height) - decoration_type[self.type]["size"][1]
+            self.actual_skin.set_alpha(255)
+            self.placed = True
+        else :
+            main_game.player.say('Je suis trop pauvre :/', 2000)
 
