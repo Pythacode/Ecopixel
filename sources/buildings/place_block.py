@@ -10,11 +10,14 @@ import json
 from game import*
 
 decoration_type = {
-    "dirt": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"])), "size":(32,32)},
-    "fruits": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"])), "size":(32,32)},
-    "logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(32,32)},
-    "sprout": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"])), "size":(32,32)},
-    "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32)}
+    "dirt": {"dir":[main_game.asset_doc, "image", "game", "ground.png"], "size":(32,32)},
+    "fruits": {"dir":[main_game.asset_doc, "image", "game", "fruits.png"], "size":(32,32)},
+    "logo": {"dir":[main_game.asset_doc, "image", "game", "logo.png"], "size":(32,32)},
+    "sprout": {"dir":[main_game.asset_doc, "image", "game", "sprout.png"], "size":(32,32)},
+    "arrosoir": {"dir":[main_game.asset_doc, "image", "item", "arrosoir.png"], "size":(32,32)},
+    "table": {"dir":[main_game.asset_doc, "image", "decoration", "table.png"], "size":(32,10)},
+    "fence": {"dir":[main_game.asset_doc, "image", "decoration", "fence.png"], "size":(32,16)},
+    "flowerpot": {"dir":[main_game.asset_doc, "image", "decoration", "flowerpot.png"], "size":(12,24)}
 }
 
 list_decoration_type = list(decoration_type.keys())
