@@ -145,6 +145,19 @@ class gameView() :
             main_game.screen.blit(selector_arrow, rect)
             self.draw_deco_case(self.actual_decoration.actual_skin, (62, 62), (width / 2, ground_altitude - 30))
 
+            font = pygame.font.Font(main_game.main_font_name, 24)
+            price = font.render(str(decoration_type[self.actual_decoration.type]["price"]), 0, 'black')
+            word_width, word_height = price.get_size()
+            rect = price.get_rect()
+            rect.center = width/2 - word_width/2, ground_altitude + 20
+            main_game.screen.blit(price, rect)
+
+            image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]))
+            scaled_image = pygame.transform.scale(image, (20, 20))
+            rect = scaled_image.get_rect()
+            rect.center = width/2 + word_width/2, ground_altitude + 20
+            main_game.screen.blit(scaled_image, rect)
+
             select_index = list_decoration_type.index(self.actual_decoration.type)
 
             self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-3)%(len(list_decoration_type))])['img'], (32, 32), ((width / 2) - 155, ground_altitude - 30))

@@ -15,7 +15,7 @@ decoration_type = {
     "logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(32,32), "price" : 32},
     "sprout": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"])), "size":(32,32), "price" : 32},
     "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32), "price" : 32},
-    "table": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "table.png"])), "size":(32,10), "price" : 32},
+    "table": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "table.png"])), "size":(320,100), "price" : 42_000},
     "fence": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "fence.png"])), "size":(32,16), "price" : 32},
     "flowerpot": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "flowerpot.png"])), "size":(12,24), "price" : 32}
 }
