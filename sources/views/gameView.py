@@ -147,8 +147,6 @@ class gameView() :
 
             select_index = list_decoration_type.index(self.actual_decoration.type)
 
-            self.actual_decoration.change_type((main_game.scroll_y//10)%len(decoration_type))
-
             self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-3)%(len(list_decoration_type))])['img'], (32, 32), ((width / 2) - 155, ground_altitude - 30))
             self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-1)%(len(list_decoration_type))])['img'], (52, 52), ((width / 2) - 70, ground_altitude - 30))
             self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-2)%(len(list_decoration_type))])['img'], (45, 45), ((width / 2) - 125, ground_altitude - 30))
@@ -306,6 +304,9 @@ class gameView() :
                     self.actual_decoration = None
                 else :
                     self.actual_decoration = Decoration()
+            
+            if event.type == pygame.MOUSEWHEEL :
+                self.actual_decoration.change_type((main_game.scroll_y//10)%len(decoration_type))
 
             if event.type == pygame.KEYDOWN:
                 if event.key == main_game.key_move_left:
