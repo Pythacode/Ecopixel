@@ -14,7 +14,10 @@ decoration_type = {
     "fruits": {"dir":[main_game.asset_doc, "image", "game", "fruits.png"], "size":(32,32)},
     "logo": {"dir":[main_game.asset_doc, "image", "game", "logo.png"], "size":(32,32)},
     "sprout": {"dir":[main_game.asset_doc, "image", "game", "sprout.png"], "size":(32,32)},
-    "arrosoir": {"dir":[main_game.asset_doc, "image", "item", "arrosoir.png"], "size":(32,32)}
+    "arrosoir": {"dir":[main_game.asset_doc, "image", "item", "arrosoir.png"], "size":(32,32)},
+    "table": {"dir":[main_game.asset_doc, "image", "decoration", "table.png"], "size":(32,10)},
+    "fence": {"dir":[main_game.asset_doc, "image", "decoration", "fence.png"], "size":(32,16)},
+    "flowerpot": {"dir":[main_game.asset_doc, "image", "decoration", "flowerpot.png"], "size":(12,24)}
 }
 
 class Decoration():
