@@ -34,7 +34,7 @@ class Decoration():
         if not self.placed : 
             rect.center = pygame.mouse.get_pos()
         else :
-            rect.center = self.x + offset_x, ground_altitude - self.y - 32
+            rect.center = self.x + offset_x, ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin, rect)
 
     def change_type(self, type) :

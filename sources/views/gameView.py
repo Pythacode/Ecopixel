@@ -146,8 +146,9 @@ class gameView() :
             self.draw_deco_case(self.actual_decoration.actual_skin, (62, 62), (width / 2, ground_altitude - 30))
 
             font = pygame.font.Font(main_game.main_font_name, 24)
-            price = font.render(str(decoration_type[self.actual_decoration.type]["price"]), 0, 'black')
-            word_width, word_height = price.get_size()
+            
+            price = font.render(f"{decoration_type[self.actual_decoration.type]["price"]:,}".replace(',', ' '), 0, 'black')
+            word_width = price.get_size()[0]
             rect = price.get_rect()
             rect.center = width/2 - word_width/2, ground_altitude + 20
             main_game.screen.blit(price, rect)
@@ -318,7 +319,7 @@ class gameView() :
                 else :
                     self.actual_decoration = Decoration()
             
-            if event.type == pygame.MOUSEWHEEL :
+            if event.type == pygame.MOUSEWHEEL and self.actual_decoration :
                 self.actual_decoration.change_type((main_game.scroll_y//10)%len(decoration_type))
 
             if event.type == pygame.KEYDOWN:
