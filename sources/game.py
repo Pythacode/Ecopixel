@@ -422,10 +422,10 @@ def draw_header() :
     main_game.screen.blit(scaled_logo, (2.5, 2.5))
 
     data = (
-        (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), str(main_game.player.money)), # Coin
-        (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), str(main_game.player.sprout)), # Sprout
-        (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), str(main_game.player.fertilizer)), # Fertilizer
-        (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), str(main_game.player.fruits)), # Fruits
+        (os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]), f"{main_game.player.money:,}".replace(',', ' ')), # Coin
+        (os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"]), f"{main_game.player.sprout:,}".replace(',', ' ')), # Sprout
+        (os.sep.join([main_game.asset_doc, "image", "item", "fertilizer.png"]), f"{main_game.player.fertilizer:,}".replace(',', ' ')), # Fertilizer
+        (os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"]), f"{main_game.player.fruits:,}".replace(',', ' ')), # Fruits
     )
 
     start_pos = 20
