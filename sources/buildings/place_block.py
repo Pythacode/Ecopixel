@@ -52,6 +52,8 @@ class Decoration():
             self.y = (main_game.screen.get_size()[1] - pygame.mouse.get_pos()[1] - ground_height) - decoration_type[self.type]["size"][1]
             self.actual_skin.set_alpha(255)
             self.placed = True
+            return True
         else :
             main_game.player.say('Je suis trop pauvre :/', 2000)
+            return False
 

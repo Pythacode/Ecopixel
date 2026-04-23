@@ -301,8 +301,8 @@ class gameView() :
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.actual_decoration :
-                    self.actual_decoration.placing(self.offset_x, ground_rect[3])
-                    self.decorations.append(self.actual_decoration)
+                    if self.actual_decoration.placing(self.offset_x, ground_rect[3]):
+                        self.decorations.append(self.actual_decoration)
                     self.actual_decoration = None
                 else :
                     self.actual_decoration = Decoration()
