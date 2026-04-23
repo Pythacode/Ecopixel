@@ -10,23 +10,21 @@ import json
 from game import*
 
 decoration_type = {
-    "dirt": {"dir":[main_game.asset_doc, "image", "game", "ground.png"], "size":(32,32)},
-    "fruits": {"dir":[main_game.asset_doc, "image", "game", "fruits.png"], "size":(32,32)},
-    "logo": {"dir":[main_game.asset_doc, "image", "game", "logo.png"], "size":(32,32)},
-    "sprout": {"dir":[main_game.asset_doc, "image", "game", "sprout.png"], "size":(32,32)},
-    "arrosoir": {"dir":[main_game.asset_doc, "image", "item", "arrosoir.png"], "size":(32,32)}
+    "dirt": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"])), "size":(32,32)},
+    "fruits": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"])), "size":(32,32)},
+    "logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(32,32)},
+    "sprout": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"])), "size":(32,32)},
+    "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32)}
 }
+
+list_decoration_type = list(decoration_type.keys())
 
 class Decoration():
     def __init__(self):
 
         self.x = self.y = None
         self.placed = False
-        self.type = list(decoration_type.keys())[0]
-        self.actual_skin = pygame.image.load(os.sep.join(decoration_type[self.type]["dir"]))
-        self.actual_skin = pygame.transform.scale(self.actual_skin, decoration_type[self.type]["size"])
-        self.size = decoration_type[self.type]["size"]
-        self.actual_skin.set_alpha(200)
+        self.change_type((main_game.scroll_y//10)%len(decoration_type))
     
     def draw(self, surface, ground_altitude, offset_x) :
         rect = self.actual_skin.get_rect()
@@ -35,6 +33,14 @@ class Decoration():
         else :
             rect.center = self.x + offset_x, ground_altitude - self.y - 32
         surface.blit(self.actual_skin, rect)
+
+    def change_type(self, type) :
+        type = list_decoration_type[type]
+        self.type = type
+        self.actual_skin = decoration_type[self.type]["img"]
+        self.actual_skin = pygame.transform.scale(self.actual_skin, decoration_type[self.type]["size"])
+        self.size = decoration_type[self.type]["size"]
+        self.actual_skin.set_alpha(200)
 
     def placing(self, offset_x, ground_height):
         self.x = pygame.mouse.get_pos()[0] - offset_x

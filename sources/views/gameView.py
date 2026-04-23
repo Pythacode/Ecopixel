@@ -15,7 +15,7 @@ from buildings.shop_place import Shop_place
 from sprites.cloud import Cloud
 from sprites.moutain import Mountain
 from sprites.player import Player
-from buildings.place_block import Decoration, decoration_type
+from buildings.place_block import Decoration, decoration_type, list_decoration_type
 
 class gameView() :
 
@@ -85,11 +85,26 @@ class gameView() :
     def add_player(self, p) :
         self.players[p['username']] = Player(main_game.screen.get_size()[0] / 2, playerdata=p, pnj=True)
 
+    def draw_deco_case(self, img, size:tuple, pos:tuple) :
+        
+        selected_case = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "deco_selector", "case.png"]))
+        selected_case = pygame.transform.scale(selected_case, size)
+
+        rect = selected_case.get_rect()
+        rect.center = pos
+        main_game.screen.blit(selected_case, rect)
+
+        selected_deco = pygame.transform.scale(img, (size[0] - 20, size[1] - 20))
+
+        rect = selected_deco.get_rect()
+        rect.center = pos
+        main_game.screen.blit(selected_deco, rect)
+
     def update(self, events) :
         """
         Update function
         """
-        main_game.screen.fill('white')
+        main_game.screen.fill('blue')
 
         ground_rect = self.ground.get_rect()
         width, height = main_game.screen.get_size()
@@ -128,21 +143,19 @@ class gameView() :
             rect = selector_arrow.get_rect()
             rect.center = width / 2, ground_altitude - 100
             main_game.screen.blit(selector_arrow, rect)
+            self.draw_deco_case(self.actual_decoration.actual_skin, (62, 62), (width / 2, ground_altitude - 30))
 
-            selected_case = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "deco_selector", "case.png"]))
-            selected_case = pygame.transform.scale(selected_case, (62, 62))
+            select_index = list_decoration_type.index(self.actual_decoration.type)
 
-            rect = selected_case.get_rect()
-            rect.center = width / 2, ground_altitude - 30
-            main_game.screen.blit(selected_case, rect)
+            self.actual_decoration.change_type((main_game.scroll_y//10)%len(decoration_type))
 
-            selected_deco = self.actual_decoration.actual_skin
-            selected_deco = pygame.transform.scale(selected_deco, (42, 42))
-            selected_deco.set_alpha(255)
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-3)%(len(list_decoration_type))])['img'], (32, 32), ((width / 2) - 155, ground_altitude - 30))
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-1)%(len(list_decoration_type))])['img'], (52, 52), ((width / 2) - 70, ground_altitude - 30))
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index-2)%(len(list_decoration_type))])['img'], (45, 45), ((width / 2) - 125, ground_altitude - 30))
 
-            rect = selected_deco.get_rect()
-            rect.center = width / 2, ground_altitude - 30
-            main_game.screen.blit(selected_deco, rect)
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index+3)%(len(list_decoration_type))])['img'], (32, 32), ((width / 2) + 155, ground_altitude - 30))
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index+1)%(len(list_decoration_type))])['img'], (52, 52), ((width / 2) + 70, ground_altitude - 30))
+            self.draw_deco_case(decoration_type.get(list_decoration_type[(select_index+2)%(len(list_decoration_type))])['img'], (45, 45), ((width / 2) + 125, ground_altitude - 30))
 
         if main_game.connect :
             for p in self.players.values() :
