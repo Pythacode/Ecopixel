@@ -282,7 +282,7 @@ def cyclique_task() :
                         tree["skin_index"] = 0
                     elif tree["skin_index"] > 2:
                         tree["growned_up"] = True
-                    send_all_player({"x":tree["x"], "skin_index":tree["skin_index"], "seedling":tree["seedling"], "growned_up":tree["growned_up"]})
+                    send_all_player({"type":"new_tree", "tree":{"x":tree["x"], "skin_index":tree["skin_index"], "seedling":tree["seedling"], "growned_up":tree["growned_up"]}})
             growall = datetime.now()
 
 
