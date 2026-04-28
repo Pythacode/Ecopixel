@@ -266,9 +266,25 @@ server.settimeout(1.0)
 
 def cyclique_task() :
     now = datetime.now()
+    growall = datetime.now()
     while True :
         if datetime.now() - now > 500 :
             save_game()
+        if datetime.now() - growall > 1:
+            Trees = open(os.sep.join(["server", "data", "json", "data_game.json"]), 'r')
+            for tree in Trees:
+                tree["time_alive"] += 1
+                if tree["time_alive"] == tree["max_alive"] and not tree["growned_up"]:
+                    tree["skin_index"] += 1
+                    tree["time_alive"] = 0
+                    if tree["skin_index"] > 2 and tree["seedling"]:
+                        tree["seedling"] = False
+                        tree["skin_index"] = 0
+                    elif tree["skin_index"] > 2:
+                        tree["growned_up"] = True
+                    send_all_player({"x":tree["x"], "skin_index":tree["skin_index"], "seedling":tree["seedling"], "growned_up":tree["growned_up"]})
+            growall = datetime.now()
+
 
 #thread = threading.Thread(target=cyclique_task)
 #thread.daemon = True
