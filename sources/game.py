@@ -364,7 +364,6 @@ class entry_text() :
         if size :
             self.search_zone[2:4] = size
 
-        return_value = None
         for event in events:
             if event.type == pygame.MOUSEBUTTONUP:
                 if self.search_zone.collidepoint(event.pos):
