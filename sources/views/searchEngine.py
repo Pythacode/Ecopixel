@@ -128,7 +128,6 @@ class searchView() :
         main_game.screen.fill((255, 201, 157))
 
         if self.searchFiniched :
-            print(main_game.scroll_y)
             pos_y = 140 - main_game.scroll_y
             pos_x = 20
             gap = 4
@@ -137,6 +136,10 @@ class searchView() :
                 if len(self.exploit_result.get('data')) == 0 :
                     search_text = self.font.render("Aucun résultat", True, 'black')
                     main_game.screen.blit(search_text, (30, 140))
+
+                mouse_pos = pygame.mouse.get_pos()
+                cursor = (pygame.cursors.Cursor(),)
+
                 for result in self.exploit_result.get('data') :
 
                     start_y = pos_y
@@ -169,9 +172,16 @@ class searchView() :
                         'rect' : pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y),
                         'link' : result.get('link')
                     })
+
+                    rect = pygame.Rect(pos_x, start_y, width, (pos_y - 5 - gap)-start_y)
+
+                    if rect.collidepoint(mouse_pos) and mouse_pos[1] > 140:
+                        cursor = pygame.cursors.tri_left
+                        
+                pygame.mouse.set_cursor(*cursor)
                 screen_width, screen_height = main_game.screen.get_size() 
-                self.min_scroll_y = pos_y - screen_height
-                self.min_scroll_y = 0 if self.min_scroll_y < 0 else self.min_scroll_y
+                self.max_scroll_y = abs((140 - main_game.scroll_y) - pos_y) - screen_height + 140
+                #self.max_scroll_y = 0 if self.min_scroll_y < 0 else self.min_scroll_y
             elif self.exploit_result.get('result') == 'error' :
                 self.min_scroll_y = 0
                 if self.exploit_result.get('type') == 'ConnectionError' :
@@ -207,14 +217,6 @@ class searchView() :
         main_game.screen.blit(main_game.back, back_rect)
 
         self.search_zone.update(events)
-
-        mouse_pos = pygame.mouse.get_pos()
-        cursor = (pygame.cursors.Cursor(),)
-        for i in self.results_rect :
-            if i.get('rect').collidepoint(mouse_pos) :
-                cursor = pygame.cursors.tri_left
-                break
-        pygame.mouse.set_cursor(*cursor)
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
