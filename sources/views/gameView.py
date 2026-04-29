@@ -309,6 +309,12 @@ class gameView() :
                         self.players[data['username']].x = data['pos']
                     case 'pos' :
                         self.players[data['username']].x = data['pos']
+                    case 'new_tree':
+                        for tree in self.trees:
+                            if tree["x"] == data["x"]:
+                                tree["skin_index"] = data["skin_index"]
+                                tree["seedling"] = data["seedling"]
+                                tree["growned_up"] = data["growned_up"]
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
