@@ -34,7 +34,8 @@ class searchView() :
             (width - 80, 40),
             2,
             20,
-            self.font
+            self.font,
+            backround_color='white'
         )
         self.search_zone.active = True
         self.header = True
@@ -127,6 +128,7 @@ class searchView() :
         main_game.screen.fill((255, 201, 157))
 
         if self.searchFiniched :
+            print(main_game.scroll_y)
             pos_y = 140 - main_game.scroll_y
             pos_x = 20
             gap = 4
@@ -206,13 +208,6 @@ class searchView() :
 
         self.search_zone.update(events)
 
-        text = self.search_zone.get_text()
-
-        if isinstance(text, str) :
-            if text != "" :
-                self.onsearch = True
-                threading.Thread(target=self.search, args=(text,), daemon=True).start()
-
         mouse_pos = pygame.mouse.get_pos()
         cursor = (pygame.cursors.Cursor(),)
         for i in self.results_rect :
@@ -229,5 +224,13 @@ class searchView() :
                 for i in self.results_rect :
                     if i.get('rect').collidepoint(event.pos) :
                         webbrowser.open(i.get('link'))
-            elif event.type == pygame.KEYDOWN and event.key == main_game.key_back :
-                main_game.change_view(self.previous_view)
+            elif event.type == pygame.KEYDOWN :
+                if event.key == main_game.key_back :
+                    main_game.change_view(self.previous_view)
+                elif event.key == pygame.K_RETURN :
+                    text = self.search_zone.get_text()
+
+                    if isinstance(text, str) :
+                        if text != "" :
+                            self.onsearch = True
+                            threading.Thread(target=self.search, args=(text,), daemon=True).start()
