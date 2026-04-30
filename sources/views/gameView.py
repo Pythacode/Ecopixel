@@ -60,9 +60,10 @@ class gameView() :
         self.clouds = [Cloud() for i in range(1000)]
         self.mountains = [Mountain() for i in range(250)]
 
-        self.decorations = []
+        self.decorations = [Decoration().load(d.get('type'), d.get('x'), d.get('y')) for d in gamedata.get('decorations')]
         self.decor_type = ""
         self.actual_decoration = None
+        print(self.decorations)
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)

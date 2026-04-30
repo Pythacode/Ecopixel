@@ -150,6 +150,13 @@ class Game() :
                                         'fertilized': t.fertilized
                                     } for t in self.game_view.trees
                                 ],
+                            'decorations' : [
+                                {
+                                    'x' : d.x,
+                                    'y' : d.y,
+                                    'type' : d.type
+                                } for d in self.game_view.decorations
+                            ],
                             'house':{
                                 'lvl': self.game_view.h.lvl
                                 }

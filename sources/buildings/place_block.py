@@ -56,4 +56,13 @@ class Decoration():
         else :
             main_game.player.say('Je suis trop pauvre :/', 2000)
             return False
+    
+    def load(self, type, x, y) :
+        self.change_type(list_decoration_type.index(type))
+        self.x = x
+        self.y = y
+        self.placed = True
+        self.actual_skin.set_alpha(255)
+        return self
+
 
