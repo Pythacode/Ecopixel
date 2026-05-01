@@ -8,6 +8,7 @@ sauv_game.json
 logs
 *config.json
 *settings*
-data_game.json
+*data_game*
 *.db
 *sauv*
+server/data/json/data_game.json

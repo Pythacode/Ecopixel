@@ -40,6 +40,7 @@ engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), 
 
 
 connected = {}
+connected_username = []
 
 log = log.loggeur(dataFolder)
 s = Serveur()
@@ -113,39 +114,49 @@ def save_game(*args) :
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
-    send(client_socket, aes_key, {
-        "type": "login",
-        "response_type" : "succes",
-        "player_data" : {
-            "username" : username,
-            "x" : x,
-            "y" : y,
-            "money": 1000000,#money,
-            "sprout": sprout,
-            "fertilizer": fertilizer,
-            "fruits": fruits,
-            "arrosoir": arrosoir
-        },
-        "gamedata" : gamedata,
-        "players" : [{
-            "username": u["username"],
-            "x" : u["x"],
-            "y" : u["y"],
-            "move" : u.get("move", False)
-            } for u in connected.values()]
-    })
-    connected[client_socket] = {
-            "username" : username,
-            "aes_key":aes_key,
-            "x" : x,
-            "y" : y,
-            "money": money,
-            "sprout": sprout,
-            "fertilizer": fertilizer,
-            "fruits": fruits,
-            "arrosoir": arrosoir
-        }
-    send_all_player({'type':'new_players', 'player':{'username':username, 'x':x, 'y':y}}, client_socket)  
+    if username in connected_username :
+        send(client_socket, aes_key, {
+            "type": "login",
+            "response_type": "error",
+            "message": "User already logged in"
+        })
+        client_socket.shutdown(socket.SHUT_RDWR)
+        client_socket.close()
+    else :
+        send(client_socket, aes_key, {
+            "type": "login",
+            "response_type" : "succes",
+            "player_data" : {
+                "username" : username,
+                "x" : x,
+                "y" : y,
+                "money": 1000000,#money,
+                "sprout": sprout,
+                "fertilizer": fertilizer,
+                "fruits": fruits,
+                "arrosoir": arrosoir
+            },
+            "gamedata" : gamedata,
+            "players" : [{
+                "username": u["username"],
+                "x" : u["x"],
+                "y" : u["y"],
+                "move" : u.get("move", False)
+                } for u in connected.values()]
+        })
+        connected[client_socket] = {
+                "username" : username,
+                "aes_key":aes_key,
+                "x" : x,
+                "y" : y,
+                "money": money,
+                "sprout": sprout,
+                "fertilizer": fertilizer,
+                "fruits": fruits,
+                "arrosoir": arrosoir
+            }
+        connected_username.append(username)
+        send_all_player({'type':'new_players', 'player':{'username':username, 'x':x, 'y':y}}, client_socket)  
 
 @s.on("login")
 def login(message, client_socket, aes_key) :
