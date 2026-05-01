@@ -11,13 +11,14 @@ from game import*
 
 decoration_type = {
     "dirt": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"])), "size":(32,32), "price" : 32},
-    "fruits": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"])), "size":(32,32), "price" : 32},
+    "fruits": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "fruits.png"])), "size":(32,32), "price" : 5},
     "logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(32,32), "price" : 32},
+    "big_logo": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "logo.png"])), "size":(64,64), "price" : 64},
     "sprout": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "sprout.png"])), "size":(32,32), "price" : 32},
-    "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32), "price" : 32},
-    "table": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "table.png"])), "size":(320,100), "price" : 42_000},
-    "fence": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "fence.png"])), "size":(32,16), "price" : 32},
-    "flowerpot": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "flowerpot.png"])), "size":(12,24), "price" : 32}
+    "arrosoir": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "item", "arrosoir.png"])), "size":(32,32), "price" : 20},
+    "table": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "table.png"])), "size":(320,100), "price" : 70},
+    "fence": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "fence.png"])), "size":(64,64), "price" : 32},
+    "flowerpot": {"img":pygame.image.load(os.sep.join([main_game.asset_doc, "image", "decoration", "flowerpot.png"])), "size":(24,48), "price" : 32}
 }
 
 list_decoration_type = list(decoration_type.keys())
