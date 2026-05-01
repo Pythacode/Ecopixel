@@ -85,6 +85,10 @@ def player_move(message, client_socket, aes_key) :
     if message['type'] == "pos" or message['type'] == 'stop_move' :
         connected[client_socket]['x'] = message['pos']
 
+@s.on("house")
+def player_move(message, client_socket, aes_key) :
+    send_all_player(message, client_socket)
+
 @s.on('new_deco')
 def new_deco(message, client_socket, aes_key) :
     decorations.append({

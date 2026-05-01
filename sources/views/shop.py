@@ -93,6 +93,8 @@ class shopView():
     def Amelioration1(self):
         if main_game.game_view.h.lvl == 1 and main_game.player.money > self.items[2]['price']:
             main_game.player.money -= self.items[2]["price"]
+            if main_game.connect : 
+                main_game.outbox.put({'type':'house', 'lvl':2})
             main_game.game_view.h.lvl = 2
             main_game.screen.blit(self.image_house3,self.rect_house3)
             main_game.house.change_skin()
@@ -100,6 +102,8 @@ class shopView():
     def Amelioration2(self):
         if main_game.game_view.h.lvl == 2 and main_game.player.money > self.items[3]['price']:
             main_game.player.money -= self.items[3]["price"]
+            if main_game.connect : 
+                main_game.outbox.put({'type':'house', 'lvl':3})
             main_game.game_view.h.lvl = 3
             main_game.screen.blit(self.image_house3,self.rect_house4)
             main_game.house.change_skin()
@@ -107,6 +111,8 @@ class shopView():
     def Amelioration3(self):
         if main_game.game_view.h.lvl == 3 and main_game.player.money > self.items[4]['price']:
             main_game.player.money -= self.items[4]["price"]
+            if main_game.connect : 
+                main_game.outbox.put({'type':'house', 'lvl':4})
             main_game.house.lvl = 4
             main_game.house.change_skin()
 

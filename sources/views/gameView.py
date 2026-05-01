@@ -341,6 +341,9 @@ class gameView() :
                             'fertilizer' : main_game.player.fruits,
                             'arrosoir' : main_game.player.arrosoir
                         })
+                    case 'house' :
+                        main_game.game_view.h.lvl = data.get('lvl')
+                        main_game.house.change_skin()
                     case _ :
                         print(data['type'])
 
