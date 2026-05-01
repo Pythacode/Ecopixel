@@ -114,6 +114,7 @@ def save_game(*args) :
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
+    print(player)
     if username in connected_username() :
         send(client_socket, aes_key, {
             "type": "login",
@@ -130,7 +131,7 @@ def login_succes(client_socket, aes_key, player, gamedata) :
                 "username" : username,
                 "x" : x,
                 "y" : y,
-                "money": 1000000,#money,
+                "money": money,
                 "sprout": sprout,
                 "fertilizer": fertilizer,
                 "fruits": fruits,
@@ -156,6 +157,13 @@ def login_succes(client_socket, aes_key, player, gamedata) :
                 "arrosoir": arrosoir
             }
         send_all_player({'type':'new_players', 'player':{'username':username, 'x':x, 'y':y}}, client_socket)  
+
+@s.on("palantir")
+def palantir(message, client_socket, _) :
+    del message['type']
+    for cle in message.keys() :
+        if cle in connected[client_socket] :
+            connected[client_socket][cle] = message[cle]
 
 @s.on("login")
 def login(message, client_socket, aes_key) :
@@ -300,12 +308,15 @@ server.settimeout(1.0)
 def cyclique_task() :
     last_save = datetime.now()
     growall = datetime.now()
+    palantir = datetime.now()
     while True :
-        if datetime.now() - last_save > timedelta(minutes=5) :
+        if datetime.now() - last_save > timedelta(minutes=1) :
             save_game()
             last_save = datetime.now()
+        if datetime.now() - palantir > timedelta(seconds=30) :
+            send_all_player({'type':'palantir'})
+            palantir = datetime.now()
         if datetime.now() - growall > timedelta(seconds=5) :
-            log.log(' '.join(connected_username()), tag='USR')
             for tree in Trees:
                 tree["time_alive"] += 1
                 if tree["time_alive"] == tree["max_alive"] and not tree["growned_up"]:

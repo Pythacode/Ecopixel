@@ -332,6 +332,15 @@ class gameView() :
                             main_game.change_view(main_game.menu_view)
                         else :
                             del self.players[data.get('username')]
+                    case 'palantir' :
+                        main_game.outbox.put({
+                            'type' : 'palantir',
+                            'x' : main_game.player.x,
+                            'money' : main_game.player.money, 
+                            'sprout' : main_game.player.sprout,
+                            'fertilizer' : main_game.player.fruits,
+                            'arrosoir' : main_game.player.arrosoir
+                        })
                     case _ :
                         print(data['type'])
 
