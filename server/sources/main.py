@@ -40,7 +40,7 @@ engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), 
 
 
 connected = {}
-connected_username = []
+connected_username = lambda : [c.get('username') for c in connected.values()]
 
 log = log.loggeur(dataFolder)
 s = Serveur()
@@ -114,7 +114,7 @@ def save_game(*args) :
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
-    if username in connected_username :
+    if username in connected_username() :
         send(client_socket, aes_key, {
             "type": "login",
             "response_type": "error",
@@ -155,7 +155,6 @@ def login_succes(client_socket, aes_key, player, gamedata) :
                 "fruits": fruits,
                 "arrosoir": arrosoir
             }
-        connected_username.append(username)
         send_all_player({'type':'new_players', 'player':{'username':username, 'x':x, 'y':y}}, client_socket)  
 
 @s.on("login")
@@ -218,6 +217,16 @@ def login(message, client_socket, aes_key) :
                 gamedata
             )
 
+def disconnect(client_socket) :
+    if client_socket in connected.keys() :
+        send_all_player({
+            'type' : 'remove_player',
+            'username' : connected[client_socket].get('username')
+        })
+        del connected[client_socket]
+    client_socket.shutdown(socket.SHUT_RDWR)
+    client_socket.close()
+
 def handle_client(client_socket, address):
     buffer = ""
     aes_key = None
@@ -260,8 +269,10 @@ def handle_client(client_socket, address):
                 try :
                     entête = client_socket.recv(4)
                 except :
+                    disconnect(client_socket)
                     break
                 if not entête:
+                    disconnect(client_socket)
                     break
                 taille = int.from_bytes(entête, "big")
                 paquet = client_socket.recv(taille)
@@ -294,6 +305,7 @@ def cyclique_task() :
             save_game()
             last_save = datetime.now()
         if datetime.now() - growall > timedelta(seconds=5) :
+            log.log(' '.join(connected_username()), tag='USR')
             for tree in Trees:
                 tree["time_alive"] += 1
                 if tree["time_alive"] == tree["max_alive"] and not tree["growned_up"]:

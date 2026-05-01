@@ -318,13 +318,20 @@ class gameView() :
                     case 'pos' :
                         self.players[data['username']].x = data['pos']
                     case 'new_tree':
+                        continue # Ca fait beuger tous le jeu 😭😭
                         for tree in self.trees:
-                            if tree["x"] == data["x"]:
-                                tree["skin_index"] = data["skin_index"]
-                                tree["seedling"] = data["seedling"]
-                                tree["growned_up"] = data["growned_up"]
+                            if tree.x == data["x"]:
+                                tree.skin_index = data["skin_index"]
+                                tree.growned_up = data["growned_up"]
+                                tree.seedling = data["seedling"]
                     case 'new_deco' :
                         self.decorations.append(Decoration().load(data.get('deco_type'), data.get('x'), data.get('y')))
+                    case 'remove_player' :
+                        if main_game.player.username == data.get('username') :
+                            main_game.game_view = gameView # Réinitialise la vue
+                            main_game.change_view(main_game.menu_view)
+                        else :
+                            del self.players[data.get('username')]
                     case _ :
                         print(data['type'])
 
