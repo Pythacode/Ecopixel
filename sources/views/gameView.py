@@ -60,7 +60,7 @@ class gameView() :
         self.clouds = [Cloud() for i in range(1000)]
         self.mountains = [Mountain() for i in range(250)]
 
-        self.decorations = [Decoration().load(d.get('type'), d.get('x'), d.get('y')) for d in gamedata.get('decorations')]
+        self.decorations = [Decoration().load(d.get('type'), d.get('x'), d.get('y')) for d in gamedata.get('decorations', [])]
         self.decor_type = ""
         self.actual_decoration = None
 
@@ -147,17 +147,25 @@ class gameView() :
 
             font = pygame.font.Font(main_game.main_font_name, 24)
             
-            price = font.render(f"{decoration_type[self.actual_decoration.type]["price"]:,}".replace(',', ' '), 0, 'black')
-            word_width = price.get_size()[0]
-            rect = price.get_rect()
-            rect.center = width/2 - word_width/2, ground_altitude + 20
-            main_game.screen.blit(price, rect)
-
+            price = font.render(f"{decoration_type[self.actual_decoration.type]['price']:,}".replace(',', ' '), 0, 'black')
             image = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "icon", "coin.png"]))
             scaled_image = pygame.transform.scale(image, (20, 20))
-            rect = scaled_image.get_rect()
-            rect.center = width/2 + word_width/2, ground_altitude + 20
-            main_game.screen.blit(scaled_image, rect)
+
+            price_w, price_h = price.get_size()
+            icon_w, icon_h = 20, 20
+            gap = 5
+
+            total_width = price_w + gap + icon_w
+            total_height = max(price_h, icon_h)
+
+            combined = pygame.Surface((total_width, total_height), pygame.SRCALPHA)
+            combined.blit(price, (0, (total_height - price_h) // 2))
+            combined.blit(scaled_image, (price_w + gap, (total_height - icon_h) // 2))
+
+            rect = combined.get_rect()
+            rect.center = (width // 2, ground_altitude + 20)
+
+            main_game.screen.blit(combined, rect)
 
             select_index = list_decoration_type.index(self.actual_decoration.type)
 
@@ -315,12 +323,24 @@ class gameView() :
                                 tree["skin_index"] = data["skin_index"]
                                 tree["seedling"] = data["seedling"]
                                 tree["growned_up"] = data["growned_up"]
+                    case 'new_deco' :
+                        self.decorations.append(Decoration().load(data.get('deco_type'), data.get('x'), data.get('y')))
+                    case _ :
+                        print(data['type'])
 
         for event in events :
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                 if self.actual_decoration :
                     if self.actual_decoration.placing(self.offset_x, ground_rect[3]):
-                        self.decorations.append(self.actual_decoration)
+                        if main_game.connect :
+                            main_game.outbox.put({
+                                'type' : 'new_deco',
+                                'x' : self.actual_decoration.x,
+                                'y' : self.actual_decoration.y,
+                                'deco_type' : self.actual_decoration.type
+                            })
+                        else :
+                            self.decorations.append(self.actual_decoration)
                     self.actual_decoration = None
                 else :
                     self.actual_decoration = Decoration()

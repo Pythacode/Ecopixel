@@ -1,7 +1,7 @@
 import socket
 from colorama import *
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import threading
 import base64
@@ -14,6 +14,11 @@ dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolu
                         '..', # Remonte d'un répertoir (Répertoir source)
                         'data'
                     ])
+
+data_game = json.load(open(os.sep.join([dataFolder, "json", "data_game.json"]), 'r'))
+
+Trees = data_game.get('trees', [])
+decorations = data_game.get('decorations', [])
 
 class Serveur:
     def __init__(self):
@@ -79,6 +84,15 @@ def player_move(message, client_socket, aes_key) :
     if message['type'] == "pos" or message['type'] == 'stop_move' :
         connected[client_socket]['x'] = message['pos']
 
+@s.on('new_deco')
+def new_deco(message, client_socket, aes_key) :
+    decorations.append({
+        'type' : message.get('deco_type'),
+        'x' : message.get('x'),
+        'y' : message.get('y')
+    })
+    send_all_player(message)
+
 @s.on("save")
 def save_game(*args) :
     global connected
@@ -87,9 +101,14 @@ def save_game(*args) :
         with engine.begin() as conn:
             conn.execute(text("UPDATE players set x = :x, y = :y, money = :money, sprout = :sprout, fertilizer = :fertilizer, fruits = :fruits, arrosoir = :arrosoir WHERE username = :username"), 
                             player)
-            player = conn.execute(text("SELECT * FROM players WHERE username = :username"), 
-                        {"username":"Nath"}).fetchone()
-        print(player)
+    data = {
+        'trees' : Trees,
+        'decorations' : decorations
+    }
+
+    with open(os.sep.join([dataFolder, "json", "data_game.json"]), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+                json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
+
     log.log('End sauvegarde')
 
 def login_succes(client_socket, aes_key, player, gamedata) :
@@ -101,7 +120,7 @@ def login_succes(client_socket, aes_key, player, gamedata) :
             "username" : username,
             "x" : x,
             "y" : y,
-            "money": money,
+            "money": 1000000,#money,
             "sprout": sprout,
             "fertilizer": fertilizer,
             "fruits": fruits,
@@ -115,16 +134,6 @@ def login_succes(client_socket, aes_key, player, gamedata) :
             "move" : u.get("move", False)
             } for u in connected.values()]
     })
-    print({
-            "username" : username,
-            "x" : x,
-            "y" : y,
-            "money": money,
-            "sprout": sprout,
-            "fertilizer": fertilizer,
-            "fruits": fruits,
-            "arrosoir": arrosoir
-        })
     connected[client_socket] = {
             "username" : username,
             "aes_key":aes_key,
@@ -167,7 +176,6 @@ def login(message, client_socket, aes_key) :
                          {"username":username}).fetchone()
         if player is not None :
             id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
-            print(player)
             if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
                 login_succes(client_socket, aes_key, player, gamedata)
             else :
@@ -238,7 +246,10 @@ def handle_client(client_socket, address):
                                 json_connexion_message = json.dumps(message) + "\n"
                                 client_socket.sendall(json_connexion_message.encode('utf-8'))
             else :
-                entête = client_socket.recv(4)
+                try :
+                    entête = client_socket.recv(4)
+                except :
+                    break
                 if not entête:
                     break
                 taille = int.from_bytes(entête, "big")
@@ -265,13 +276,13 @@ players = {}
 server.settimeout(1.0)
 
 def cyclique_task() :
-    now = datetime.now()
+    last_save = datetime.now()
     growall = datetime.now()
     while True :
-        if datetime.now() - now > 500 :
+        if datetime.now() - last_save > timedelta(minutes=5) :
             save_game()
-        if datetime.now() - growall > 1:
-            Trees = open(os.sep.join(["server", "data", "json", "data_game.json"]), 'r')
+            last_save = datetime.now()
+        if datetime.now() - growall > timedelta(seconds=5) :
             for tree in Trees:
                 tree["time_alive"] += 1
                 if tree["time_alive"] == tree["max_alive"] and not tree["growned_up"]:
@@ -286,9 +297,9 @@ def cyclique_task() :
             growall = datetime.now()
 
 
-#thread = threading.Thread(target=cyclique_task)
-#thread.daemon = True
-#thread.start()
+thread = threading.Thread(target=cyclique_task)
+thread.daemon = True
+thread.start()
 
 try :
     while True:
