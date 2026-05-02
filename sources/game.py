@@ -217,10 +217,11 @@ class Game() :
         return données[:-pad]
 
     def network_thread(self, port, hostname):
-        client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.client.settimeout(10.0)
 
         try :
-            client.connect((hostname, port))  
+            self.client.connect((hostname, port))  
             self.connect = True
         except ConnectionRefusedError :
             self.network_error = "Aucune connexion n'a pu être établie car l'ordinateur cible l'a expressément refusée"
@@ -233,9 +234,9 @@ class Game() :
         }
         
         message = json.dumps(message) + "\n"
-        client.sendall(message.encode('utf-8'))
+        self.client.sendall(message.encode('utf-8'))
 
-        data = json.loads(client.recv(700))
+        data = json.loads(self.client.recv(700))
 
         if not data['accept'] :
             print("Connexion impossible\nLa version de votre client n'est pas compatible avec le serveur.")
@@ -245,39 +246,56 @@ class Game() :
         public_key_pem = base64.b64decode(data["public_key"])
         public_key = serialization.load_pem_public_key(public_key_pem)
 
-        aes_key = os.urandom(32)  # AES-256
-        aes_key_crypted = public_key.encrypt(aes_key, OAEP)
-        client.sendall(aes_key_crypted)        
+        self.aes_key = os.urandom(32)  # AES-256
+        aes_key_crypted = public_key.encrypt(self.aes_key, OAEP)
+        self.client.sendall(aes_key_crypted)        
 
         # Thread d'envoi
         def send_loop():
-            while True:
+            while self.connect:
                 data = self.outbox.get()  # attend qu'un message soit à envoyer
                 message = json.dumps(data) + "\n"
-                paquet = self.aes_encrypt(aes_key, message.encode())
-                client.sendall(len(paquet).to_bytes(4, "big") + paquet)
+                paquet = self.aes_encrypt(self.aes_key, message.encode())
+                self.client.sendall(len(paquet).to_bytes(4, "big") + paquet)
 
         threading.Thread(target=send_loop, daemon=True).start()
 
         # Réception dans ce thread
         buffer = ""
-        while True:
-            entête = client.recv(4)
+        while self.connect:
+            entête = self.client.recv(4)
             if not entête:
                 break
             size = int.from_bytes(entête, "big")
             paquet = b""
             while len(paquet) < size:
-                paquet += client.recv(size - len(paquet))
+                paquet += self.client.recv(size - len(paquet))
             # Côté client (network_thread)
             iv = paquet[:16]
             données_chiffrées = paquet[16:]
-            chunk = self.aes_decrypt(aes_key, iv, données_chiffrées).decode("utf-8")
+            chunk = self.aes_decrypt(self.aes_key, iv, données_chiffrées).decode("utf-8")
             buffer += chunk
             while "\n" in buffer:
                 data, buffer = buffer.split("\n", 1)
                 data = json.loads(data)
                 self.inbox.put(data)
+
+    def disconnect(self):
+        message = json.dumps({'type' : 'disconnect'}) + "\n"
+        paquet = self.aes_encrypt(self.aes_key, message.encode())
+        self.client.sendall(len(paquet).to_bytes(4, "big") + paquet)
+        
+        self.connect = False
+
+        try:
+            self.client.shutdown(socket.SHUT_RDWR)
+        except:
+            pass
+
+        try:
+            self.client.close()
+        except:
+            pass
             
 class button():
 
@@ -308,19 +326,25 @@ class button():
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         self.rect = scaled_image.get_rect()
         self.rendertext = font.render(self.text, True, 'black')
+        self.can_click = False
 
-    def update(self, screen, position=""):
+    def update(self, screen, events, position=""):
         if position == "" : position = self.position
         buttonpos = (position[0] - self.rendertext.get_size()[0]/2, position[1] - self.rendertext.get_size()[1]/2)
         self.rect.center = position
         image = self.image_nor
+        for e in events :
+            if e.type == pygame.MOUSEBUTTONDOWN and pygame.mouse.get_pressed(num_buttons=3)[0]:
+                self.can_click = True
         if self.rect.collidepoint(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]):
-            if pygame.mouse.get_pressed(num_buttons=3)[0]:
+            if pygame.mouse.get_pressed(num_buttons=3)[0] and self.can_click:
                 image = self.image_click
                 self.click = True
             else:
                 image = self.image_mouse
                 self.click = False
+        else  :
+            self.can_click = False
         scaled_image = pygame.transform.scale(image, (self.width, self.height))
         screen.blit(scaled_image, self.rect)
         screen.blit(self.rendertext, buttonpos)

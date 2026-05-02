@@ -8,6 +8,7 @@ class loggeur :
         self.hour = None
         self.file = None
         self.dataFolder = dataFolder
+        self.messages = []
         self.update_file()
 
     def update_file(self) :
@@ -40,16 +41,16 @@ class loggeur :
         self.update_file()
         message = self.format("ERROR", message)
         self.file.write(message)
-        print(Fore.RED, message, Fore.RESET, sep="", end="")
+        self.messages.append(Fore.RED + message.removesuffix('\n') + Fore.RESET)
 
     def warn(self, message) :
         self.update_file()
         message = self.format("WARN", message)
         self.file.write(message)
-        print(Fore.YELLOW, message, Fore.RESET, sep="", end="")
+        self.messages.append(Fore.YELLOW + message.removesuffix('\n') + Fore.RESET)
 
     def log(self, message:str, tag:str="LOG") :
         self.update_file()
         message = self.format(tag, message)
         self.file.write(message)
-        print(message, end="")
+        self.messages.append(message.removesuffix('\n'))

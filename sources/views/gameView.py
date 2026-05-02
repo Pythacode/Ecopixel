@@ -28,6 +28,12 @@ class gameView() :
     def ResumeButton_Pressed(self):
         self.pause = False
 
+    def HomeButton_Pressed(self) : 
+        main_game.save()
+        main_game.game_view = gameView
+        if main_game.connect :
+            main_game.disconnect()
+        main_game.change_view(main_game.menu_view)
 
     def __init__(self, gamedata=None, playerdata=None, players=None):
         """
@@ -66,7 +72,8 @@ class gameView() :
 
         self.resumebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100), 48*4, 24*4, self.ResumeButton_Pressed, text="Resume")
         self.settingsButton = button(os.sep.join([main_game.asset_doc, "image", "button", "settings_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "settings_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2), 48*4, 24*4, self.settingsButton_Pressed)
-        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.QuitButton_Pressed, text="")
+        self.homebutton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, self.HomeButton_Pressed, text="Menu")
+        self.quitbutton = button(os.sep.join([main_game.asset_doc, "image", "button", "quit_button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "quit_button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 200), 48*4, 24*4, self.QuitButton_Pressed, text="")
         self.tutoButton = button(os.sep.join([main_game.asset_doc, "image", "button", "button_nor.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_mouse.png"]), os.sep.join([main_game.asset_doc, "image", "button", "button_click.png"]), (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100), 48*4, 24*4, lambda : main_game.tuto.next("present"), text="Jouer")
 
         self.cloud1 = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "background", "cloud1.png"]))
@@ -104,7 +111,7 @@ class gameView() :
         """
         Update function
         """
-        main_game.screen.fill('blue')
+        main_game.screen.fill('#9dcbe0')
 
         ground_rect = self.ground.get_rect()
         width, height = main_game.screen.get_size()
@@ -210,7 +217,7 @@ class gameView() :
 
             blit_text(main_game.tuto.get_message(), (ws/2 - w/2, hs/2 - h/2), font, ws/2, "white", main_game.screen)
 
-            self.tutoButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2+h+50))
+            self.tutoButton.update(main_game.screen, events, (main_game.screen.get_width()/2, main_game.screen.get_height()/2+h+50))
             return
             
         elif self.pause:
@@ -226,9 +233,10 @@ class gameView() :
             main_game.screen.blit(PM_bg, PM_bg_rect)
 
             # Pause Buttons
-            self.resumebutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100))
-            self.settingsButton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2))
-            self.quitbutton.update(main_game.screen, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100)) 
+            self.resumebutton.update(main_game.screen, events, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + -100))
+            self.settingsButton.update(main_game.screen, events, (main_game.screen.get_width()/2, main_game.screen.get_height()/2))
+            self.homebutton.update(main_game.screen, events, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 100))
+            self.quitbutton.update(main_game.screen, events, (main_game.screen.get_width()/2, main_game.screen.get_height()/2 + 200))
             return
 
         # Move player

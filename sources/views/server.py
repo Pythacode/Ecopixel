@@ -122,5 +122,5 @@ class serverView():
             error_text = self.little_font.render(self.error, True, 'red')
             main_game.screen.blit(error_text, (width/2-self.width_cont/2+5, 550))
 
-        self.serverbutton.update(main_game.screen, ((width/2), 650))
+        self.serverbutton.update(main_game.screen, events, ((width/2), 650))
         

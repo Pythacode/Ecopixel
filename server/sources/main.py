@@ -8,11 +8,9 @@ import base64
 import bcrypt
 from sqlalchemy import create_engine, text, bindparam
 import encrypt as encr
-import log
+import log as loggeur
 import curses
 import sys
-
-messages = []
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -33,8 +31,8 @@ class CursesOutput:
 
         while "\n" in self.buffer:
             line, self.buffer = self.buffer.split("\n", 1)
-            if line.strip():
-                messages.append(line)
+            if line.strip() :
+                log.log(line)
 
     def flush(self):
         pass
@@ -60,7 +58,7 @@ engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), 
 connected = {}
 connected_username = lambda : [c.get('username') for c in connected.values()]
 
-log = log.loggeur(dataFolder)
+log = loggeur.loggeur(dataFolder)
 sys.stdout = CursesOutput()
 sys.stderr = CursesOutput()
 
@@ -144,7 +142,6 @@ def save_game(*args) :
 
 def login_succes(client_socket, aes_key, player, gamedata) :
     id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
-    print(player)
     if username in connected_username() :
         send(client_socket, aes_key, {
             "type": "login",
@@ -268,6 +265,10 @@ def disconnect(client_socket) :
         client_socket.close()
     except OSError :
         pass
+
+@s.on("disconnect")
+def handle_disconnect(message, client_socket, aes_key):
+    disconnect(client_socket)
 
 def handle_client(client_socket, address):
     buffer = ""
@@ -398,8 +399,8 @@ def terminal(stdscr):
 
         # zone messages (au-dessus)
         zone = h - 2
-        visibles = messages[-zone:]
-        messages = messages[-200:]
+        visibles = log.messages[-zone:]
+        messages = log.messages[-200:]
 
         for i, msg in enumerate(visibles):
             stdscr.addstr(i, 0, msg[:w-1])
@@ -427,16 +428,18 @@ def terminal(stdscr):
                     case 'exit' :
                         raise KeyError
                     case 'connected' :
-                        connected = connected_username()
-                        print(f'{len(connected)} player :\n - ' + '\n - '.join(connected) if connected else 'Nobody has login')
+                        connected_user = connected_username()
+                        message = (f'{len(connected_user)} player :\n - ' + '\n - '.join(connected_user)) if connected_user else 'Nobody has login'
+                        for line in message.splitlines():
+                            log.messages.append(line)
                     case 'kick' :
                         username = ' '.join(args)
                         if username in connected_username() :
                             disconnect(get_socket(username))
                         else :
-                            print(username, 'is not login.')
-                    case 'help' | _:
-                        print('Uknow commande "cmd". Availabe commandes :\n -', '\n - '.join(['exit : Close server', 'connected : Show login user', 'kick <username> : kick username']))
+                            log.messages.append(username + ' is not login.')
+                    case _:
+                        log.messages.append(f'Uknow commande "{cmd}". Availabe commandes :\n - ' + '\n - '.join(['exit : Close server', 'connected : Show login user', 'kick <username> : kick username']))
                         
             buffer = ""
         elif key == "\b" or key == "\x7f" or key == curses.KEY_BACKSPACE:

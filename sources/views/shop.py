@@ -50,31 +50,31 @@ class shopView():
         self.buy_cooldown = 0
 
         
-    def  update (self,event):
+    def  update (self,events):
         main_game.screen.fill("#ffe75d")
         main_game.screen.blit(self.image_arrosoir,self.rect_arrosoir)
         main_game.screen.blit(self.image_fertilizer,self.rect_fertilizer)
         main_game.screen.blit(self.image_house2,self.rect_house2)
-        self.arrosoir_btn.update(main_game.screen)
-        self.prix_arrosoir_btn.update(main_game.screen)
-        self.fertilizer_btn.update(main_game.screen)
-        self.prix_fertilizer_btn.update(main_game.screen)
-        self.vendre_btn.update(main_game.screen)
-        self.upgrade1_btn.update(main_game.screen)
-        self.prix_upgrade1_btn.update(main_game.screen)
-        self.Retour_btn.update(main_game.screen)
+        self.arrosoir_btn.update(main_game.screen, events)
+        self.prix_arrosoir_btn.update(main_game.screen, events)
+        self.fertilizer_btn.update(main_game.screen, events)
+        self.prix_fertilizer_btn.update(main_game.screen, events)
+        self.vendre_btn.update(main_game.screen, events)
+        self.upgrade1_btn.update(main_game.screen, events)
+        self.prix_upgrade1_btn.update(main_game.screen, events)
+        self.Retour_btn.update(main_game.screen, events)
         if main_game.player.arrosoir == True:
             main_game.screen.blit(self.image_rupture_arrosoir,self.rect_rupture_arrosoir)
         if main_game.game_view.h.lvl >= 2:
             main_game.screen.blit(self.image_rupture_house2,self.rect_rupture_house2)
             main_game.screen.blit(self.image_house3,self.rect_house3)
-            self.upgrade2_btn.update(main_game.screen)
-            self.prix_upgrade2_btn.update(main_game.screen)
+            self.upgrade2_btn.update(main_game.screen, events)
+            self.prix_upgrade2_btn.update(main_game.screen, events)
         if main_game.game_view.h.lvl >= 3:
             main_game.screen.blit(self.image_rupture_house3,self.rect_rupture_house3)
             main_game.screen.blit(self.image_house4,self.rect_house4)
-            self.upgrade3_btn.update(main_game.screen)
-            self.prix_upgrade3_btn.update(main_game.screen)
+            self.upgrade3_btn.update(main_game.screen, events)
+            self.prix_upgrade3_btn.update(main_game.screen, events)
         if main_game.game_view.h.lvl == 4:
             main_game.screen.blit(self.image_rupture_house4,self.rect_rupture_house4)
 

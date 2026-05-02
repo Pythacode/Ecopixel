@@ -68,10 +68,10 @@ class menuView():
         # Header
         pygame.draw.rect(main_game.screen, (255, 201, 157), (0, 0, width, height), width=0)
 
-        self.logo.update(main_game.screen, ((width/2) - (self.logo.rect[2]), 200))
-        self.playbutton.update(main_game.screen, ((width/2), 360))
-        self.quitbutton.update(main_game.screen, ((width/2), 460))
-        self.serverbutton.update(main_game.screen, ((width/2), 560))
-        self.settingsButton.update(main_game.screen, ((width/2), 660))
+        self.logo.update(main_game.screen, events, position=((width/2) - (self.logo.rect[2]), 200))
+        self.playbutton.update(main_game.screen, events, ((width/2), 360))
+        self.quitbutton.update(main_game.screen, events, ((width/2), 460))
+        self.serverbutton.update(main_game.screen, events, ((width/2), 560))
+        self.settingsButton.update(main_game.screen, events, ((width/2), 660))
 
         
