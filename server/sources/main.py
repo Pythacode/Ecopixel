@@ -86,7 +86,7 @@ def player_move(message, client_socket, aes_key) :
         connected[client_socket]['x'] = message['pos']
 
 @s.on("house")
-def player_move(message, client_socket, aes_key) :
+def house(message, client_socket, aes_key) :
     send_all_player(message, client_socket)
 
 @s.on('new_deco')
