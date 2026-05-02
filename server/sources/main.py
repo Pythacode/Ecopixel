@@ -9,6 +9,10 @@ import bcrypt
 from sqlalchemy import create_engine, text, bindparam
 import encrypt as encr
 import log
+import curses
+import sys
+
+messages = []
 
 dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolus de `game.py`
                         '..', # Remonte d'un répertoir (Répertoir source)
@@ -19,6 +23,21 @@ data_game = json.load(open(os.sep.join([dataFolder, "json", "data_game.json"]), 
 
 Trees = data_game.get('trees', [])
 decorations = data_game.get('decorations', [])
+
+class CursesOutput:
+    def __init__(self):
+        self.buffer = ""
+
+    def write(self, text):
+        self.buffer += text
+
+        while "\n" in self.buffer:
+            line, self.buffer = self.buffer.split("\n", 1)
+            if line.strip():
+                messages.append(line)
+
+    def flush(self):
+        pass
 
 class Serveur:
     def __init__(self):
@@ -38,11 +57,13 @@ class Serveur:
 
 engine = create_engine("sqlite:///" + os.sep.join([dataFolder, "ecopixel.db"]), pool_size=5, max_overflow=10)
 
-
 connected = {}
 connected_username = lambda : [c.get('username') for c in connected.values()]
 
 log = log.loggeur(dataFolder)
+sys.stdout = CursesOutput()
+sys.stderr = CursesOutput()
+
 s = Serveur()
 
 log.log(f'Script start')
@@ -63,6 +84,11 @@ server.listen(5)
 
 log.log(f'Serveur start on {server.getsockname()[0]}:{server.getsockname()[1]}')
 
+def get_socket(username) :
+    for s, v in connected.items() :
+        if v.get('username', None) == username :
+            return s
+        
 def send(client_socket, aes_key, data: dict):
     message = (json.dumps(data) + "\n").encode("utf-8")
     paquet = encr.aes_encrypt(aes_key, message)
@@ -195,7 +221,7 @@ def login(message, client_socket, aes_key) :
 
         with engine.begin() as conn:
             player = conn.execute(text("SELECT * FROM players WHERE username = :username"), 
-                         {"username":username}).fetchone()
+                        {"username":username}).fetchone()
         if player is not None :
             id_player, username, savePassword, x, y, money, sprout, fertilizer, fruits, arrosoir = player
             if bcrypt.checkpw(password.encode('utf-8'), savePassword.encode('utf-8')):
@@ -218,7 +244,7 @@ def login(message, client_socket, aes_key) :
 
             with engine.begin() as conn:
                 result = conn.execute(text("insert into players (username, password) values (:username, :password)"), 
-                         {"username":username, "password":hashed_password})
+                        {"username":username, "password":hashed_password})
                 conn.commit()
                 id = result.lastrowid
                 
@@ -230,14 +256,18 @@ def login(message, client_socket, aes_key) :
             )
 
 def disconnect(client_socket) :
+    log.log('Disconnect : ' + str(client_socket))
     if client_socket in connected.keys() :
         send_all_player({
             'type' : 'remove_player',
             'username' : connected[client_socket].get('username')
         })
         del connected[client_socket]
-    client_socket.shutdown(socket.SHUT_RDWR)
-    client_socket.close()
+    try :
+        client_socket.shutdown(socket.SHUT_RDWR)
+        client_socket.close()
+    except OSError :
+        pass
 
 def handle_client(client_socket, address):
     buffer = ""
@@ -339,16 +369,83 @@ thread = threading.Thread(target=cyclique_task)
 thread.daemon = True
 thread.start()
 
-try :
+def main() :
     while True:
         try :
             client_socket, address = server.accept()
         except socket.timeout:
             continue
+        except Exception as e:
+            log.error(f"Erreur serveur: {e}")
         log.log(f"New connection of {address[0]}:{address[1]}")
         thread = threading.Thread(target=handle_client, args=(client_socket, address))
         thread.daemon = True
         thread.start()
+
+buffer = ""
+
+def terminal(stdscr):
+    global buffer
+
+    curses.curs_set(1)
+    stdscr.nodelay(True)
+
+    threading.Thread(target=main, daemon=True).start()
+
+    while True:
+        stdscr.clear()
+        h, w = stdscr.getmaxyx()
+
+        # zone messages (au-dessus)
+        zone = h - 2
+        visibles = messages[-zone:]
+        messages = messages[-200:]
+
+        for i, msg in enumerate(visibles):
+            stdscr.addstr(i, 0, msg[:w-1])
+
+        # barre en bas
+        stdscr.hline(h-2, 0, "_", w)
+        stdscr.addstr(h-1, 0, "Ecopixel~$ " + buffer)
+
+        stdscr.refresh()
+
+        try:
+            key = stdscr.get_wch()
+        except:
+            continue
+
+        if key == "\n":
+            if buffer :
+                log.log(buffer, tag="CMD")
+                buffer = buffer.split()
+                cmd = buffer[0]
+                if len(buffer) > 1 :
+                    args = buffer[1:]
+                
+                match cmd :
+                    case 'exit' :
+                        raise KeyError
+                    case 'connected' :
+                        connected = connected_username()
+                        print(f'{len(connected)} player :\n - ' + '\n - '.join(connected) if connected else 'Nobody has login')
+                    case 'kick' :
+                        username = ' '.join(args)
+                        if username in connected_username() :
+                            disconnect(get_socket(username))
+                        else :
+                            print(username, 'is not login.')
+                    case 'help' | _:
+                        print('Uknow commande "cmd". Availabe commandes :\n -', '\n - '.join(['exit : Close server', 'connected : Show login user', 'kick <username> : kick username']))
+                        
+            buffer = ""
+        elif key == "\b" or key == "\x7f" or key == curses.KEY_BACKSPACE:
+            buffer = buffer[:-1]
+        elif isinstance(key, str):
+            buffer += key
+
+try :
+    curses.wrapper(terminal)
 except KeyboardInterrupt :
     log.log("Close server by user")
 except OSError as e:
