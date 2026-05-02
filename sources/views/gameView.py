@@ -33,6 +33,7 @@ class gameView() :
         main_game.game_view = gameView
         if main_game.connect :
             main_game.disconnect()
+        pygame.display.set_caption(f'Ecopixel')
         main_game.change_view(main_game.menu_view)
 
     def __init__(self, gamedata=None, playerdata=None, players=None):
