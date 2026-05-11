@@ -1,5 +1,4 @@
 from datetime import datetime
-from colorama import Fore
 import os
 
 class loggeur :
@@ -41,13 +40,13 @@ class loggeur :
         self.update_file()
         message = self.format("ERROR", message)
         self.file.write(message)
-        self.messages.append(Fore.RED + message.removesuffix('\n') + Fore.RESET)
+        self.messages.append(message.removesuffix('\n'))
 
     def warn(self, message) :
         self.update_file()
         message = self.format("WARN", message)
         self.file.write(message)
-        self.messages.append(Fore.YELLOW + message.removesuffix('\n') + Fore.RESET)
+        self.messages.append(message.removesuffix('\n'))
 
     def log(self, message:str, tag:str="LOG") :
         self.update_file()

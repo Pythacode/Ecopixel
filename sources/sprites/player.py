@@ -543,8 +543,18 @@ class Player() :
                     self.skin_index = 0
                     self.plant = False
                 elif self.skin_index == 11 :
-                    main_game.game_view.trees.append(Tree(main_game.game_view.wait_tree.get('x'), main_game.game_view.wait_tree.get('y'), main_game.game_view.wait_tree.get('type'), main_game.game_view.wait_tree.get('fertilized')))
-                    main_game.game_view.wait_tree = None
+                    if main_game.connect :
+                        main_game.outbox.put({
+                            'type' : 'new_tree',
+                            'x' : main_game.game_view.wait_tree.get('x'), 
+                            'y' : main_game.game_view.wait_tree.get('y'), 
+                            'type' : main_game.game_view.wait_tree.get('type'),
+                            'fertilized' : main_game.game_view.wait_tree.get('fertilized')
+                        })
+                        main_game.game_view.wait_tree = None
+                    else :
+                        main_game.game_view.trees.append(Tree(main_game.game_view.wait_tree.get('x'), main_game.game_view.wait_tree.get('y'), main_game.game_view.wait_tree.get('type'), main_game.game_view.wait_tree.get('fertilized')))
+                        main_game.game_view.wait_tree = None
             elif self.washing:
                 skin_list = self.washed_skin_list
                 if self.skin_index > len(self.washed_skin_list)-1:

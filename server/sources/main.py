@@ -1,5 +1,4 @@
 import socket
-from colorama import *
 import os
 from datetime import datetime, timedelta
 import json
@@ -17,7 +16,11 @@ dataFolder = os.sep.join([os.path.split(__file__)[0], # Obtient le chemin absolu
                         'data'
                     ])
 
-data_game = json.load(open(os.sep.join([dataFolder, "json", "data_game.json"]), 'r'))
+data_game_path = os.sep.join([dataFolder, "json", "data_game.json"])
+if os.path.exists(data_game_path):
+    data_game = json.load(open(data_game_path, 'r'))
+else :
+    data_game = {}
 
 Trees = data_game.get('trees', [])
 decorations = data_game.get('decorations', [])
@@ -135,7 +138,7 @@ def save_game(*args) :
         'decorations' : decorations
     }
 
-    with open(os.sep.join([dataFolder, "json", "data_game.json"]), 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
+    with open(data_game_path, 'w', encoding='utf-8') as f: # Ouvre le fichier de sauvegarde
                 json.dump(data, f, ensure_ascii=False, indent=4) # Enrigistrer les données sous forme de JSON
 
     log.log('End sauvegarde')
@@ -210,8 +213,8 @@ def login(message, client_socket, aes_key) :
         username = message['username']
         password = message['password']
 
-        if os.path.exists(os.sep.join([dataFolder, "json", "data_game.json"])) :
-            gamedata = open(os.sep.join([dataFolder, "json", "data_game.json"]), 'r')
+        if os.path.exists(data_game_path) :
+            gamedata = open(data_game_path, 'r')
             gamedata = json.load(gamedata)
         else :
             gamedata = {}
@@ -265,6 +268,17 @@ def disconnect(client_socket) :
         client_socket.close()
     except OSError :
         pass
+
+@s.on('new_tree')
+def new_tree(message, client_socket, aes_key):
+    send_all_player({
+        "type":"new_tree", 
+        "tree":{
+            "x":message["x"], 
+            "skin_index":0,
+            "seedling":True,
+            "growned_up":False}
+        }, client_socket)
 
 @s.on("disconnect")
 def handle_disconnect(message, client_socket, aes_key):
@@ -388,13 +402,20 @@ buffer = ""
 def terminal(stdscr):
     global buffer
 
+    curses.start_color() 
+    curses.use_default_colors()
+    curses.init_pair(1, curses.COLOR_GREEN, -1)   # logs normaux
+    curses.init_pair(2, curses.COLOR_YELLOW, -1)  # warnings
+    curses.init_pair(3, curses.COLOR_RED, -1)     # erreurs
+    curses.init_pair(4, curses.COLOR_CYAN, -1)    # CMD
+
     curses.curs_set(1)
     stdscr.nodelay(True)
 
     threading.Thread(target=main, daemon=True).start()
 
     while True:
-        stdscr.clear()
+        stdscr.erase()
         h, w = stdscr.getmaxyx()
 
         # zone messages (au-dessus)
@@ -403,7 +424,15 @@ def terminal(stdscr):
         messages = log.messages[-200:]
 
         for i, msg in enumerate(visibles):
-            stdscr.addstr(i, 0, msg[:w-1])
+            if "[ERROR]" in msg:
+                attr = curses.color_pair(3)
+            elif "[WARN]" in msg:
+                attr = curses.color_pair(2)
+            elif "[CMD]" in msg:
+                attr = curses.color_pair(4)
+            else:
+                attr = curses.color_pair(1)
+            stdscr.addstr(i, 0, msg[:w-1], attr)
 
         # barre en bas
         stdscr.hline(h-2, 0, "_", w)
@@ -431,15 +460,22 @@ def terminal(stdscr):
                         connected_user = connected_username()
                         message = (f'{len(connected_user)} player :\n - ' + '\n - '.join(connected_user)) if connected_user else 'Nobody has login'
                         for line in message.splitlines():
-                            log.messages.append(line)
+                            log.messages.append('[CMD]' + line)
                     case 'kick' :
                         username = ' '.join(args)
                         if username in connected_username() :
                             disconnect(get_socket(username))
                         else :
-                            log.messages.append(username + ' is not login.')
+                            log.messages.append('[CMD]' + username + ' is not login.')
+                    case 'save' :
+                        save_game()
                     case _:
-                        log.messages.append(f'Uknow commande "{cmd}". Availabe commandes :\n - ' + '\n - '.join(['exit : Close server', 'connected : Show login user', 'kick <username> : kick username']))
+                        log.messages.append(f'[CMD] Uknow commande "{cmd}". Availabe commandes :\n - ' + '\n - '.join([
+                            'exit : Close server',
+                            'connected : Show login user',
+                            'kick <username> : kick username',
+                            'save : Save game'
+                            ]))
                         
             buffer = ""
         elif key == "\b" or key == "\x7f" or key == curses.KEY_BACKSPACE:
