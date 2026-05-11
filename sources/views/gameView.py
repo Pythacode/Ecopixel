@@ -327,7 +327,6 @@ class gameView() :
                     case 'pos' :
                         self.players[data['username']].x = data['pos']
                     case 'new_tree':
-                        print(data)
                         for tree in self.trees:
                             if tree.x == data["x"]:
                                 tree.skin_index = data["skin_index"]
