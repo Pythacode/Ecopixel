@@ -126,17 +126,9 @@ class Tree():
         rect[1] = ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin["subsurface"], rect)
 
-        self.f += main_game.dt
-        if self.f >= 100:
-            if not self.growned_up:
-                self.time_alive +=1
-            else:
-                self.apple_spawn += 1
-            self.f = 0
-            if self.time_alive == self.max_alive and not self.growned_up:
-                self.change_skin()
-                self.time_alive = 0
-            if self.apple_spawn > self.max_apple:
-                self.apple_spawn = 0
-                if self.type == "oak":
-                    main_game.game_view.fruits.append(Fruit(self.x + self.size[0]/2 + randint(-100, 100), 0, "oak"))
+        if self.growned_up:
+            self.f += 1
+            if self.f > self.max_apple:
+                main_game.game_view.fruits.append(Fruit(self.x + self.size[0]/2 + randint(-100, 100), self.y, "apple"))
+                self.f = 0
+
