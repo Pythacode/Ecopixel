@@ -548,7 +548,7 @@ class Player() :
                             'type' : 'new_tree',
                             'x' : main_game.game_view.wait_tree.get('x'), 
                             'y' : main_game.game_view.wait_tree.get('y'), 
-                            'type' : main_game.game_view.wait_tree.get('type'),
+                            'tree_type' : main_game.game_view.wait_tree.get('type'),
                             'fertilized' : main_game.game_view.wait_tree.get('fertilized')
                         })
                         main_game.game_view.wait_tree = None

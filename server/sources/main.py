@@ -278,7 +278,7 @@ def new_tree(message, client_socket, aes_key):
             "skin_index":0,
             "seedling":True,
             "growned_up":False}
-        }, client_socket)
+        })
 
 @s.on("disconnect")
 def handle_disconnect(message, client_socket, aes_key):

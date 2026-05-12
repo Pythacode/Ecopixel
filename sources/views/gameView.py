@@ -287,21 +287,18 @@ class gameView() :
             # Plant
             elif not main_game.player.plant :
                 if main_game.player.sprout >= 1 :
-                    if main_game.connect :
-                        pass
+                    x = main_game.player.get_relativ_x(self.offset_x)
+                    # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
+                    t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
+                    if len(t) == 0 : # Vérifier si elle est vide
+                        main_game.tuto.next("plant")
+                        main_game.player.plant_act()
+                        main_game.player.sprout -= 1
+                        self.wait_tree = {'x' : main_game.player.x + (0 if main_game.player.orientation == "LEFT" else main_game.player.size[0]), 'y' : 0, 'type' : 'oak', 'fertilized': main_game.player.fertilizer > 0}
+                        if main_game.player.fertilizer > 0 :
+                            main_game.player.fertilizer -= 1
                     else :
-                        x = main_game.player.get_relativ_x(self.offset_x)
-                        # Générer une liste de tous les arbres qui sont proche de l'endroit où le joueur veut planter une pousse
-                        t = list(filter(lambda tree : abs(tree.x - x) < 100, self.trees))
-                        if len(t) == 0 : # Vérifier si elle est vide
-                            main_game.tuto.next("plant")
-                            main_game.player.plant_act()
-                            main_game.player.sprout -= 1
-                            self.wait_tree = {'x' : main_game.player.x + (0 if main_game.player.orientation == "LEFT" else main_game.player.size[0]), 'y' : 0, 'type' : 'oak', 'fertilized': main_game.player.fertilizer > 0}
-                            if main_game.player.fertilizer > 0 :
-                                main_game.player.fertilizer -= 1
-                        else :
-                            main_game.player.say('Trop proche :/', 2_000)
+                        main_game.player.say('Trop proche :/', 2_000)
                 else :
                     main_game.player.say("Pas de pousse :/", 2_000)
 
@@ -327,12 +324,17 @@ class gameView() :
                     case 'pos' :
                         self.players[data['username']].x = data['pos']
                     case 'new_tree':
-                        continue # Ca fait beuger tous le jeu 😭😭
+                        found = False
                         for tree in self.trees:
                             if tree.x == data["x"]:
                                 tree.skin_index = data["skin_index"]
                                 tree.growned_up = data["growned_up"]
                                 tree.seedling = data["seedling"]
+                                found = True
+                            break
+                        if not found :
+                            self.trees.append(Tree(x=data['tree']['x'], skin_index=data['tree']['skin_index'], seedling=data['tree']['seedling'], growned_up=data['tree']['growned_up']))
+
                     case 'new_deco' :
                         self.decorations.append(Decoration().load(data.get('deco_type'), data.get('x'), data.get('y')))
                     case 'remove_player' :

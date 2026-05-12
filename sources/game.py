@@ -253,24 +253,35 @@ class Game() :
         # Thread d'envoi
         def send_loop():
             while self.connect:
-                data = self.outbox.get()  # attend qu'un message soit à envoyer
+                data = self.outbox.get()  # attend qu'un message soit à envoyer 
+                print("send : " + str(data))
                 message = json.dumps(data) + "\n"
                 paquet = self.aes_encrypt(self.aes_key, message.encode())
-                self.client.sendall(len(paquet).to_bytes(4, "big") + paquet)
+                try :
+                    self.client.sendall(len(paquet).to_bytes(4, "big") + paquet)
+                except BrokenPipeError :
+                    connect=False
 
         threading.Thread(target=send_loop, daemon=True).start()
 
         # Réception dans ce thread
         buffer = ""
+        timeout = 0
         while self.connect:
-            entête = self.client.recv(4)
+            try :
+                entête = self.client.recv(4)
+            except TimeoutError :
+                timeout += 1
+                if timeout > 10 :
+                    break
+                continue
             if not entête:
                 break
+            timeout = 0
             size = int.from_bytes(entête, "big")
             paquet = b""
             while len(paquet) < size:
                 paquet += self.client.recv(size - len(paquet))
-            # Côté client (network_thread)
             iv = paquet[:16]
             données_chiffrées = paquet[16:]
             chunk = self.aes_decrypt(self.aes_key, iv, données_chiffrées).decode("utf-8")
@@ -278,6 +289,7 @@ class Game() :
             while "\n" in buffer:
                 data, buffer = buffer.split("\n", 1)
                 data = json.loads(data)
+                print("receive " + str(data))
                 self.inbox.put(data)
 
     def disconnect(self):
