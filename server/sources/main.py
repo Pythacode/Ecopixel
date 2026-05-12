@@ -365,10 +365,10 @@ def cyclique_task() :
         if datetime.now() - palantir > timedelta(seconds=30) :
             send_all_player({'type':'palantir'})
             palantir = datetime.now()
-        if datetime.now() - growall > timedelta(seconds=0.5) :
+        if datetime.now() - growall > timedelta(seconds=0.1) :
             for tree in Trees:
                 tree["time_alive"] += 1
-                if tree["time_alive"] == tree["max_alive"] and not tree["growned_up"]:
+                if tree["time_alive"] >= tree["max_alive"] and not tree["growned_up"]:
                     tree["skin_index"] += 1
                     tree["time_alive"] = 0
                     if tree["skin_index"] > 2 and tree["seedling"]:
