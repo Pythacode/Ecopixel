@@ -99,24 +99,24 @@ class serverView():
         main_game.screen.blit(scaled_image, rect)
 
         # Connection
-        hostname_text = self.font.render("Hostname", True, 'black')
-        main_game.screen.blit(hostname_text, (width/2-self.width_cont/2+5, 250))
-        port_text = self.font.render("Port", True, 'black')
-        main_game.screen.blit(port_text, (width/2+self.width_cont/4+10, 250))
+        #hostname_text = self.font.render("Hostname", True, 'black')
+        #main_game.screen.blit(hostname_text, (width/2-self.width_cont/2+5, 250))
+        #port_text = self.font.render("Port", True, 'black')
+        #main_game.screen.blit(port_text, (width/2+self.width_cont/4+10, 250))
 
-        self.hostname_entry.update(events, (width/2-self.width_cont/2, 280), (3*(self.width_cont/4)-5, 40))
-        self.port_entry.update(events, (width/2+self.width_cont/4, 280), (self.width_cont/4-5, 40))
-        
-        hostname_text = self.font.render("Nom d'utilisateur", True, 'black')
-        main_game.screen.blit(hostname_text, (width/2-self.width_cont/2+5, 350))
-        port_text = self.font.render("Mot de passe", True, 'black')
-        main_game.screen.blit(port_text, (width/2-self.width_cont/2+5, 450))
+        #self.hostname_entry.update(events, (width/2-self.width_cont/2, 280), (3*(self.width_cont/4)-5, 40))
+        #self.port_entry.update(events, (width/2+self.width_cont/4, 280), (self.width_cont/4-5, 40))
+        #
+        username_text = self.font.render("Nom d'utilisateur", True, 'black')
+        main_game.screen.blit(username_text, (width/2-self.width_cont/2+5, 350))
+        #port_text = self.font.render("Mot de passe", True, 'black')
+        #main_game.screen.blit(port_text, (width/2-self.width_cont/2+5, 450))
 
         self.username_entry.update(events, (width/2-self.width_cont/2, 380), (self.width_cont, 40))
-        self.password_entry.update(events, (width/2-self.width_cont/2, 480), (self.width_cont, 40))
+        #self.password_entry.update(events, (width/2-self.width_cont/2, 480), (self.width_cont, 40))
 
-        help_text = self.little_font.render("Si aucun compte n'est associé à ce nom d'utilisateur, il seras créer.", True, 'black')
-        main_game.screen.blit(help_text, (width/2-self.width_cont/2+5, 530))
+        #help_text = self.little_font.render("Si aucun compte n'est associé à ce nom d'utilisateur, il seras créer.", True, 'black')
+        #main_game.screen.blit(help_text, (width/2-self.width_cont/2+5, 530))
 
         if self.error is not None :
             error_text = self.little_font.render(self.error, True, 'red')

@@ -55,7 +55,7 @@ class gameView() :
 
         self.trees = []
         for tree in gamedata.get('trees', []) :
-            self.trees.append(Tree(tree.get('x'), tree.get('y'), tree.get('type'), tree.get('fertilized'), tree.get('time_alive'), tree.get('seedling'), tree.get('growned_up'), tree.get('skin_index'), tree.get('max_alive')))
+            self.trees.append(Tree(x=tree.get('x'), y=tree.get('y'), type=tree.get('type'), fertilized=tree.get('fertilized'), time_alive=tree.get('time_alive'), seedling=tree.get('seedling'), growned_up=tree.get('growned_up'), skin_index=tree.get('skin_index'), max_alive=tree.get('max_alive')))
         self.wait_tree = gamedata.get('wait_tree', None)
         self.fruits = []
 
@@ -327,13 +327,19 @@ class gameView() :
                         found = False
                         for tree in self.trees:
                             if tree.x == data["x"]:
+                                print("found")
                                 tree.skin_index = data["skin_index"]
                                 tree.growned_up = data["growned_up"]
                                 tree.seedling = data["seedling"]
                                 found = True
                             break
                         if not found :
-                            self.trees.append(Tree(x=data['tree']['x'], skin_index=data['tree']['skin_index'], seedling=data['tree']['seedling'], growned_up=data['tree']['growned_up']))
+                            for tree in self.trees:
+                                if tree.x == data["x"]:
+                                    self.trees.remove(tree)
+                            if data["skin_index"] == 3:
+                                data["skin_index"] = 2
+                            self.trees.append(Tree(x=data['x'], skin_index=data['skin_index'], seedling=data['seedling'], growned_up=data['growned_up']))
 
                     case 'new_deco' :
                         self.decorations.append(Decoration().load(data.get('deco_type'), data.get('x'), data.get('y')))

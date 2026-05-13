@@ -198,7 +198,7 @@ def palantir(message, client_socket, _) :
 @s.on("login")
 def login(message, client_socket, aes_key) :
 
-    if message["username"].strip() == "" or message["password"].strip() == "":
+    if message["username"].strip() == ""  :# or message["password"].strip() == "":
         message = {
             "type": "login",
             "response_type": "error",
@@ -271,13 +271,20 @@ def disconnect(client_socket) :
 
 @s.on('new_tree')
 def new_tree(message, client_socket, aes_key):
-    send_all_player({
-        "type":"new_tree", 
-        "tree":{
+    Trees.append({
             "x":message["x"], 
             "skin_index":0,
+            "time_alive":0,
+            "max_alive":15,
             "seedling":True,
-            "growned_up":False}
+            "growned_up":False
+        })
+    send_all_player({
+        "type":"new_tree",
+        "x":message["x"], 
+        "skin_index":0,
+        "seedling":True,
+        "growned_up":False
         })
 
 @s.on("disconnect")
@@ -366,9 +373,9 @@ def cyclique_task() :
             send_all_player({'type':'palantir'})
             palantir = datetime.now()
         if datetime.now() - growall > timedelta(seconds=0.1) :
-            for tree in Trees:
+            for tree in Trees: 
                 tree["time_alive"] += 1
-                if tree["time_alive"] >= tree["max_alive"] and not tree["growned_up"]:
+                if tree["time_alive"] >= tree["max_alive"] and not tree["growned_up"]:  #
                     tree["skin_index"] += 1
                     tree["time_alive"] = 0
                     if tree["skin_index"] > 2 and tree["seedling"]:
@@ -376,7 +383,9 @@ def cyclique_task() :
                         tree["skin_index"] = 0
                     elif tree["skin_index"] > 2:
                         tree["growned_up"] = True
-                    send_all_player({"type":"new_tree", "tree":{"x":tree["x"], "skin_index":tree["skin_index"], "seedling":tree["seedling"], "growned_up":tree["growned_up"]}})
+                    if tree["growned_up"]:
+                        tree["skin_index"] = 2
+                    send_all_player({"type":"new_tree", "x":tree["x"], "skin_index":tree["skin_index"], "seedling":tree["seedling"], "growned_up":tree["growned_up"]})
             growall = datetime.now()
 
 

@@ -96,14 +96,17 @@ class Tree():
         if self.seedling:
             self.skin_list = self.seedling_skin_list
         else:
-            if self.type == "oak":
+            if self.type == "oak" or True:
                 self.skin_list = self.oak_skin_list
+
+        if skin_index > len(self.skin_list) - 1 :
+            skin_index = 0
 
         self.actual_skin = self.skin_list[skin_index]
         self.rect = self.actual_skin["subsurface"].get_rect()
 
         self.x = x
-        self.y = y
+        self.y = 0
     
     def change_skin(self) :
         self.skin_index += 1

@@ -640,4 +640,4 @@ main_game.shop_view = shopView
 main_game.settings_view = settingView
 main_game.server_view = serverView
 
-main_game.change_view(main_game.menu_view)
+main_game.change_view(main_game.server_view)
