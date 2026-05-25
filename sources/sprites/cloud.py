@@ -31,5 +31,5 @@ class Cloud():
 
     def draw(self, surface, ground_altitude, offset_x) :
         rect = self.actual_skin.get_rect()
-        rect[0], rect[1] = self.x+offset_x/2, ground_altitude - self.y - self.size[1]
+        rect[0], rect[1] = self.x+offset_x/2, 100#ground_altitude - self.y - self.size[1]
         surface.blit(self.actual_skin, rect)

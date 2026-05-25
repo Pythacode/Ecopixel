@@ -65,17 +65,17 @@ class shopView():
         self.Retour_btn.update(main_game.screen, events)
         if main_game.player.arrosoir == True:
             main_game.screen.blit(self.image_rupture_arrosoir,self.rect_rupture_arrosoir)
-        if main_game.game_view.h.lvl >= 2:
+        if main_game.game_view.house.lvl >= 2:
             main_game.screen.blit(self.image_rupture_house2,self.rect_rupture_house2)
             main_game.screen.blit(self.image_house3,self.rect_house3)
             self.upgrade2_btn.update(main_game.screen, events)
             self.prix_upgrade2_btn.update(main_game.screen, events)
-        if main_game.game_view.h.lvl >= 3:
+        if main_game.game_view.house.lvl >= 3:
             main_game.screen.blit(self.image_rupture_house3,self.rect_rupture_house3)
             main_game.screen.blit(self.image_house4,self.rect_house4)
             self.upgrade3_btn.update(main_game.screen, events)
             self.prix_upgrade3_btn.update(main_game.screen, events)
-        if main_game.game_view.h.lvl == 4:
+        if main_game.game_view.house.lvl == 4:
             main_game.screen.blit(self.image_rupture_house4,self.rect_rupture_house4)
 
     
@@ -91,30 +91,30 @@ class shopView():
             self.buy_cooldown = pygame.time.get_ticks()
 
     def Amelioration1(self):
-        if main_game.game_view.h.lvl == 1 and main_game.player.money > self.items[2]['price']:
+        if main_game.game_view.house.lvl == 1 and main_game.player.money > self.items[2]['price']:
             main_game.player.money -= self.items[2]["price"]
             if main_game.connect : 
                 main_game.outbox.put({'type':'house', 'lvl':2})
-            main_game.game_view.h.lvl = 2
+            main_game.game_view.house.lvl = 2
             main_game.screen.blit(self.image_house3,self.rect_house3)
-            main_game.house.change_skin()
+            main_game.game_view.house.change_skin()
         
     def Amelioration2(self):
-        if main_game.game_view.h.lvl == 2 and main_game.player.money > self.items[3]['price']:
+        if main_game.game_view.house.lvl == 2 and main_game.player.money > self.items[3]['price']:
             main_game.player.money -= self.items[3]["price"]
             if main_game.connect : 
                 main_game.outbox.put({'type':'house', 'lvl':3})
-            main_game.game_view.h.lvl = 3
+            main_game.game_view.house.lvl = 3
             main_game.screen.blit(self.image_house3,self.rect_house4)
-            main_game.house.change_skin()
+            main_game.game_view.house.change_skin()
 
     def Amelioration3(self):
-        if main_game.game_view.h.lvl == 3 and main_game.player.money > self.items[4]['price']:
+        if main_game.game_view.house.lvl == 3 and main_game.player.money > self.items[4]['price']:
             main_game.player.money -= self.items[4]["price"]
             if main_game.connect : 
                 main_game.outbox.put({'type':'house', 'lvl':4})
-            main_game.house.lvl = 4
-            main_game.house.change_skin()
+            main_game.game_view.house.lvl = 4
+            main_game.game_view.house.change_skin()
 
     def Vendre_item(self):
         main_game.tuto.next("buy")

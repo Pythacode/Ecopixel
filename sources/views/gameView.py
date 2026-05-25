@@ -40,6 +40,7 @@ class gameView() :
         """
         init function
         """
+        
 
         self.ground = pygame.image.load(os.sep.join([main_game.asset_doc, "image", "game", "ground.png"]))
         self.last_frame = 0
@@ -60,7 +61,7 @@ class gameView() :
         self.fruits = []
 
         house_data = gamedata.get('house', {})
-        self.h = House(lvl=house_data.get('lvl', 1))
+        self.house = House(lvl=house_data.get('lvl', 1))
         self.s = Shop_place(-500)
         self.eimg = pygame.image.load(os.sep.join([main_game.asset_doc,"image","button","Ebtn.png"]))
 
@@ -132,7 +133,7 @@ class gameView() :
         for mountain in self.mountains:
             mountain.draw(main_game.screen, ground_altitude, self.offset_x)
 
-        self.h.draw(main_game.screen, ground_altitude, self.offset_x)
+        self.house.draw(main_game.screen, ground_altitude, self.offset_x)
         self.s.draw(main_game.screen, ground_altitude, self.offset_x)
 
         for tree in self.trees :
@@ -252,7 +253,7 @@ class gameView() :
         # If distance between center of house & shop < half of his size :
         #     display_action_touch
         if (
-            (abs((self.h.x + self.h.size[0]/2 + self.offset_x) - x) < self.h.size[0]/2)
+            (abs((self.house.x + self.house.size[0]/2 + self.offset_x) - x) < self.house.size[0]/2)
             or
             (abs((self.s.x + self.s.size[0]/2 + self.offset_x) - x) < self.s.size[0]/2)
             ) :
@@ -269,7 +270,7 @@ class gameView() :
         if main_game.touch_pressed.get(main_game.key_action, False) :
             
             # Search
-            if abs((self.h.x + self.h.size[0]/2 + self.offset_x) - x) < self.h.size[0]/2:
+            if abs((self.house.x + self.house.size[0]/2 + self.offset_x) - x) < self.house.size[0]/2:
                 img = pygame.transform.scale(self.eimg, (72, 72))
                 rect = img.get_rect()
                 rect.center = (main_game.player.get_relativ_x(self.offset_x) + 60, ground_altitude - 250)
@@ -359,8 +360,8 @@ class gameView() :
                             'arrosoir' : main_game.player.arrosoir
                         })
                     case 'house' :
-                        main_game.game_view.h.lvl = data.get('lvl')
-                        main_game.house.change_skin()
+                        main_game.game_view.house.lvl = data.get('lvl')
+                        main_game.game_view.house.change_skin()
                     case _ :
                         print(data['type'])
 
