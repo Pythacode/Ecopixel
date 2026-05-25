@@ -198,7 +198,7 @@ def palantir(message, client_socket, _) :
 @s.on("login")
 def login(message, client_socket, aes_key) :
 
-    if message["username"].strip() == ""  :# or message["password"].strip() == "":
+    if message["username"].strip() == "" or message["password"].strip() == "":
         message = {
             "type": "login",
             "response_type": "error",
